@@ -6,7 +6,7 @@ export class Module {
 'evaluationIds': number[];
 'themes': Theme[];
 'name': string;
-'teachersIds': number[] = [];
+'teacherIds': number[] = [];
 
 
 constructor(data?: any) {

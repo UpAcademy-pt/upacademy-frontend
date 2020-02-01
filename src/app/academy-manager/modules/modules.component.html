@@ -1,8 +1,87 @@
-<div class="ml-4">
+<div *ngIf="module$ | async as module">
+  <div class="ml-4">
+    <form  #updateModuleForm="ngForm" (ngSubmit)="updateModule()">
+  <button class="float-right btn bnt-primary" *ngIf="!inUpdate" (click)="toggleUpdateModule()">Editar</button>
+  <button *ngIf="inUpdate" type="submit" class="btn btn-primary float-right mx-2">Atualizar</button>
+  <button class="btn btn-danger float-right mx-2" *ngIf="inUpdate" (click)="openModal(templateConfirmDeleteModule)">Remover Conta</button>
+  <h3>Módulo</h3>
+  <label style="font-weight: bolder;" for="edName">Nome:</label>
+  <input [readonly]="!inUpdate" #nameField="ngModel" [(ngModel)]="module.name" name="name" id="name" type="text"
+          [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}" 
+          [placeholder]="module.name === null ? '' : module.name">
+<div>
+  <h5>Temas</h5>
+<div *ngIf="!inUpdate">
+  <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
+  <ul *ngIf="module?.themes.length > 0">
+    <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
+  </ul>
+</div>
+  <div *ngIf="inUpdate" class="row">
+    <div class="row" *ngIf="allThemes$ | async as allThemes">
+        <ngx-bootstrap-multiselect name="themes" #themesField="ngModel" [(ngModel)]="module.themes"
+            [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+        <button class="btn btn-primary" (click)="openModal(templateAddTheme)">Adicionar tema</button>
+    </div>
+</div>
+</div>
+
+<div>
+  <h5>Formadores</h5>
+<div *ngIf="!inUpdate">
+  <p *ngIf="module?.teacherIds.length === 0"><i>Sem Formadores</i></p>
+  <ul *ngIf="module?.teacherIds.length > 0">
+    <li *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button class="btn btn-primary" (click)="showProfile(teacher['account'].id)">Perfil</button></li>
+  </ul>
+</div>
+<!-- falta editar formadores -->
+<!--   <div *ngIf="inUpdate" class="row">
+    <div class="row" *ngIf="allThemes$ | async as allThemes">
+        <ngx-bootstrap-multiselect name="themes" [(ngModel)]="module.themes"
+            [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+        <button class="btn btn-primary" (click)="openModal(templateAddTheme)">Adicionar tema</button>
+    </div>
+</div> -->
+</div>
+</form>
 
   <div class="float-left mb-4 ml-3">
     <button type="button" class="btn btn-primary btn-md mt-4 float-left"
-      (click)="openModalAddEvaluation(templateAddEvaluation)">Nova Avaliação</button>
+      (click)="openModal(templateAddEvaluation)">Novo Campo de Avaliação</button>
+  </div>
+
+  
+
+        <div class="row">
+          <button type="submit" [disabled]="!addEvaluationForm.valid" class="btn btn-primary mx-auto">Criar</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+
+  <!-- Table -->
+    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>Formandos</th>
+          <th *ngFor="let grade of gradesArray$ | async; let i = index;" id="{{i}}">{{grade.subject}}</th>
+          <th>Comentário</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let evaluation of evaluations$ | async; let i = index;" id="{{i}}">
+          <td>{{student.name}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <button (click)="returnToAcademy()" class="btn btn-secondary mx-auto">Voltar</button>
   </div>
 
   <!-- Modal Add Evaluation -->
@@ -32,31 +111,35 @@
           </form>
         </div>
 
-        <div class="row">
-          <button type="submit" [disabled]="!addEvaluationForm.valid" class="btn btn-primary mx-auto">Criar</button>
-        </div>
+    <!-- Modal Adicionar Tema -->
+    <ng-template #templateAddTheme>
+      <div class="modal-header">Adicionar Tema</div>
+      <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
+          <div class="modal-body container">
+              <input type="text" [(ngModel)]="newTheme.name" name="name" required>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-primary" type="submit">Adicionar</button>
+
+          </div>
       </form>
-    </div>
   </ng-template>
-
-
-  <!-- Table -->
-    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
-
-      <thead class="thead-dark">
-        <tr>
-          <th>Formandos</th>
-          <th *ngFor="let grade of gradesArray$ | async; let i = index;" id="{{i}}">{{grade.subject}}</th>
-          <th>Comentário</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let evaluation of evaluations$ | async; let i = index;" id="{{i}}">
-          <td>{{student.name}}</td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
   </div>
+</div>
+
+<!-- Modal Remover Conta -->
+<ng-template #templateConfirmDeleteModule>
+  <div class="modal-header">Remover Módulo</div>
+  <div class="modal-body container">
+      <p><strong>Tem a certeza que quer remover o módulo <span
+                  class="text-primary">"{{module.name}}"?</span></strong>
+      </p>
+      <p>Toda a informação será apagada permanentemente.</p>
+      <p class="text-danger">Esta operação não pode ser revertida!</p>
+
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-outline-secondary mx-2" (click)="modalRef.hide()">Cancelar</button>
+      <button class="btn btn-danger mx-2" (click)="deleteModule()">Sim</button>
+  </div>
+</ng-template>
