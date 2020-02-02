@@ -6,7 +6,7 @@ export class Academy {
     'startDate': string;
     'endDate': string;
     'edName': string;
-    'modules': Module[] = [];
+    'moduleDTOs': Module[] = [];
     'studentsIds': number[] = [];
     'status': string;
     'warning': string;

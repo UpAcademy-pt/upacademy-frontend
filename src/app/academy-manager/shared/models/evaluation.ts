@@ -4,7 +4,7 @@ export class Evaluation {
 
     'id': number;
     'accountId': number;
-    'grades': Grade[];
+    'grades': Grade[] = [];
     'comment': string;
 
     constructor(data?: any) {

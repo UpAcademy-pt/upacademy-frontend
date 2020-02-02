@@ -127,7 +127,7 @@ export class AcademyViewComponent implements OnInit {
   public addModuleToAcademy() {
     this.moduleService.createModule(this.newModule).subscribe(
       (res: any) => {
-        this.academy.modules.push(this.newModule);
+        this.academy.moduleDTOs.push(this.newModule);
         this.academy$.next(this.academy);
         this.academyService.updateAcademy(this.academy).subscribe(
           (res: any) => {
