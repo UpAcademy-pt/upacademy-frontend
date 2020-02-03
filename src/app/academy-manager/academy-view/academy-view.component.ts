@@ -120,6 +120,11 @@ export class AcademyViewComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  public openModalAddStudent(template: TemplateRef<any>) {
+  //  this.getAllStudents();
+    this.modalRef = this.modalService.show(template);
+  }
+
   public showModule(moduleId: number) {
     this.router.navigate(['/academy-manager/academy/' + this.academy.id + '/module/' + moduleId]);
   }
