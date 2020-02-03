@@ -9,6 +9,8 @@ import { Module } from '../shared/models/module';
 import { ThemesServiceService } from '../shared/services/themes-service.service';
 import { Theme } from '../shared/models/theme';
 import { ModuleService } from '../shared/services/module.service';
+import { User } from 'src/app/core/models/user';
+import { UserServiceService } from 'src/app/core/services/user-service/user-service.service';
 
 @Component({
   selector: 'app-academy-view',
@@ -47,6 +49,25 @@ export class AcademyViewComponent implements OnInit {
   public newTheme = new Theme();
   public addingTheme = false;
 
+  public student: User;
+  public allStudents: User[];
+  public allStudents$: ReplaySubject<User[]> = new ReplaySubject(1);
+  public studentDropdownList = [{ id: 0, name: 'Sem alunos' }];
+  public studentsDropdownSettings = {
+    dataIdProperty: 'id',
+    dataNameProperty: 'name',
+    headerText: 'Alunos',
+    noneSelectedBtnText: 'Nenhum seleccionado',
+    btnWidth: 'auto',
+    dropdownHeight: 'auto',
+    showDeselectAllBtn: true,
+    showSelectAllBtn: true,
+    deselectAllBtnText: 'Desmarcar todos',
+    selectAllBtnText: 'Seleccionar todos',
+    btnClasses: 'dropdown-toggle form-control',
+    selectionLimit: 100,
+    enableFilter: true
+  };
 
   datesForm = new FormGroup({
     dateRange: new FormControl([
@@ -61,25 +82,28 @@ export class AcademyViewComponent implements OnInit {
     private modalService: BsModalService,
     private router: Router,
     private themeService: ThemesServiceService,
-    private moduleService: ModuleService
-  ) { this.route.params.subscribe(
-    params => {
-      this.academyService.getbyId(Number(params.academyId)).subscribe(
-        (academy: Academy) => {
-          this.academy = academy;
-          this.academy$.next(this.academy);
-        }
-      ); });
-    }
+    private moduleService: ModuleService,
+    private userService: UserServiceService
+  ) {
+    this.route.params.subscribe(
+      params => {
+        this.academyService.getbyId(Number(params.academyId)).subscribe(
+          (academy: Academy) => {
+            this.academy = academy;
+            this.academy$.next(this.academy);
+          }
+        );
+      });
+  }
 
   ngOnInit() {
   }
 
-   public toggleUpdateAcademy() {
-     this.inUpdate = true;
-   }
+  public toggleUpdateAcademy() {
+    this.inUpdate = true;
+  }
 
-   public getDates(dates: string) {
+  public getDates(dates: string) {
     this.datesArray = dates.split(' - ');
     this.academy.startDate = this.datesArray[0];
     this.academy.endDate = this.datesArray[1];
@@ -117,11 +141,6 @@ export class AcademyViewComponent implements OnInit {
 
   public openModalAddModule(template: TemplateRef<any>) {
     this.getAllThemes();
-    this.modalRef = this.modalService.show(template);
-  }
-
-  public openModalAddStudent(template: TemplateRef<any>) {
-  //  this.getAllStudents();
     this.modalRef = this.modalService.show(template);
   }
 
@@ -171,5 +190,29 @@ export class AcademyViewComponent implements OnInit {
     );
   }
 
+  public openModalAddStudent(template: TemplateRef<any>) {
+    this.getAllStudents();
+    this.modalRef = this.modalService.show(template);
+  }
 
+  public showStudent(studentId: number) {
+    this.router.navigate(['/academy-manager/profile/' + studentId]);
+  }
+
+  public addStudentToAcademy() { }
+
+  public getAllStudents() {
+    this.userService.getUsers('', '', 'USER').subscribe(
+      (res: any) => {
+        this.allStudents = res;
+        this.allStudents$.next(this.allStudents);
+        if (this.allStudents !== []) {
+          this.studentDropdownList = [];
+        }
+        this.allStudents.forEach(student => {
+          this.studentDropdownList.push({ id: student.id, name: student.name });
+        });
+      }
+    );
+  }
 }
