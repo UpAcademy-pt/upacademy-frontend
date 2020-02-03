@@ -256,9 +256,11 @@ export class ModulesComponent implements OnInit {
   }
   public updateModule() {
     this.chosenTeachers.forEach(teacher => {
+      if (!this.module.teacherIds.includes(teacher['id'])) {
       this.module.teacherIds.push(teacher['id']);
+      this.getUserAccountById(teacher['id'], 'teacher');
+      }
     });
-    this.module.teacherIds.forEach(teacherId => this.getUserAccountById(teacherId, 'teacher'));
     this.moduleService.updateModule(this.module).subscribe((res: any) => {
       this.inUpdate = false;
     });
@@ -372,7 +374,6 @@ export class ModulesComponent implements OnInit {
 
   public filterTeachers() {
     console.log(this.filteredTeachers);
-    
     console.log(this.filterTheme);
     this.filteredTeachers = [];
     let teachersByTheme: {}[];
@@ -385,7 +386,6 @@ export class ModulesComponent implements OnInit {
       this.filteredTeachers.push({ 'id': teacher['account'].id, 'name': teacher['name'] });
     });
     console.log(this.filteredTeachers);
-    
   }
 
 }
