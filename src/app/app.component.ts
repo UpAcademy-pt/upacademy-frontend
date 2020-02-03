@@ -19,7 +19,10 @@ constructor(
       this.currentUser$ = this.userApi.currentUser$;
       this.subscriptionUser = this.currentUser$.subscribe(s => {
         if(s && s.id) {
-          this.show = true} 
+          this.show = true
+        }else{
+          this.show = false;
+        }
       });
     }
 

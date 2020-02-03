@@ -1,11 +1,14 @@
-<form class="mg-5 mt-3 col-5 container" #updateProfileForm="ngForm" (ngSubmit)="updateUser()">
-  <div class="row my-5 text-center">
+<div class="mt-5 col-5 container">
+  <div class="my-2 row text-center">
     <h5 class="col">Atualize os seus dados</h5>
   </div>
   <div class="row">
-    <button class="ml-auto btn btn-link" (click)="openModalUpdatePassword(templateUpdatePassword)">Alterar
-      password</button>
+    <button class="ml-auto btn btn-link" (click)="openModalUpdatePassword(templateUpdatePassword)">
+      <small>Alterar password</small></button>
   </div>
+</div>
+
+<form class="col-5 container" #updateProfileForm="ngForm" (ngSubmit)="updateUser()">
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label">Nome:</label>
     <div class="col-sm-10">
@@ -23,8 +26,7 @@
     </div>
   </div>
   <div class="row">
-    <button [disabled]="!updateProfileForm.valid" type="submit"
-      class="btn btn-primary mx-auto">Atualizar</button>
+    <button [disabled]="!updateProfileForm.valid" type="submit" class="btn btn-primary mx-auto">Atualizar</button>
   </div>
 </form>
 
@@ -45,7 +47,7 @@
         <div class="col-sm-10">
           <input #password1Field="ngModel" [(ngModel)]="currentPassword" name="passwordatual" id="passwordatual"
             type="password" class="form-control" placeholder="Digite a password atual aqui" required>
-          <small *ngIf = "showCurrentPassError" class="text-danger">Password errado, tente novamente</small>
+          <small *ngIf="showCurrentPassError" class="text-danger">Password errado, tente novamente</small>
         </div>
       </div>
       <div class="form-group row">
@@ -53,16 +55,16 @@
         <div class="col-sm-10">
           <input #password2Field="ngModel" [(ngModel)]="newPassword1" name="newpassword1" id="newpassword1"
             type="password" class="form-control" placeholder="Digite a nova password aqui" required minlength="8">
-            <small class="text-danger" [hidden]="password2Field.valid || !password2Field.touched">Digite a password com no
-              mínimo 8 dígitos!</small>
+          <small class="text-danger" [hidden]="password2Field.valid || !password2Field.touched">Digite a password com no
+            mínimo 8 dígitos!</small>
         </div>
       </div>
       <div class="form-group row">
         <label for="novopassword2" class="col-sm-2 col-form-label">Nova password:</label>
         <div class="col-sm-10">
           <input #password3Field="ngModel" [(ngModel)]="newPassword2" name="novopassword2" id="novopassword2"
-          type="password" class="form-control" placeholder="Confirme a nova password" required  minlength="8">
-          <small *ngIf = "showNewPassError" class="text-danger">A nova password não corresponde</small>
+            type="password" class="form-control" placeholder="Confirme a nova password" required minlength="8">
+          <small *ngIf="showNewPassError" class="text-danger">A nova password não corresponde</small>
         </div>
       </div>
       <div class="row">

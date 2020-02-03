@@ -1,6 +1,9 @@
 <div class="container">
-    <img class="p-5" src="https://www.upacademy.pt/media/UP-Academy-Logo-Retina-Website.png" alt="UpAcademy imagem" width="600 px">
-<form >
+    <div class="text-center">
+        <img class="p-5 mt-5 mb-3" src="https://www.upacademy.pt/media/UP-Academy-Logo-Retina-Website.png" alt="UpAcademy imagem" width="600 px">
+
+    </div>
+<!-- <form >
     <div class="row">
         <label for="validateEmail">Email: </label>
         <input [(ngModel)]="email" id="validateEmail" name="email" type="email" placeholder="Email">
@@ -20,9 +23,47 @@
         <input [(ngModel)]="newPassword2" id="validateNew2Password" name="passworddup" type="password" placeholder="Password nova">
     </div>
     <div class="row">
-        <button  type="button">Enviar</button>
+        <button (click)="validateUser()"  type="button">Enviar</button>
     </div>
-</form>
-   
+</form> -->
+
+<form class="mg-5 mt-3 container" #updatePasswordForm="ngForm" (ngSubmit)="validateUser()">
+    <div class="form-group row">
+        <label for="emailatual" class="col-sm-2 col-form-label">Email Atual:</label>
+        <div class="col-sm-10">
+          <input #password1Field="ngModel" [(ngModel)]="email" name="emailatual" id="emailatual"
+            type="email" class="form-control" placeholder="Digite o email atual aqui" required>
+          <small *ngIf = "showCurrentPassError" class="text-danger">Email errado, tente novamente</small>
+        </div>
+      </div>
+    <div class="form-group row">
+      <label for="passwordatual" class="col-sm-2 col-form-label">Password Atual:</label>
+      <div class="col-sm-10">
+        <input #password1Field="ngModel" [(ngModel)]="oldPassword" name="passwordatual" id="passwordatual"
+          type="password" class="form-control" placeholder="Digite a password atual aqui" required>
+        <small *ngIf = "showCurrentPassError" class="text-danger">Password errado, tente novamente</small>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="newpassword1" class="col-sm-2 col-form-label">Nova password:</label>
+      <div class="col-sm-10">
+        <input #password2Field="ngModel" [(ngModel)]="newPassword1" name="newpassword1" id="newpassword1"
+          type="password" class="form-control" placeholder="Digite a nova password aqui" required minlength="8">
+          <small class="text-danger" [hidden]="password2Field.valid || !password2Field.touched">Digite a password com no
+            mínimo 8 dígitos!</small>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="novopassword2" class="col-sm-2 col-form-label">Nova password:</label>
+      <div class="col-sm-10">
+        <input #password3Field="ngModel" [(ngModel)]="newPassword2" name="novopassword2" id="novopassword2"
+        type="password" class="form-control" placeholder="Confirme a nova password" required  minlength="8">
+        <small *ngIf = "showNewPassError" class="text-danger">A nova password não corresponde</small>
+      </div>
+    </div>
+    <div class="row">
+      <button [disabled]="!updatePasswordForm.valid" type="submit" class="btn btn-primary mx-auto">Enviar</button>
+    </div>
+  </form>
 
 </div>
