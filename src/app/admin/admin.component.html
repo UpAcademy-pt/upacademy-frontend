@@ -6,51 +6,6 @@
     </button>
   </div>
 
-  <!-- Filter Fields -->
-  <form class="col-12 mx-auto">
-    <div class="form-row">
-      <div class="col-md-4">
-        <input [(ngModel)]="nameField" name="nameFiled" type="text" class="form-control" placeholder="Nome">
-      </div>
-      <div class="col-md-4">
-        <input [(ngModel)]="emailField" name="emailField" type="text" class="form-control" placeholder="Email">
-      </div>
-      <ngx-select [items]="rolesWithAll" [(ngModel)]="roleField" name="roleField" defaultValue={{rolesWithAll[0].id}} class="col-md-3"></ngx-select>
-      <button (click)="getUsers()" type="button" class="btn-borderless col-1"><fa-icon [icon]="faSearch" size="2x"></fa-icon></button>
-    </div>
-  </form>
-
-  <!-- Table -->
-  <table *ngIf = "showTable" class="table table-responsive-md table-hover table-striped container m-3 col-12 text-center">
-    <thead class="thead-dark">
-    <tr>
-      <th scope="col"></th>
-      <th scope="col-5">Nome</th>
-      <th scope="col-3">Email</th>
-      <th scope="col-2">Role</th>
-      <th scope="col-1">Editar</th>
-      <th scope="col-1">Eliminar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor = "let row of users; let i = index;" id="{{i}}">
-      <th scope="row"></th>
-      <td *ngFor = "let column of headers">{{row[column]}}</td>
-      <td>
-        <button (click)="openModalUpdateUser(templateUpdateUser, i)" type="button" class="btn-borderless btn-edit">
-          <fa-icon [icon]="faEdit" size="lg"></fa-icon>
-        </button>
-      </td>
-      <td>
-        <button (click)="openModalConfirmDeleteUser(templateConfirmDeleteUser, i)" type="button" class="btn-borderless btn-delete">
-          <fa-icon [icon]="faTrashAlt" size="lg"></fa-icon>
-        </button>
-      </td>
-    </tr>
-  </tbody>
-  </table>
-</div>
-
     <!-- Filter Fields -->
     <form class="col-12 mx-auto">
       <div class="form-row">
