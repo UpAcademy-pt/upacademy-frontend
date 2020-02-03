@@ -10,6 +10,7 @@ import { UserServiceService } from 'src/app/core/services/user-service/user-serv
 import { User } from 'src/app/core/models/user';
 import { MissedclassesService } from '../shared/services/missedclasses.service';
 import { Missed } from '../shared/models/missed';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-superuser-classrom',
@@ -17,6 +18,8 @@ import { Missed } from '../shared/models/missed';
   styleUrls: ['./superuser-classrom.component.scss']
 })
 export class SuperuserClassromComponent implements OnInit {
+  private academy: Academy;
+  public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public view = false;
 
   public tempAccount: Account;
@@ -45,8 +48,17 @@ export class SuperuserClassromComponent implements OnInit {
     private academyApi: AcademyService,
     private userApi: UserServiceService,
     private missedApi: MissedclassesService,
+    private route: ActivatedRoute,
     private http: HttpClient) {
-    this.getAllStudents();
+      this.route.params.subscribe(
+        params => {
+          this.academyApi.getbyId(Number(params.academyId)).subscribe(
+            (res: Academy) => {
+              this.academyAccountIds = res.studentsIds;
+              this.academyAccountIds.forEach(student => this.getStudentAccounts(student));
+            }
+          ); });
+    // this.getAllStudents();
     // this.getUserAccount();
     // console.log(this.arrayPositions);
     // this.arrayPositions.map(pos => {
@@ -60,14 +72,14 @@ export class SuperuserClassromComponent implements OnInit {
   ngOnInit() {
   }
 
-  public getAllStudents() {
-    this.academyApi.getbyId(1).subscribe(
-      (res: Academy) => {
-        this.academyAccountIds = res.studentsIds;
-        this.academyAccountIds.forEach(student => this.getStudentAccounts(student));
-      }
-    );
-  }
+  // public getAllStudents() {
+  //   this.academyApi.getbyId(1).subscribe(
+  //     (res: Academy) => {
+  //       this.academyAccountIds = res.studentsIds;
+  //       this.academyAccountIds.forEach(student => this.getStudentAccounts(student));
+  //     }
+  //   );
+  // }
 public getStudentAccounts(id: number){
   this.accountApi.getById(id).subscribe(
     (res: Account) => {
