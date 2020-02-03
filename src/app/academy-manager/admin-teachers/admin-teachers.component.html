@@ -6,7 +6,7 @@
     <div class= col-6>
       <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome" (input) = "filterTable()">
     </div>
-    <ngx-select [items]="allAcademiesNames" name="academy" #academy = "ngModel" [(ngModel)] = "academyFilter" defaultValue="allAcademiesNames[0].id" class=col-6 placeholder="Todas as Academias" (change) = "filterTable()">
+    <ngx-select [items]="allAcademiesNames" name="academy" #academy = "ngModel" [(ngModel)] = "academyFilter" class=col-6 placeholder="Todas as Academias" (ngModelChange) = "filterTable()">
     </ngx-select>
   </div>
 

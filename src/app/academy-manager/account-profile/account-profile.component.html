@@ -28,25 +28,23 @@
                                 #ageField="ngModel" [(ngModel)]="account.age" name="age" id="age" type="date"
                                 [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                                 [placeholder]="account.age === null ? '' : account.age"></label>
-                        <div class="h-divider"></div>
+
                         <label style="font-weight: bolder;">Área de Formação:<input [readonly]="!inUpdate"
                                 #academicBackgroundField="ngModel" [(ngModel)]="account.academicBackground"
                                 id="academicBackground" name="academicBackground" type="text"
                                 [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                                 [placeholder]="account.academicBackground === null ? '' : account.academicBackground"></label>
-                        <div class="h-divider"></div>
+
                         <label style="font-weight: bolder;">Grau académico:<input [readonly]="!inUpdate"
                                 #academicDegreeField="ngModel" [(ngModel)]="account.academicDegree" id="academicDegree"
                                 name="academicDegree" type="text"
                                 [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                                 [placeholder]="account.academicDegree === null ? '' : account.academicDegree"></label>
-                        <div class="h-divider"></div>
+
                         <label style="font-weight: bolder;">NIF:<input [readonly]="!inUpdate" #nifField="ngModel"
                                 [(ngModel)]="account.nif" id="nif" name="nif" type="number"
                                 [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                                 placeholder="account.nif"></label>
-                        <div class="h-divider"></div>
-
                     
                 </div>
             </div>
@@ -56,19 +54,16 @@
                     <div> <label style="font-weight: bolder;">Email: </label>
                         <div> {{user.email}}</div>
                     </div>
-                    <div class="h-divider"></div>
                     <label style="font-weight: bolder;">Linkedin:<input [readonly]="!inUpdate"
                             #linkedInAdressField="ngModel" [(ngModel)]="account.linkedInAdress" id="linkedInAdress"
                             name="linkedInAdress" type="text"
                             [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                             [placeholder]="account.linkedInAdress === null ? '' : account.linkedInAdress"></label>
-                    <div class="h-divider"></div>
                     <label style="font-weight: bolder;">Telemovel:<input [readonly]="!inUpdate"
                             #mobilePhoneField="ngModel" [(ngModel)]="account.mobilePhone" id="mobilePhone"
                             name="mobilePhone" type="text"
                             [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                             placeholder="account.mobilePhone"></label>
-                    <div class="h-divider"></div>
                 </div>
                 <div class="col-md-7 ml-3 text-left ">
                     <div style="font-weight: bolder; font-style: italic; font-size: large;">Academias:</div>
@@ -81,11 +76,10 @@
                         </div>
                         <div *ngIf="academies?.length > 0">
                             <div *ngFor="let academy of academies">
-                                <span><a href="">{{academy.edName}}</a></span>
+                                <span><a [routerLink]="['/academy-manager/academy/', academy.id]">{{academy.edName}}</a></span>
                             </div>
                         </div>
                     </div>
-                    <div class="h-divider"></div>
                     
                     <!--  Temas (só para formadores) -->
                     <div *ngIf="user?.role === 'SUPERUSER'">

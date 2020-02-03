@@ -50,7 +50,7 @@ export class AccountProfileComponent implements OnInit {
   public newMissedClass = new Missed();
   private missedClassToUpdate = new Missed();
   private index: number;
-  private accountAcademies: Academy[];
+  private accountAcademies: Academy[] = [];
   public accountAcademies$: ReplaySubject<Academy[]> = new ReplaySubject(1);
 
 
