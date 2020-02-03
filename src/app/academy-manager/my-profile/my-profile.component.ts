@@ -20,12 +20,6 @@ export class MyProfileComponent implements OnInit {
 
   public name: string;
   public email: string;
-  public age: number;
-  public academicB: string;
-  public academicDegree: string;
-  public nif: number;
-  public linkedin: string;
-  public phone: number;
   public misses: Missed[];
   public misses$: ReplaySubject<Missed[]> = new ReplaySubject(1);
 
@@ -60,12 +54,6 @@ export class MyProfileComponent implements OnInit {
       
     this.name = this.userApi.getCurrentName();
     this.email = this.userApi.getCurrentUser().email;
-    this.age = this.currentAccount.age;
-    this.academicB = this.currentAccount.academicBackground;
-    this.academicDegree = this.currentAccount.academicDegree;
-    this.nif = this.currentAccount.nif;
-    this.linkedin= this.currentAccount.linkedInAdress;
-    this.phone = this.currentAccount.mobilePhone;
     this.profileForm.controls['notEditable'].disable();
     this.profileForm.controls['editable'].disable();
     this.profileForm.controls['formAge'].disable();
@@ -96,8 +84,6 @@ export class MyProfileComponent implements OnInit {
   getMisses(){
     this.missedClassApi.get(this.currentAccount.id).subscribe((misses:any) => {this.misses = misses;
       this.misses$.next(this.misses) ; console.log(this.misses);});
-    // this.http.get(this.URL +"/" +this.currentAccount.id).subscribe((misses:any) => {this.misses = misses;
-    //                   this.misses$.next(this.misses) ; console.log(this.misses);});
   }
 
 

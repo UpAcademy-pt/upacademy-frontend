@@ -57,7 +57,7 @@ const routes: Routes = [
         component: MyDeclarationsComponent
       },
       {
-        path: 'superuser-classroom',
+        path: 'academy-classroom/:academyId',
         component: SuperuserClassromComponent
       },
       {

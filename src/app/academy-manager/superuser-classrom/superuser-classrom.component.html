@@ -1,13 +1,14 @@
 <div class="container-fluid mt-2 ml-4 d-flex justify-content-center">
-    <div>TESTESTE</div>
+  <div>
+  <div><button type="button" class="btn btn-danger" (click)="changeView()">change view</button></div>
 
-    <!-- <div id="zemanel">
+  <!-- <div id="zemanel">
 
 
     </div> -->
-    <!-- <div #one></div> -->
+  <!-- <div #one></div> -->
 
-    <!-- <div>
+  <!-- <div>
         <input type="number" [(ngModel)]="rows" />
         <input type="number" [(ngModel)]="colums" />
         <button (click)="setDimension()" type="button">Change</button>
@@ -26,30 +27,49 @@
       </div> -->
 
 
-    <div>
+  <!-- <div>
         <input type="number" [(ngModel)]="rows" />
         <input type="number" [(ngModel)]="colums" />
         <button (click)="setDimension()" type="button">Change</button>
         <button (click)="setphoto()" type="button">photo</button>
         <button (click)="cleanElement()" type="button">cleanBruno</button>
-        <!-- <div class="text-center">
+        <div class="text-center">
                 <div *ngFor="let row of rowArray; index as i" class="row text-center" id="z{{i}}">
                     <div *ngFor="let col of colArray; index as a" class="col border strokeme border-secondary m-2 rounded-circle" id="a{{i}}{{a}}" style="width:150px; height: 150px; max-width: 150px; background: url('https://us.v-cdn.net/6022045/uploads/defaultavatar.png')no-repeat center center /cover;"><div class="row"><div class="col d-flex align-items-start " id="topL{{i}}{{a}}"></div><div class="col d-flex align-items-end" id="topR{{i}}{{a}}"></div></div><div class="row d-flex align-items-end justify-content-center" style="margin-top: 90px;" id="bot{{i}}{{a}}"></div></div>
                     
         </div> -->
 
-        <div>
-            <div *ngFor="let position of arrayPositions$ | async"  class="col" style="width:150px; height: 150px; max-width: 150px;">
-                <img class="row" src="{{position.account.photoLink}}">
-                <div class="row">
-                    <button type="button" class="btn btn-info">Info</button>
-                    <button type="button" class="btn btn-danger">Info2</button>
-                </div>
-                <div class="row"> {{position.user.name}}</div>
-            </div>
-        </div>
+  <div *ngIf="view === true">
+    <div *ngFor="let position of arrayPositions$ | async" class="col"
+      style="width:150px; height: 150px; max-width: 150px;">
+      <img class="row" src="{{position.account.photoLink}}">
+      <div class="row">
+        <button type="button" class="btn btn-info">Info</button>
+        <button type="button" class="btn btn-danger">Info2</button>
+      </div>
+      <div class="row"> {{position.user.name}}</div>
     </div>
+  </div>
 
-
-
+  <div *ngIf="view === false">
+    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
+      <thead class="thead-dark">
+        <tr>
+          <th>Foto</th>
+          <th>Nome</th>
+          <th>Falta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let position of arrayPositions$ | async; let i = index;" id="{{position.position}}">
+          <td><img src="{{position.account.photoLink}}" class="rounded-circle" alt="" style="max-height: 50px;max-width: auto;"></td>
+          <td>{{position.user.name}}</td>
+          <td>
+            <button *ngIf="chekedIfMissed(position.account.id) == false" (click)="addMissed(position.account.id)" class="btn btn-danger">Falta</button>
+            <button *ngIf="chekedIfMissed(position.account.id) == true" (click)="removeMissed(position.account.id)" class="btn btn-success">Remover Falta</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

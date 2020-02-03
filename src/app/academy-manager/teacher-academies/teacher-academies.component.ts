@@ -56,4 +56,8 @@ public openAcademyById(id: number) {
   this.router.navigate(['academy-manager/academy-teacher/' + id]);
 }
 
+public openClassByAcademyId(id: number) {
+  this.router.navigate(['academy-manager/academy-classroom/' + id]);
+}
+
 }
