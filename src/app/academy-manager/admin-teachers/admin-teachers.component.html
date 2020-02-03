@@ -4,9 +4,9 @@
 
   <div class="row ml-4">
     <div class= col-6>
-      <input name="nameFilter" #nameFilter type="text" class="form-control" placeholder="Nome" (input) = "filterTable(nameFilter.value, academyFilter.value)">
+      <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome" (input) = "filterTable()">
     </div>
-    <ngx-select [items]="allAcademiesNames" name="academyFilter" #academyFilter defaultValue="allAcademiesNames[0].id" class=col-6 placeholder="Todas as Academias" (change) = "filterTable(nameFilter.value, academyFilter.value)">
+    <ngx-select [items]="allAcademiesNames" name="academy" #academy = "ngModel" [(ngModel)] = "academyFilter" defaultValue="allAcademiesNames[0].id" class=col-6 placeholder="Todas as Academias" (change) = "filterTable()">
     </ngx-select>
   </div>
 

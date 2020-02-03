@@ -36,4 +36,10 @@ export class TeacherAcademyComponent implements OnInit {
   ngOnInit() {
   }
 
+  public refreshWarningAndInfo() {
+    this.academyService.updateAcademy(this.academy).subscribe(
+      (res: any) => console.log(res)
+    )
+  }
+
 }

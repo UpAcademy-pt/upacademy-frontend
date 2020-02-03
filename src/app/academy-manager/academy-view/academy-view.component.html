@@ -5,7 +5,7 @@
                 (click)="toggleUpdateAcademy()">Editar</button>
             <button *ngIf="inUpdate===true" type="submit" class="btn btn-primary float-right mx-2">Atualizar</button>
             <button class="btn btn-danger float-right mx-2" *ngIf="inUpdate===true"
-                (click)="openModal(templateConfirmDeleteAcademy)">Remover Academia</button>
+                (click)="openModalConfirmDelete(templateConfirmDeleteAcademy)">Remover Academia</button>
             <h3>Academia</h3>
         </div>
 
@@ -39,11 +39,11 @@
             <div class="col-5">
                 <div class="form-group row">
                     <p *ngIf="!inUpdate"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
-                    <div *ngIf="inUpdate">
+                    <div *ngIf="inUpdate" [formGroup]="datesForm">
                         <label for="datesArray" class="col-sm-2 col-form-label" style="font-weight: bolder;">Datas:</label>
-                        <input type="text" class="form-control" name="datesArray" #datesArray 
+                        <input type="text" class="form-control" name="datesArray" #datesArray formControlName="dateRange"
                             bsDaterangepicker placeholder="Escolha as datas de duração da Academia" placement="bottom"
-                            [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }">
+                            [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }" (change) = getDates()>
                     </div>
                 </div>
                     <div class="h-divider"></div>
@@ -65,7 +65,7 @@
 
             <div class="row">
                 <div class="col-5">
-                    <p><b>Módulos</b></p>
+                    <p><b>Módulos</b> <button class="btn btn-primary" (click) = "openModalAddModule(templateAddModule)">Adicionar</button></p>
                     <table class="table table-sm table-striped">
                         <thead class="thead-dark">
                             <th>#</th>
@@ -73,9 +73,9 @@
                             <th>+Info</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let module of academy.modules | async; let i = index;" id="{{i}}">
-                                <td>{{i}}</td>
-                                <td>module.name</td>
+                            <tr *ngFor="let module of academy.modules let i = index;" id="{{i}}">
+                                <td>{{i + 1}}</td>
+                                <td>{{module.name}}</td>
                                 <td><button class="btn btn-success" (click) = "showModule(module.id)">Ver</button></td>
                             </tr>
                         </tbody>
@@ -90,9 +90,9 @@
                             <th>Perfil</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let module of academy.modules | async; let i = index;" id="{{i}}">
-                                <td>{{i}}</td>
-                                <td>module.name</td>
+                            <tr >
+                                <td></td>
+                                <td></td>
                                 <td><button class="btn btn-success">Ver</button></td>
                             </tr>
                         </tbody>
@@ -110,6 +110,34 @@
       <p>Tem a certeza que deseja apagar a academia?</p>
       <button type="button" class="btn btn-danger" (click)="deleteAcademy()">Sim</button>
       <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Não</button>
+    </div>
+  </ng-template>
+
+  <!-- Modal Add Module -->
+  <ng-template #templateAddModule>
+    <div class="modal-body text-center">
+        <form #addModuleForm="ngForm" (ngSubmit)="addModuleToAcademy()">
+            <div class="row">
+            <label style="font-weight: bolder;" for="name">Nome:</label>
+            <input #nameField="ngModel" [(ngModel)]="newModule.name" name="name" id="name" type="text" class="form-control">
+        </div>
+                <div class="row" *ngIf="allThemes$ | async as allThemes">
+                    <label for="themes" style="font-weight: bolder;">Temas</label>
+                    <ngx-bootstrap-multiselect name="themes" [(ngModel)]="newModule.themes"
+                        [items]="themeDropdownList" [settings]="dropdownSettings">
+                    </ngx-bootstrap-multiselect>
+                    <button class="btn btn-primary" (click) = "toggleAddTheme">Novo tema</button>
+                </div>
+                    <button class="btn btn-primary" type="submit">Criar</button>
+                
+</form>
+<div *ngIf="addingTheme">
+    <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
+            <input type="text" [(ngModel)]="newTheme.name" name="name" required>
+            <button class="btn btn-primary" type="submit">Adicionar Tema</button>
+    </form>
+</div>
+
     </div>
   </ng-template>
 

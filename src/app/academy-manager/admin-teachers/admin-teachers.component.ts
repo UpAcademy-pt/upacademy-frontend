@@ -21,9 +21,12 @@ export class AdminTeachersComponent implements OnInit {
   public teacherUserAccounts$: ReplaySubject<{}[]> = new ReplaySubject(1);
   private accountAcademies: string[] = [];
   private sorted = false;
+  private filterSorted = false;
   public faSort = faSort;
-  public allAcademiesNames: string[] = ['Todas'];
+  public allAcademiesNames: {}[] = [{ 'id': 'Todas', 'text': 'Todas' }];
   private filteredTeachers: {}[] = [];
+  public nameFilter = '';
+  public academyFilter = 'Todas';
 
   constructor(
     private userService: UserServiceService,
@@ -86,29 +89,44 @@ export class AdminTeachersComponent implements OnInit {
   }
 
   public sortTable() {
-    this.sorted ? this.teacherUserAccounts.sort() : this.teacherUserAccounts.reverse();
-    this.teacherUserAccounts$.next(this.teacherUserAccounts);
-  }
-
-  public filterTable(nameInput: string, academyInput: string) {
-    console.log(academyInput);
-    if (nameInput !== '') {
-  /*     if (academyInput !== 'Todas') {
-        this.filteredTeachers = this.teacherUserAccounts.filter(
-          teacher => teacher['teacherUser'].name.toLowerCase().includes(nameInput.toLowerCase()) 
-          && teacher['academyNames'].includes(academyInput));
-        this.teacherUserAccounts$.next(this.filteredTeachers);
-      } else { */
-        this.filteredTeachers = this.teacherUserAccounts.filter(teacher => 
-          teacher['teacherUser'].name.toLowerCase().includes(nameInput.toLowerCase()));
-        this.teacherUserAccounts$.next(this.filteredTeachers);
-/*       }
-    } else if (academyInput !== 'Todas') {
-      this.filteredTeachers = this.teacherUserAccounts.filter(teacher => teacher['academyNames'].includes(academyInput));
-      this.teacherUserAccounts$.next(this.filteredTeachers); */
+    if (this.nameFilter !== '' || this.academyFilter !== 'Todas') {
+      if (this.filterSorted) {
+        this.filteredTeachers.reverse();
+      } else {
+        this.filteredTeachers.sort((a, b) =>
+          ((a['teacherUser'].name === b['teacherUser'].name) ? 0 : ((a['teacherUser'].name > b['teacherUser'].name) ? 1 : -1)));
+        this.sorted = true;
+      }
+      this.teacherUserAccounts$.next(this.filteredTeachers);
     } else {
+      if (this.sorted) {
+        this.teacherUserAccounts.reverse();
+      } else {
+        this.teacherUserAccounts.sort((a, b) =>
+          ((a['teacherUser'].name === b['teacherUser'].name) ? 0 : ((a['teacherUser'].name > b['teacherUser'].name) ? 1 : -1)));
+        this.sorted = true;
+      }
       this.teacherUserAccounts$.next(this.teacherUserAccounts);
     }
   }
 
+  public filterTable() {
+    if (this.nameFilter !== '') {
+      if (this.academyFilter !== 'Todas') {
+        this.filteredTeachers = this.teacherUserAccounts.filter(
+          teacher => teacher['teacherUser'].name.toLowerCase().includes(this.nameFilter.toLowerCase())
+            && teacher['academyNames'].includes(this.academyFilter));
+        this.teacherUserAccounts$.next(this.filteredTeachers);
+      } else {
+        this.filteredTeachers = this.teacherUserAccounts.filter(teacher =>
+          teacher['teacherUser'].name.toLowerCase().includes(this.nameFilter.toLowerCase()));
+        this.teacherUserAccounts$.next(this.filteredTeachers);
+      }
+    } else if (this.academyFilter !== 'Todas') {
+      this.filteredTeachers = this.teacherUserAccounts.filter(teacher => teacher['academyNames'].includes(this.academyFilter));
+      this.teacherUserAccounts$.next(this.filteredTeachers);
+    } else {
+      this.teacherUserAccounts$.next(this.teacherUserAccounts);
+    }
+  }
 }

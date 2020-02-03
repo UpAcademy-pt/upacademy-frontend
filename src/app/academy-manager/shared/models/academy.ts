@@ -6,8 +6,8 @@ export class Academy {
     'startDate': string;
     'endDate': string;
     'edName': string;
-    'modules': Module[];
-    'studentsIds': number[];
+    'modules': Module[] = [];
+    'studentsIds': number[] = [];
     'status': string;
     'warning': string;
     'usefulInfo': string;

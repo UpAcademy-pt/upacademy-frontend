@@ -1,0 +1,26 @@
+<!-- <p>teacher-academies works!</p> -->
+
+<div class="ml-4 mt-4">
+  
+    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
+      <thead class="thead-dark">
+        <tr>
+          <th>Nome</th>
+          <th>Ver Academia</th>
+          <th>Ver Turma</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
+          <td>{{academy.edName}}</td>
+          <td>
+            <button (click)="openAcademyById(academy.id)" class="btn btn-success">Ver</button>
+          </td>
+          <td>
+            <button (click)="openClassByAcademyId(academy.id)" class="btn btn-success">Ver</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>

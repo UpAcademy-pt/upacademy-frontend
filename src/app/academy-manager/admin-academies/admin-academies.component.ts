@@ -66,8 +66,9 @@ export class AdminAcademiesComponent implements OnInit {
       });
   }
 
-  public createAcademy() {
-    this.getDates(this.academyToCreate);
+  public createAcademy(dates: string) {
+    console.log(dates);
+    this.getDates(dates, this.academyToCreate);
     this.academyService.createAcademy(this.academyToCreate).subscribe(
       (msg: string) => {
         this.getAllAcademies();
@@ -78,8 +79,9 @@ export class AdminAcademiesComponent implements OnInit {
     this.academyToCreate = new Academy();
   }
 
-  public updateAcademy() {
-    this.getDates(this.academyToUpdate);
+  public updateAcademy(dates: string) {
+    console.log(dates);
+    this.getDates(dates, this.academyToUpdate);
     this.academyService.updateAcademy(this.academyToUpdate).subscribe(
       (msg: string) => {
         this.getAllAcademies();
@@ -118,9 +120,8 @@ export class AdminAcademiesComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  public getDates(academy: Academy) {
-    this.dates = ( document.getElementById('datesArray') as HTMLInputElement).value;
-    this.datesArray = this.dates.split(' - ');
+  public getDates(dates: string, academy: Academy) {
+    this.datesArray = dates.split(' - ');
     academy.startDate = this.datesArray[0];
     academy.endDate = this.datesArray[1];
   }

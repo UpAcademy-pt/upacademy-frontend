@@ -21,9 +21,12 @@ export class AdminStudentsComponent implements OnInit {
   public studentUserAccounts$: ReplaySubject<{}[]> = new ReplaySubject(1);
   private accountAcademies: string[] = [];
   private sorted = false;
+  private filterSorted = false;
   public faSort = faSort;
-  public allAcademiesNames: {}[] = [{ 'id': undefined, 'text': 'Todas' }];
+  public allAcademiesNames: {}[] = [{ 'id': 'Todas', 'text': 'Todas' }];
   private filteredStudents: {}[] = [];
+  public nameFilter = '';
+  public academyFilter = 'Todas';
 
 
   constructor(
@@ -55,7 +58,7 @@ export class AdminStudentsComponent implements OnInit {
         for (const academyId of account.academyIds) {
           this.getAcademy(academyId);
         }
-        this.studentUserAccounts.push({ 'studentUser': studentUser, 'studentAccount': account, 'academyNames': this.accountAcademies});
+        this.studentUserAccounts.push({ 'studentUser': studentUser, 'studentAccount': account, 'academyNames': this.accountAcademies });
         this.studentUserAccounts$.next(this.studentUserAccounts);
         this.accountAcademies = [];
       }
@@ -87,36 +90,43 @@ export class AdminStudentsComponent implements OnInit {
   }
 
   public sortTable() {
-    this.sorted ? this.studentUserAccounts.sort() : this.studentUserAccounts.reverse();
-    this.studentUserAccounts$.next(this.studentUserAccounts);
-  }
-
-  public filterTable(nameInput: string, academyInput: string) {
-    console.log(academyInput);
-    
-    if (nameInput !== '') {
-       if (academyInput !== undefined ) {
-         console.log("ambos");
-         
-        this.filteredStudents = this.studentUserAccounts.filter(
-          student => student['studentUser'].name.toLowerCase().includes(nameInput.toLowerCase()) 
-          && student['academyNames'].includes(academyInput));
-        this.studentUserAccounts$.next(this.filteredStudents);
+    if (this.nameFilter !== '' || this.academyFilter !== 'Todas') {
+      if (this.filterSorted) {
+        this.filteredStudents.reverse();
       } else {
-        console.log("só nome");
-        
-        this.filteredStudents = this.studentUserAccounts.filter(student => 
-          student['studentUser'].name.toLowerCase().includes(nameInput.toLowerCase()));
-        this.studentUserAccounts$.next(this.filteredStudents);
+        this.filteredStudents.sort((a, b) =>
+          ((a['studentUser'].name === b['studentUser'].name) ? 0 : ((a['studentUser'].name > b['studentUser'].name) ? 1 : -1)));
+        this.sorted = true;
       }
-    } else if (academyInput !== undefined) {
-      console.log("só academia");
-      
-      this.filteredStudents = this.studentUserAccounts.filter(student => student['academyNames'].includes(academyInput));
       this.studentUserAccounts$.next(this.filteredStudents);
     } else {
-      console.log("nada");
-      
+      if (this.sorted) {
+        this.studentUserAccounts.reverse();
+      } else {
+        this.studentUserAccounts.sort((a, b) =>
+          ((a['studentUser'].name === b['studentUser'].name) ? 0 : ((a['studentUser'].name > b['studentUser'].name) ? 1 : -1)));
+        this.sorted = true;
+      }
+      this.studentUserAccounts$.next(this.studentUserAccounts);
+    }
+  }
+
+  public filterTable() {
+    if (this.nameFilter !== '') {
+      if (this.academyFilter !== 'Todas') {
+        this.filteredStudents = this.studentUserAccounts.filter(
+          student => student['studentUser'].name.toLowerCase().includes(this.nameFilter.toLowerCase())
+            && student['academyNames'].includes(this.academyFilter));
+        this.studentUserAccounts$.next(this.filteredStudents);
+      } else {
+        this.filteredStudents = this.studentUserAccounts.filter(student =>
+          student['studentUser'].name.toLowerCase().includes(this.nameFilter.toLowerCase()));
+        this.studentUserAccounts$.next(this.filteredStudents);
+      }
+    } else if (this.academyFilter !== 'Todas') {
+      this.filteredStudents = this.studentUserAccounts.filter(student => student['academyNames'].includes(this.academyFilter));
+      this.studentUserAccounts$.next(this.filteredStudents);
+    } else {
       this.studentUserAccounts$.next(this.studentUserAccounts);
     }
   }

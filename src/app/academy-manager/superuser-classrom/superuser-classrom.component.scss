@@ -1,0 +1,16 @@
+.h-grandaborder{
+    height:1px;
+    width:500px;
+    border:5px solid gray;
+   }
+
+.strokeme{
+    font-weight: bolder;
+    font-size:larger ;
+    color: black;
+    text-shadow:
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;  
+}

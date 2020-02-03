@@ -1,36 +1,62 @@
 <div class="ml-4">
 
-    <div class="float-left mb-4 ml-3">
-      <button type="button" class="btn btn-primary btn-md mt-4 float-left">Novo Componente</button>
+  <div class="float-left mb-4 ml-3">
+    <button type="button" class="btn btn-primary btn-md mt-4 float-left"
+      (click)="openModalAddEvaluation(templateAddEvaluation)">Nova Avaliação</button>
+  </div>
+
+  <!-- Modal Add Evaluation -->
+  <ng-template #templateAddEvaluation>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Nova Avaliação</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  
+    <div class="modal-body container">
+      Escolha os temas para avaliação deste módulo:
+      <form class="mg-5 mt-3 container" #addEvaluationForm="ngForm" (ngSubmit)="createEvaluation()">
+
+        <div class="form-group row">
+          <form class="mg-5 mt-3 container" #addGradeForm="ngForm" (ngSubmit)="createGrades()">
+            <label for="grades" class="col-sm-2 col-form-label">Tema:</label>
+            <div class="inline">
+              <div class="col-sm-8">
+                <input #gradesFields="ngModel" [(ngModel)]="grade.subject" name="subject" id="subject" type="text"
+                  class="form-control" placeholder="Digite o tema" required>
+                <small class="text-danger" [hidden]="gradesFields.valid || !gradesFields.touched">Campo
+                  Obrigatório</small>
+              </div>
+              <button type="submit" [disabled]="!addGradeForm.valid" class="btn btn-primary mx-auto">Adicionar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="row">
+          <button type="submit" [disabled]="!addEvaluationForm.valid" class="btn btn-primary mx-auto">Criar</button>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+
+  <!-- Table -->
     <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
+
       <thead class="thead-dark">
         <tr>
           <th>Formandos</th>
-          <th>Dinâmicos</th>
+          <th *ngFor="let grade of gradesArray$ | async; let i = index;" id="{{i}}">{{grade.subject}}</th>
           <th>Comentário</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
-          <td>{{academy.edName}}</td>
-          <td>
-            <button (click)="openAcademyById(academy.id)" class="btn btn-success">Ver</button>
-          </td>
-          <td>
-            <button (click)="openModalUpdateAcademy(templateUpdateAcademy, academy)" class="btn-borderless btn-edit">
-              <fa-icon [icon]="faEdit"></fa-icon>
-            </button>
-          </td>
-          <td>
-            <button (click)="openModalConfirmDeleteAcademy(templateConfirmDeleteAcademy, i)"
-              class="btn-borderless btn-delete">
-              <fa-icon [icon]="faTrashAlt"></fa-icon>
-            </button>
-          </td>
+        <tr *ngFor="let evaluation of evaluations$ | async; let i = index;" id="{{i}}">
+          <td>{{student.name}}</td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
-    
   </div>
