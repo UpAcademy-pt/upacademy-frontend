@@ -1,5 +1,5 @@
 
-<div class="container row mx-auto w-75 mt-5">
+<div class="container-flat row mx-auto w-75 my-2">
   <div class="container mb-4">
     <button type="button" class="btn-borderless btn-edit" (click)="openModalAddUser(templateAddUser)">
       <fa-icon [icon]="faUserPlus" size="2x"></fa-icon>
@@ -9,19 +9,19 @@
   <!-- Filter Fields -->
   <form class="col-12 mx-auto">
     <div class="form-row">
-      <div class="col-4">
+      <div class="col-md-4">
         <input [(ngModel)]="nameField" name="nameFiled" type="text" class="form-control" placeholder="Nome">
       </div>
-      <div class="col-4">
+      <div class="col-md-4">
         <input [(ngModel)]="emailField" name="emailField" type="text" class="form-control" placeholder="Email">
       </div>
-      <ngx-select [items]="roles" [(ngModel)]="roleField" name="roleField" defaultValue={{roles[0].id}} class="col-3"></ngx-select>
+      <ngx-select [items]="rolesWithAll" [(ngModel)]="roleField" name="roleField" defaultValue={{rolesWithAll[0].id}} class="col-md-3"></ngx-select>
       <button (click)="getUsers()" type="button" class="btn-borderless col-1"><fa-icon [icon]="faSearch" size="2x"></fa-icon></button>
     </div>
   </form>
 
   <!-- Table -->
-  <table *ngIf = "showTable" class="table table-striped container m-3 col-12 text-center">
+  <table *ngIf = "showTable" class="table table-responsive-md table-hover table-striped container m-3 col-12 text-center">
     <thead class="thead-dark">
     <tr>
       <th scope="col"></th>
@@ -108,10 +108,10 @@
     <div *ngIf="!resetPasswordConfirm" class="ml-auto row">
       <button class="btn btn-danger col-sm-6 btn-sm" (click)="resetPassword()">Comfirmar</button>
       <button class="btn btn-secondary col-sm-5 btn-sm ml-1" (click)="resetPasswordConfirm = !resetPasswordConfirm">Cancelar</button>
-    </div>
+    </div> -->
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
-    </button> -->
+    </button>
   </div>
   <div class="modal-body container">
     Atualize os dados abaixo:
