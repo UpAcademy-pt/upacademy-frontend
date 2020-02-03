@@ -14,7 +14,7 @@ export class MyAcademiesComponent implements OnInit {
   public isCollapsed = true;
   public currentAccount: Account;
   public currentAccount$: ReplaySubject<Account>;
-  public academies: Academy [];
+  public academies: Academy[] = [];
   public academy: Academy;
   public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   private count = 0;
