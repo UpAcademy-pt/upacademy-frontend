@@ -19,9 +19,7 @@ import { Router } from '@angular/router';
 export class TeacherAcademyComponent implements OnInit {
 
   private academy: Academy;
-  private module: Module;
   public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
-  private module$: ReplaySubject<Module> = new ReplaySubject(1);
 
   constructor(
     private router: Router,
@@ -41,7 +39,7 @@ export class TeacherAcademyComponent implements OnInit {
 
   ngOnInit() {
   }
-  //GONÇALO
+  
   public refreshWarningAndInfo() {
     this.academyService.updateAcademy(this.academy).subscribe(
       (res: any) => {
@@ -63,7 +61,7 @@ export class TeacherAcademyComponent implements OnInit {
   }
 
   public openModuleById(id: number) {
-    this.router.navigate(['academy-manager/academy/' + this.academy.id + 'module' + id]);
+    this.router.navigate(['academy-manager/academy/' + this.academy.id + '/module/' + id]);
   }
-    // ver se o url precisa de meter 2 Ids no url
+  
 }

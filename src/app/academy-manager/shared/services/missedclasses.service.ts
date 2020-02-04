@@ -22,6 +22,9 @@ export class MissedclassesService {
  public get(accountId: number){
     return this.http.get(this.URL +"/account/" + accountId)
   }
+  public getByDate(date: number){
+    return this.http.get(this.URL +"/date/" + date)
+  }
 
   public create(mClass: Missed){
     return this.http.post(this.URL +"/m/",mClass)
