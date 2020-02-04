@@ -22,7 +22,7 @@ export class MissedclassesService {
  public get(accountId: number){
     return this.http.get(this.URL +"/account/" + accountId)
   }
-  public getByDate(date: number){
+  public getByDate(date: string){
     return this.http.get(this.URL +"/date/" + date)
   }
 
