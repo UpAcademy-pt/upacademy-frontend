@@ -48,7 +48,10 @@
       </div>
     </form>
 
-    <p><b>Campos de Avaliação: </b> {{module.evaluationSubjects}}</p>
+    <div><b>Campos de Avaliação: </b> <ul class="list-inline">
+      <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
+        {{evaluationSubject}} <button type="button" *ngIf="inUpdate" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
+          <span aria-hidden="true"> ×</span></button></li></ul></div>
     <div class="float-left mb-4 ml-3">
       <button type="button" class="btn btn-primary btn-md mt-4 float-left"
         (click)="openModal(templateAddEvaluation)">Novo Campo de Avaliação</button>
@@ -61,13 +64,13 @@
       <thead class="thead-dark">
         <tr>
           <th *ngFor="let column of tableHeaders$ | async">{{column}}</th>
-          <th>Avaliar</th>
+          <th *ngIf="isSuperUser">Avaliar</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let row of tableRows$ | async; let i = index;" id="{{i}}">
           <td *ngFor="let column of tableHeaders$ | async">{{row[column]}}</td>
-          <td><button class="btn btn-borderless" (click)="openModalUpdateEvaluation(templateEditEvaluation, row['Evaluation'], i)">
+          <td *ngIf="isSuperUser"><button class="btn btn-borderless" (click)="openModalUpdateEvaluation(templateEditEvaluation, row['Evaluation'], i)">
             <fa-icon [icon]="faClipboardList" size="2x"></fa-icon></button></td>
         </tr>
       </tbody>
@@ -90,17 +93,17 @@
         <div class="form-group">
           <div class="form-inline">
             <label for="evaluationFields" class="col-sm-2 col-form-label">Tema:</label>
-            <div class="col-sm-8">
               <input #evaluationSubjectField="ngModel" [(ngModel)]="evaluationField" name="evaluationSubjectField"
                 id="evaluationSubjectField" type="text" class="form-control" placeholder="Digite o tema">
-            </div>
-            <button type="button" class="btn btn-primary mx-auto" (click)="addEvaluationField()">Adicionar</button>
+            <button type="button" class="btn btn-borderless mx-auto" (click)="addEvaluationField()"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
           </div>
-          <p *ngIf="module?.evaluationSubject !== null">{{module.evaluationSubjects}}</p>
+          <div *ngIf="module?.evaluationSubject !== null"><ul class="list-inline">
+            <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>{{evaluationSubject}}
+              <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
+                <span aria-hidden="true"> ×</span></button></li></ul></div>
         </div>
         <div class="row">
-          <button type="button" class="btn btn-primary mx-auto" (click)="updateEvaluationSubjects()">Criar Campos de
-            Avaliação</button>
+          <button type="button" class="btn btn-borderless mx-auto" (click)="updateEvaluationSubjects()"><fa-icon [icon]="faSave" size="2x"></fa-icon></button>
         </div>
       </div>
     </ng-template>
