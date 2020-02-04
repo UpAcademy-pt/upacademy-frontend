@@ -51,6 +51,7 @@ export class AcademyViewComponent implements OnInit {
   public newTheme = new Theme();
   public addingTheme = false;
 
+  public studentToAdd: {}[] = [];
   private studentsDropdown: {}[] = [];
   public studentsDropdown$: ReplaySubject<{}[]> = new ReplaySubject(1);
   private academyStudents: {}[] = [];
@@ -209,7 +210,9 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public addStudentToAcademy() {
-    
+    this.academy.studentsIds = [];
+    this.studentToAdd.forEach(student => this.academy.studentsIds.push(student['id']));
+    this.modalRef.hide();
   }
 
   public getStudentsByAcademy() {
