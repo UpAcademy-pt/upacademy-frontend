@@ -90,24 +90,22 @@ export class UserServiceService {
   }
 
   public deleteUser(id: number) {
-    return this.http.delete(this.url + id, {responseType: 'text'});
+    return this.http.put(this.url + id, {responseType: 'text'});
   }
   public validatePassword(user: User, newPassword: string){
-    const params = new HttpParams();
-    params.set("newPassword",newPassword);
-    return this.http.put(this.url + user,{params})
+    /* const params = new HttpParams();
+    params.set("newPassword",newPassword); */
+    return this.http.put(this.url +"validate?newPass=" + newPassword,user, {responseType: 'text'})
   }
 
   public resetPassword(id: number) {
     return this.http.put(this.url + "resetpassword/" + id, {responseType: 'text'});
   }
-
-  user: User
+  
   public updatePassword(currentPassword: string, newPassword: string) {
-    this.user = this.getCurrentUser();
-    this.user.password = currentPassword;
-    
-    return this.http.put(this.url + "validate?newPass=" + newPassword, this.user, {responseType: 'text'});
+    let user: User = this.getCurrentUser();
+    user.password = currentPassword;
+    return this.http.put(this.url + "validate?newPass=" + newPassword, user, {responseType: 'text'});
   }
 
   public getUserById(id: number){

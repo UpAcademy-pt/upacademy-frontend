@@ -1,5 +1,9 @@
-<app-header *ngIf="show"></app-header>
+<div class="containerall vh-100">
+    <app-header *ngIf="show"></app-header>
 
-<router-outlet> </router-outlet>
-
-<app-footer *ngIf="show"></app-footer>
+    <div class="maincontent">
+        <router-outlet> </router-outlet>
+    </div>
+    
+    <app-footer *ngIf="show"></app-footer>
+</div>

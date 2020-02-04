@@ -23,7 +23,7 @@ export class GradeService {
   }
 
   public createGrade(grade: Grade) {
-    return this.http.post(this.url, grade, {responseType: 'text'});
+    return this.http.post(this.url, grade);
   }
 
   public getbyId(id: number) {
@@ -31,10 +31,10 @@ export class GradeService {
   }
 
   public updateGrade(grade: Grade) {
-    return this.http.put(this.url, grade, {responseType: 'text'});
+    return this.http.put(this.url, grade);
   }
 
   public deleteGrade(id: number) {
-    return this.http.delete(this.url + id, {responseType: 'text'});
+    return this.http.delete(this.url + id);
   }
 }

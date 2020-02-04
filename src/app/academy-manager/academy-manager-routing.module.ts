@@ -45,7 +45,7 @@ const routes: Routes = [
         component: MyProfileComponent
       },
       {
-        path: 'profile/:accountId',
+        path: 'profile/:userId',
         component: AccountProfileComponent
       },
       {

@@ -4,6 +4,7 @@ import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
 import { Router } from '@angular/router';
 import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-header',
@@ -23,7 +24,7 @@ export class HeaderComponent implements OnInit {
     private userApi: UserServiceService,
     private router: Router
   ) {
-    this.name = this.userApi.getCurrentName().split[0];
+    this.name = this.userApi.getCurrentName();
     if (this.userApi.isAdmin()) {
       this.showAdminTab = true;
     }
@@ -37,9 +38,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  collapse() {
+  public collapse() {
     if (!this.isCollapsed) {
       this.isCollapsed = true;
     }
   }
+
 }
