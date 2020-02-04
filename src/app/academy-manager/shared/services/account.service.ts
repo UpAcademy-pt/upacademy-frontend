@@ -72,4 +72,12 @@ export class AccountService {
     this.currentAccount = account;
     this.currentAccount$.next(this.currentAccount);
    }
+
+public getUserbyAccount(id: number) {
+    return this.http.get(this.url + id + '/user');
+
+
 }
+
+
+  }
