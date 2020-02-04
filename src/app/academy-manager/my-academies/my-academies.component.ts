@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../shared/services/account.service';
 import { AcademyService } from '../shared/services/academy.service';
 import { ReplaySubject } from 'rxjs';
-import {Account} from '../shared/models/account';
+import { Account } from '../shared/models/account';
 import { Academy } from '../shared/models/academy';
+import { User } from 'src/app/core/models/user';
 
 @Component({
   selector: 'app-my-academies',
@@ -11,6 +12,8 @@ import { Academy } from '../shared/models/academy';
   styleUrls: ['./my-academies.component.scss']
 })
 export class MyAcademiesComponent implements OnInit {
+  private teacherUsers: User[];
+  public teacherUsers$: ReplaySubject<User[]> = new ReplaySubject(1);
   public isCollapsed = true;
   public currentAccount: Account;
   public currentAccount$: ReplaySubject<Account>;
@@ -24,8 +27,9 @@ export class MyAcademiesComponent implements OnInit {
     private academyService: AcademyService,
 
   ) {
+
     this.currentAccount$ = this.accountService.currentAccount$;
-    this.currentAccount$.subscribe((account) => {
+    this.currentAccount$.subscribe( (account) => {
       this.currentAccount = account;
       console.log('accountE' + account);
       this.currentAccount.academyIds.forEach(element => {
@@ -37,19 +41,38 @@ export class MyAcademiesComponent implements OnInit {
           if (this.count === this.currentAccount.academyIds.length) {
             this.academy = this.academies[0];
             console.log(this.academy);
-            
-                this.academy$.next(this.academy);
+            this.academy$.next(this.academy);
           }
-        });
+          this.academy$.next(this.academy);
+
+        }
+        );
       });
-      
-      
-      
     });
+
+
 
   }
 
-  ngOnInit() {  }
 
+
+  public getTeachers() {
+  this.academy.moduleDTOs.forEach(module => {
+    module.teacherIds.forEach(teacher => {
+      this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
+        this.teacherUsers.push(userTeacher);
+        this.teacherUsers$.next(this.teacherUsers);
+
+      });
+
+
+    });
+
+  });
 }
+ngOnInit(){ }
+
+  }
+
+
 
