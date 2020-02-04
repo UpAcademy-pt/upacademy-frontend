@@ -33,6 +33,8 @@ export class TeacherAcademiesComponent implements OnInit {
       this.currentAccount = account;
       this.currentAccount$.next(this.currentAccount);
       this.academyIds = this.currentAccount.academyIds;
+      console.log(this.currentAccount.academyIds);
+      
       this.academyIds.forEach(academy => this.getActiveAcademies(academy));
       });  
   }
@@ -43,7 +45,11 @@ export class TeacherAcademiesComponent implements OnInit {
 public getActiveAcademies (academyId: number) {
   this. academyApi.getbyId(academyId).subscribe(
     (res: Academy) => {
-       if (res.status !== 'NOTACTIVE') {
+      console.log(res);
+      
+       if (res.status === 'ACTIVE') {
+         console.log('cheguei');
+         
         this.academies.push(res);
         this.academies$.next(this.academies);
        }

@@ -71,7 +71,7 @@ export class MyProfileComponent implements OnInit {
 
   public MakeEdit(){
     this.profileForm.controls['editable'].enable();
-    // this.profileForm.controls['formAge'].disable();
+   this.profileForm.controls['formAge'].enable();
     this.profileForm.controls['formAcademicB'].enable();
     this.profileForm.controls['formAcademicD'].enable();
     // this.profileForm.controls['formNif'].disable();

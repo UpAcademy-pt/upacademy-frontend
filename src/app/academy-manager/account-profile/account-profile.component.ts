@@ -12,6 +12,9 @@ import { Theme } from '../shared/models/theme';
 import { Missed } from '../shared/models/missed';
 import { AcademyService } from '../shared/services/academy.service';
 import { Academy } from '../shared/models/academy';
+import { faEdit, faTrashAlt, faSave, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { DeclarationsService } from '../shared/services/declarations.service';
+import { Declarations } from '../shared/models/declarations';
 
 @Component({
   selector: 'app-account-profile',
@@ -52,6 +55,14 @@ export class AccountProfileComponent implements OnInit {
   private index: number;
   private accountAcademies: Academy[] = [];
   public accountAcademies$: ReplaySubject<Academy[]> = new ReplaySubject(1);
+  public faEdit = faEdit;
+  public faTrashAlt = faTrashAlt;
+  public faSave = faSave;
+  public faMinusCircle = faMinusCircle;
+  public faPlusCircle = faPlusCircle;
+  public missedDay: string;
+  private declarations: Declarations[];
+  public declarations$: ReplaySubject<Declarations[]> = new ReplaySubject(1);
 
 
   constructor(
@@ -62,7 +73,8 @@ export class AccountProfileComponent implements OnInit {
     private modalService: BsModalService,
     private missedClassService: MissedclassesService,
     private themeService: ThemesServiceService,
-    private academyService: AcademyService
+    private academyService: AcademyService,
+    private declarationsService: DeclarationsService
   ) {
     this.route.params.subscribe(
       params => {
@@ -76,9 +88,15 @@ export class AccountProfileComponent implements OnInit {
           (account: Account) => {
             this.account = account;
             this.account$.next(this.account);
-            if(this.account.academyIds != null){
+            if (this.account.academyIds != null) {
               this.account.academyIds.forEach(academyId => this.getAcademy(academyId));
             }
+            this.declarationsService.get(this.account.id).subscribe(
+              (declarations: Declarations[]) => {
+                this.declarations = declarations;
+                this.declarations$.next(this.declarations);
+              }
+            );
             this.getMisses();
           }
         );
@@ -160,34 +178,65 @@ export class AccountProfileComponent implements OnInit {
 
   public addTheme() {
     this.themeService.create(this.newTheme).subscribe(
-      (res: any) => {
-        console.log(res);
+      (id: number) => {
+        console.log(id);
         this.modalRef.hide();
         this.getAllThemes();
       }
     );
   }
 
-  public addMissedDay() {
-    this.newMissedClass.accountId = this.account.id;
-    this.missedClassService.create(this.newMissedClass).subscribe(
-      (res: any) => {
-        this.misses.push(this.newMissedClass);
-        this.misses$.next(this.misses);
+  public validateMissedDate() {
+    let uniqueDate = true;
+    this.misses.forEach(missed => {
+      if (this.newMissedClass.data === missed.data) {
+        uniqueDate = false;
       }
-    );
+    });
+    return uniqueDate;
+  }
+
+  public addMissedDay() {
+    this.newMissedClass.data = new Date(this.missedDay);
+    this.newMissedClass.accountId = this.account.id;
+    this.newMissedClass.justified = false;
+    if (this.validateMissedDate()) {
+      this.missedClassService.create(this.newMissedClass).subscribe(
+        (id: number) => {
+          this.newMissedClass.id = id;
+          this.misses.push(this.newMissedClass);
+          console.log(this.misses[this.misses.length - 1]);
+          this.misses$.next(this.misses);
+          this.modalRef.hide();
+          this.newMissedClass = new Missed();
+          this.inUpdate = true;
+        }
+      );
+    }
   }
 
   public changeJustified(id: number) {
     this.index = this.misses.findIndex(missed => missed.id = id);
+    console.log(this.index);
     this.missedClassToUpdate = this.misses[this.index];
+    console.log(this.missedClassToUpdate);
     this.missedClassToUpdate.justified = !this.missedClassToUpdate.justified;
     this.missedClassService.update(this.missedClassToUpdate).subscribe(
       (res: any) => {
         this.misses[this.index] = this.missedClassToUpdate;
         this.misses$.next(this.misses);
       }
-    )
+    );
+  }
+
+  public deleteMissedClass(id: number) {
+    this.missedClassService.delete(id).subscribe(
+      (res: any) => {
+        this.index = this.misses.findIndex(missed => missed.id = id);
+        this.misses.splice(this.index, 1);
+        this.misses$.next(this.misses);
+      }
+    );
   }
 
 

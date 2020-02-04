@@ -4,7 +4,66 @@
 
     <h4 class="mb-4">Academia do Formador</h4>
 
-    <div *ngIf = "academy$ | async as academy">
+    <div *ngIf = "academy$ | async as academy" class="mb-4">
+      <div id="InfoBox" class="form-inline">
+          <div class="float-left" style="width: 500px;">
+              <h5>Cliente: <span class="badge badge-secondary"> {{ academy.client }} </span></h5>
+                  
+              <h5>Data de começo: <span class="badge badge-secondary"> {{ academy.startDate }} </span></h5>
+                  
+              <h5>Nome da edição: <span class="badge badge-secondary"> {{ academy.edName }} </span></h5>
+          </div>
+
+          <div class="float-left" style="width: 400px;">
+              <h5>Tipo de academia: <span class="badge badge-secondary"> {{ academy.academyType }} </span></h5>
+                  
+              <h5>Data de finalização: <span class="badge badge-secondary"> {{ academy.endDate }} </span></h5>
+                  
+              <h5>Status: <span class="badge badge-secondary"> {{ academy.status }} </span></h5>
+          </div>
+      </div>
+
+      <div class="inline">
+
+        <div class="input-group my-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text">warning</span>
+          </div>
+          <textarea name="warning" [(ngModel)]="academy.warning" class="form-control" aria-label="With textarea"></textarea>
+          <button type="button" (click)="refreshWarningAndInfo()" type="submit" class="btn btn-success ml-4">Submeter</button>
+        </div>
+
+        <div class="input-group my-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text">useful info</span>
+          </div>
+          <textarea name="usefulInfo" [(ngModel)]="academy.usefulInfo" class="form-control" aria-label="With textarea">{{ academy.usefulInfo }}</textarea>
+          <button type="button" (click)="refreshWarningAndInfo()" class="btn btn-success ml-4">Submeter</button>
+        </div>
+
+      </div>
+    
+      <div class="mt-5">
+        <table class="table table-sm text-center">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Modulo</th>
+              <th scope="col">Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let module of academy?.moduleDTOs; let i = index;" id="{{i}}">
+              <td> {{ module.name }} </td>  
+              <td>
+                <button (click)="openModuleById(module.id)" class="btn btn-sm btn-success">Ver</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>   
+      </div>
+
+    </div>
+
     <div id="InfoBox" class="form-inline">
         <div class="float-left" style="width: 500px;">
             <h5>Cliente: <span class="badge badge-secondary"> *client* {{ academy.client }} </span></h5>

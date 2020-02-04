@@ -18,8 +18,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./superuser-classrom.component.scss']
 })
 export class SuperuserClassromComponent implements OnInit {
-  private academy: Academy;
-  public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
+  // private academy: Academy;
+  // public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public view = false;
 
   public tempAccount: Account;
@@ -36,11 +36,14 @@ export class SuperuserClassromComponent implements OnInit {
   private index = 0;
 
   public arrayPositions: any[] = [];
+  
   public arrayPositions$: ReplaySubject<any[]> = new ReplaySubject(1);
+
+  public arrayPositionsRemoved: any[] = [];
 
    public missedClassArray: number[] = [];
 
-  // public tempPosAcc = new Posbyaccount();
+//  public cleanArrayPos  = {'pos': '','account': {id: 0},'user': {id: 0}};
   // public tempPosAcc2 = new Posbyaccount();
 
   constructor(
@@ -58,6 +61,8 @@ export class SuperuserClassromComponent implements OnInit {
               this.academyAccountIds.forEach(student => this.getStudentAccounts(student));
             }
           ); });
+          // console.log(this.cleanArrayPos);
+          
     // this.getAllStudents();
     // this.getUserAccount();
     // console.log(this.arrayPositions);
@@ -95,18 +100,33 @@ public getUser(account: Account){
 });
 }
 
-  public cleanElement() {
+  public cleanElement(pos: Posbyaccount) {
+    let tempPosAcc2 = new Posbyaccount();
+    tempPosAcc2.pos = pos.pos;
+    tempPosAcc2.account = new Account();
+    tempPosAcc2.user = new User();
+    tempPosAcc2.account.photoLink = 'https://simpleicon.com/wp-content/uploads/plus.png';
+    tempPosAcc2.user.name = 'VAZIO';
+    let index = this.arrayPositions.findIndex(x => x.pos === pos.pos);
+    this.arrayPositions[index] = tempPosAcc2;
+    // pos.pos = '';
+    this.arrayPositionsRemoved.push(pos);
+  }
+
+  public addNewElement(){
+
   }
 
   public addMissed(id: number){
-    var timeInMs = Date.now();
-    var date = new Date(timeInMs);
-    var year = date.getFullYear();
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    var day = ("0" + date.getDate()).slice(-2);
+    let timeInMs = Date.now();
+    let date = new Date(timeInMs);
+    // var year = date.getFullYear();
+    // var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    // var day = ("0" + date.getDate()).slice(-2);
 
     let missedClass = new Missed;
-    missedClass.data = "" + year+"-"+month+"-"+day;
+    // missedClass.data = "" + year+"-"+month+"-"+day;
+    missedClass.data = date;
     missedClass.accountId = id;
     missedClass.justified = false;
 
@@ -116,8 +136,21 @@ public getUser(account: Account){
     this.missedClassArray.push(id);
   }
 
-  public removeMissed(id: number){
+  public getTodayMisses(){
+    // let timeInMs = 
+    let today = Date.now() / 100000000;
+    // let date = new Date(timeInMs);
+    // var year = date.getFullYear();
+    // var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    // var day = ("0" + date.getDate()).slice(-2);
 
+    this.missedApi.getByDate(today).subscribe((res: any) => this.missedClassArray.push(res))
+
+  }
+
+  public removeMissed(id: number){
+    let index = this.missedClassArray.findIndex(x => x == id);
+    this.missedClassArray.splice(index,1);
   }
 
   public chekedIfMissed(id: number){
