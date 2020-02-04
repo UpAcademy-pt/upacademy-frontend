@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Academy } from '../models/academy';
 import { ReplaySubject } from 'rxjs';
+import { AccountService } from './account.service';
+import { Account } from '../models/account';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +11,29 @@ import { ReplaySubject } from 'rxjs';
 export class AcademyService {
 
   private url = 'http://localhost:8080/coreFinalProject/academy-manager/academies/';
-  private academies: Academy[];
-  public academies$: ReplaySubject<Academy[]> = new ReplaySubject(1);
+  private accountAcademies: Academy[] = [];
+  public accountAcademies$: ReplaySubject<Academy[]> = new ReplaySubject(1);
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private accountService: AccountService
   ) {
-    this.academies$.next(new Array<Academy>());
+    this.getCurrentAccountAcademies();
+  }
+
+  public getCurrentAccountAcademies() {
+    this.accountService.currentAccount$.subscribe(
+      (currentAccount: Account) => {
+        currentAccount.academyIds.forEach(academyId => {
+          this.getbyId(academyId).subscribe(
+            (academy: Academy) => {
+              this.accountAcademies.push(academy);
+              this.accountAcademies$.next(this.accountAcademies);
+            }
+          );
+        });
+      }
+    );
   }
 
   public getAllAcademies() {

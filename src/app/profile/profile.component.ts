@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { User } from '../core/models/user';
 import { UserServiceService } from '../core/services/user-service/user-service.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +23,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userApi: UserServiceService,
     private modalService: BsModalService,
+    private toastr: ToastrService
   ) {
     this.user = this.userApi.getCurrentUser();
   }
@@ -32,23 +34,26 @@ export class ProfileComponent implements OnInit {
   public updateUser() {
     this.userApi.updateUser(this.user).subscribe(
       (msg: string) => {
+        this.showToastSuccess("Dados atualizados com sucesso");
         console.log(msg);
       },(error: string) => {
+        this.showToastErro("Falha na atualização dos dados");
         console.log(error);
       });
   }
 
   public updatePassword() {
     console.log("Updating Password:");
-    console.log("Current password: " + this.currentPassword + ", New Password1: " + this.newPassword1 + ", New Password2: " + this.newPassword2);
     if (this.newPassword1 === this.newPassword2) {
       this.userApi.updatePassword(this.currentPassword, this.newPassword2).subscribe(
         (msg: string) => {
           this.showCurrentPassError = false;
+          this.showNewPassError = false;
           this.modalRef.hide();
           this.currentPassword = "";
           this.newPassword1 = "";
           this.newPassword2 = "";
+          this.showToastSuccess("Password atualizada com sucesso");
           console.log(msg);
         },(error: string) => {
           this.showCurrentPassError = true;
@@ -62,6 +67,14 @@ export class ProfileComponent implements OnInit {
 
   openModalUpdatePassword(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+  }
+
+  showToastSuccess(msg: string) {
+    this.toastr.success(msg, 'Sucesso', {timeOut: 3000});
+  }
+
+  showToastErro(msg: string) {
+    this.toastr.warning(msg, 'Erro', {timeOut: 3000});
   }
 
 }

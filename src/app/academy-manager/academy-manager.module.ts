@@ -22,6 +22,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { AcademyViewComponent } from './academy-view/academy-view.component';
 import { TeacherAcademyComponent } from './teacher-academy/teacher-academy.component';
 import { ModulesComponent } from './modules/modules.component';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { SuperuserClassromComponent } from './superuser-classrom/superuser-classrom.component';
 import { TeacherAcademiesComponent } from './teacher-academies/teacher-academies.component';
 
@@ -42,6 +43,7 @@ import { TeacherAcademiesComponent } from './teacher-academies/teacher-academies
     TabsModule.forRoot(),
     CollapseModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    AccordionModule.forRoot(),
     ]
 })
 export class AcademyManagerModule { }

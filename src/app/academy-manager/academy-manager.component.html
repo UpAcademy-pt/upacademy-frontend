@@ -1,14 +1,14 @@
 <div class="row">
     <div class="col-2">
-        <div *ngIf="showAdminSidebar===true" class="sidebar-sticky ">
+        <div *ngIf="showAdminSidebar===true" class="sidebar-sticky" style="position: fixed; top: 57px;">
             <app-admin-sidebar></app-admin-sidebar>
         </div>
 
-        <div *ngIf="showAdminSidebar===false" class="sidebar-sticky">
+        <div *ngIf="showAdminSidebar===false" class="sidebar-sticky"  style="position: fixed; top: 57px;">
             <app-sidebar></app-sidebar>
         </div>
     </div>
-    <div class="col-10" style="position: fixed; top: 76px; left: 190px;">
+    <div class="col-10" style="position: fixed; top: 57px; left: 190px;">
         <router-outlet></router-outlet>
     </div>
 </div>

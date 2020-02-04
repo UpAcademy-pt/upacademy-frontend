@@ -73,7 +73,7 @@
                             <th>+Info</th>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let module of academy.modules let i = index;" id="{{i}}">
+                            <tr *ngFor="let module of academy.moduleDTOs let i = index;" id="{{i}}">
                                 <td>{{i + 1}}</td>
                                 <td>{{module.name}}</td>
                                 <td><button class="btn btn-success" (click) = "showModule(module.id)">Ver</button></td>

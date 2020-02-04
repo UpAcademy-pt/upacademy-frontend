@@ -27,8 +27,10 @@ export class AccountService {
       if (account === null) {
         this.newAccount.userId = this.userId;
         this.setCurrentAccount(this.newAccount);
-        this.create(this.newAccount).subscribe((newAccount:any) => {
-          console.log(this.newAccount);
+        this.create(this.newAccount).subscribe((id:number) => {
+          this.currentAccount.id = id;
+          this.currentAccount$.next(this.currentAccount);
+          console.log(this.currentAccount);
         });
       } else {
         this.setCurrentAccount(account);
@@ -70,4 +72,12 @@ export class AccountService {
     this.currentAccount = account;
     this.currentAccount$.next(this.currentAccount);
    }
+
+public getUserbyAccount(id: number) {
+    return this.http.get(this.url + id + '/user');
+
+
 }
+
+
+  }
