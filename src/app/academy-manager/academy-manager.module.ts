@@ -41,7 +41,7 @@ import { TeacherAcademiesComponent } from './teacher-academies/teacher-academies
     AlertModule.forRoot(),
     TabsModule.forRoot(),
     CollapseModule.forRoot(),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
     ]
 })
 export class AcademyManagerModule { }

@@ -1,6 +1,10 @@
+import { Account } from './account';
+import { User } from 'src/app/core/models/user';
+
 export class Posbyaccount {
-    'position': string;
-    'accountId': number;
+    'pos': string;
+    'account': Account;
+    'user': User
 
     constructor(data?: any) {
         Object.assign(this, data);

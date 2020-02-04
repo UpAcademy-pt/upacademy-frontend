@@ -99,8 +99,8 @@
             </div>
             <div class="col-md-8 ml-3 text-left">
                 <div *ngFor="let missed of misses$ | async" >
-                    <div><p *ngIf="missed.justified == true">Data:{{missed.data}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/accept-47587_960_720.png"></p></div>
-                    <div><p *ngIf="missed.justified != true">Data:{{missed.data}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Não Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/cancel-47588_960_720.png"></p></div>
+                    <div><p *ngIf="missed.justified == true">{{missed.date | date:'fullDate'}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/accept-47587_960_720.png"></p></div>
+                    <div><p *ngIf="missed.justified != true">{{missed.date | date:'fullDate'}}  <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Não Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/cancel-47588_960_720.png"></p></div>
                 </div>
             </div>
         </div>

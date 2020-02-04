@@ -39,13 +39,17 @@
                     
         </div> -->
 
-  <div *ngIf="view === true">
-    <div *ngFor="let position of arrayPositions$ | async" class="col"
-      style="width:150px; height: 150px; max-width: 150px;">
-      <img class="row" src="{{position.account.photoLink}}">
-      <div class="row">
-        <button type="button" class="btn btn-info">Info</button>
-        <button type="button" class="btn btn-danger">Info2</button>
+  <div *ngIf="view === true" class="row">
+    <div *ngFor="let position of arrayPositions$ | async" class="col-md-3 m-2"
+      style="background-color: slateblue;">
+      <img class="row profile-photo rounded-circle" src="{{position.account.photoLink}}">
+      <div class="row mx-auto" >
+        <button type="button" (click)="cleanElement(position)" class="btn btn-info">-</button>
+        <!-- <select >
+          <option ng-value="arrayPositionsRemoved.user.name">{{arrayPositionsRemoved.user.name}}</option>
+       </select> -->
+        <button *ngIf="chekedIfMissed(position.account.id) == false" (click)="addMissed(position.account.id)" class="btn btn-danger">F</button>
+        <button *ngIf="chekedIfMissed(position.account.id) == true" (click)="removeMissed(position.account.id)" class="btn btn-success">RF</button>
       </div>
       <div class="row"> {{position.user.name}}</div>
     </div>
