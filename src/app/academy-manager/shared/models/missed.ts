@@ -1,7 +1,7 @@
 export class Missed {
     'id': number;
     'accountId': number;
-    'data': string;
+    'data': Date;
     'justified': boolean;
 
     constructor(data?: any) {

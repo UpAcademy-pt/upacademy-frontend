@@ -59,7 +59,7 @@ export class ModulesComponent implements OnInit {
   private modalRef: BsModalRef;
   private academyId: number;
   public evaluationField = '';
-  private evaluationSubjectArray: string[] = [];
+  public evaluationSubjectArray: string[] = [];
   private tableHeaders: string[] = ['Formando', 'Comentário'];
   public tableHeaders$: ReplaySubject<string[]> = new ReplaySubject(1);
   private tableRows: {}[] = [];
@@ -207,7 +207,7 @@ export class ModulesComponent implements OnInit {
     );
   }
 
-  openModal(template: TemplateRef<any>) {
+  public openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
 
@@ -255,14 +255,25 @@ export class ModulesComponent implements OnInit {
     this.router.navigate(['/academy-manager/profile/' + accountId]);
   }
   public updateModule() {
+    this.updateTeachers();
+    this.moduleService.updateModule(this.module).subscribe((res: any) => {
+      this.module$.next(this.module);
+      this.inUpdate = false;
+    });
+  }
+
+  public updateTeachers() {
     this.chosenTeachers.forEach(teacher => {
       if (!this.module.teacherIds.includes(teacher['id'])) {
-      this.module.teacherIds.push(teacher['id']);
-      this.getUserAccountById(teacher['id'], 'teacher');
+        const teacherAccount = this.allTeachers.filter(completeTeacher => completeTeacher['account'].id = teacher['id'])[0]['account'];
+        teacherAccount.academyIds.push(this.academyId);
+        this.accountService.update(teacherAccount).subscribe(
+          (res: any) => {
+            this.module.teacherIds.push(teacher['id']);
+            this.getUserAccountById(teacher['id'], 'teacher');
+          }
+        );
       }
-    });
-    this.moduleService.updateModule(this.module).subscribe((res: any) => {
-      this.inUpdate = false;
     });
   }
 
@@ -294,6 +305,8 @@ export class ModulesComponent implements OnInit {
         rowToEdit[this.evaluationField] = 0;
       });
       this.evaluationField = '';
+      this.evaluationSubjectArray = this.module.evaluationSubjects.split(', ');
+      this.evaluationSubjectArray.pop();
     }
   }
 
@@ -373,8 +386,6 @@ export class ModulesComponent implements OnInit {
   }
 
   public filterTeachers() {
-    console.log(this.filteredTeachers);
-    console.log(this.filterTheme);
     this.filteredTeachers = [];
     let teachersByTheme: {}[];
     if (this.filterTheme !== null && this.filterTheme !== 0) {
@@ -385,7 +396,34 @@ export class ModulesComponent implements OnInit {
     teachersByTheme.forEach(teacher => {
       this.filteredTeachers.push({ 'id': teacher['account'].id, 'name': teacher['name'] });
     });
-    console.log(this.filteredTeachers);
+  }
+
+  public deleteUnsavedSubjects(index: number, subject: string) {
+    this.module.evaluationSubjects = this.module.evaluationSubjects.replace(subject + ', ', '');
+    this.evaluationSubjectArray.splice(index, 1);
+    this.tableHeaders.splice(index + 2, 1);
+    this.evaluations.forEach(evaluation => {
+      const gradeIndex = evaluation.grades.findIndex(grade => grade.subject === subject);
+      const gradeToDelete = evaluation.grades.splice(gradeIndex, 1)[0];
+      this.evaluationService.updateEvaluation(evaluation).subscribe(
+        (resEval: any) => {
+          this.gradeService.deleteGrade(gradeToDelete.id).subscribe(
+            (resGrade: any) => {
+              this.tableRows.splice(index + 2, 1);
+            }
+          );
+        }
+      );
+    });
+  }
+
+  public deleteEvaluationSubject(index: number, subject: string) {
+    this.deleteUnsavedSubjects(index, subject);
+    this.moduleService.updateModule(this.module).subscribe(
+      (res: any) => {
+        this.module$.next(this.module);
+      }
+    );
   }
 
 }

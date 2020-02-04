@@ -2,12 +2,9 @@
     <div *ngIf="account$ | async as account">
         <form class="ml-4" #updateAccountForm="ngForm" (ngSubmit)="updateAccount()">
             <div class="py-2">
-                <button class="btn btn-primary float-right" *ngIf="inUpdate===false"
-                    (click)="toggleUpdateAccount()">Editar</button>
-                <button *ngIf="inUpdate===true" type="submit"
-                    class="btn btn-primary float-right mx-2">Atualizar</button>
-                <button class="btn btn-danger float-right mx-2" *ngIf="inUpdate===true"
-                    (click)="openModal(templateConfirmDeleteAccount)">Remover Conta</button>
+                <button class="btn btn-borderless float-right" *ngIf="inUpdate===false" (click)="toggleUpdateAccount()"><fa-icon [icon]="faEdit" size="2x"></fa-icon></button>
+                <button *ngIf="inUpdate===true" type="submit" class="btn btn-borderles float-right mx-2"><fa-icon [icon]="faSave" size="2x"></fa-icon></button>
+                <button class="btn btn-borderles float-right mx-2" *ngIf="inUpdate===true" (click)="openModal(templateConfirmDeleteAccount)"><fa-icon [icon]="faTrashAlt" size="2x"></fa-icon></button>
                 <h3>Perfil de {{user.name}}</h3>
             </div>
             <div class="row text-center  ">
@@ -103,8 +100,7 @@
                                 <ngx-bootstrap-multiselect name="themes" [(ngModel)]="account.themes"
                                     [items]="themeDropdownList" [settings]="dropdownSettings">
                                 </ngx-bootstrap-multiselect>
-                                <button class="btn btn-primary" (click)="openModal(templateAddTheme)">Adicionar
-                                    tema</button>
+                                <button class="btn btn-borderless" (click)="openModal(templateAddTheme)"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
                             </div>
                         </div>
 
@@ -121,24 +117,26 @@
                                 <div *ngIf="misses?.length > 0">
                                     <div *ngFor="let missed of misses">
                                         <div>
-                                            <p *ngIf="missed.justified == true">Data:{{missed.data}} <img
+                                            <p *ngIf="missed.justified === true">Data: {{missed.data | date:'d/M/y'}} <img
                                                     style="height: 25px; width: auto;" data-toggle="tooltip"
                                                     title="Justificada"
                                                     src="https://cdn.pixabay.com/photo/2012/05/07/02/13/accept-47587_960_720.png">
-                                                    <button *ngIf="inUpdate" class="btn btn-danger" (click)="changeJustified(missed.id)">Tornar Injustificada</button>
+                                                    <button *ngIf="inUpdate" class="btn btn-danger mx-2" (click)="changeJustified(missed.id)">Tornar Injustificada</button>
+                                                    <button *ngIf="inUpdate" class="btn btn-borderless mx-2" (click)="deleteMissedClass(missed.id)"><fa-icon [icon]="faMinusCircle" size="2x"></fa-icon></button>
                                             </p>
                                         </div>
                                         <div>
-                                            <p *ngIf="missed.justified != true">Data:{{missed.data}} <img
+                                            <p *ngIf="missed.justified !== true">Data: {{missed.data | date:'d/M/y'}} <img
                                                     style="height: 25px; width: auto;" data-toggle="tooltip"
                                                     title="Não Justificada"
                                                     src="https://cdn.pixabay.com/photo/2012/05/07/02/13/cancel-47588_960_720.png">
-                                                    <button *ngIf="inUpdate" class="btn btn-success" (click)="changeJustified(missed.id)">Justificar</button>
+                                                    <button *ngIf="inUpdate" class="btn btn-success mx-2" (click)="changeJustified(missed.id)">Justificar</button>
+                                                    <button *ngIf="inUpdate" class="btn btn-borderless mx-2" (click)="deleteMissedClass(missed.id)"><fa-icon [icon]="faMinusCircle" size="2x"></fa-icon></button>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                    <button *ngIf="inUpdate" class="btn btn-primary" (click) = "openModal(templateAddMissedDay)">Adicionar Falta</button>
+                                    <button *ngIf="inUpdate" class="btn btn-borderless" (click) = "openModal(templateAddMissedDay)"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
                         </div>
 
                     </div>
@@ -174,15 +172,16 @@
                 <p><strong>Adicionar falta a <span class="text-primary">"{{user.name}}"?</span></strong></p>
                     <div class="row">
                 <label>Data:</label>
-                <input #dataField="ngModel" [(ngModel)]="newMissedClass.data" id="data" name="data" type="date" class="form-control" required>
+                <input #dataField="ngModel" [(ngModel)]="missedDay" id="data" name="data" type="date" class="form-control" required>
+                <small class="text-danger" [hidden]="validateMissedDate()">Nessa data já foi adicionada uma falta</small>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <label>Justificação:</label>
                     <select #justifiedField="ngModel" [(ngModel)]="newMissedClass.justified" id="justified" name="justified"  class="form-control" required>
                         <option value="true">Sim</option>
                         <option value="false">Não</option>
                     </select>
-                </div>
+                </div> -->
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline-primary" type="submit">Adicionar</button>
