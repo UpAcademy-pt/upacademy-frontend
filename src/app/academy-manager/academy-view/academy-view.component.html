@@ -39,15 +39,17 @@
             </div>
             <div class="col-5">
                 <div class="form-group row">
-                    <p *ngIf="!inUpdate"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
-                    <div *ngIf="inUpdate" [formGroup]="datesForm">
+                    <p *ngIf="inUpdate===false"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
+                    <div  [formGroup]="datesForm">
+                        <!-- *ngIf="inUpdate===true" -->
                         <label for="datesArray" class="col-sm-2 col-form-label"
                             style="font-weight: bolder;">Datas:</label>
                         <input type="text" class="form-control" name="datesArray" #datesArray
-                            formControlName="dateRange" bsDaterangepicker
+                            formControlName="dateRange" #daterangepicker="bsDaterangepicker" bsDaterangepicker
                             placeholder="Escolha as datas de duração da Academia" placement="bottom"
                             [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }"
-                            (change)=getDates()>
+                            (change)="getDates()">
+
                     </div>
                 </div>
                 <div class="h-divider"></div>
@@ -95,10 +97,11 @@
                         <th>Perfil</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let students of academy.studentsIds let i = index;" id="{{i}}">
+                        <tr *ngFor="let student of academyStudents$ | async; let i = index;" id="{{i}}">
                             <td>{{i + 1}}</td>
-                            <td>{{user.name}}</td>
-                            <td><button class="btn btn-success" (click)="showStudent(user.id)">Ver</button></td>
+                            <td>{{student.studentUser.name}}</td>
+                            <td><button class="btn btn-success"
+                                    (click)="showStudent(student.studentUser.id)">Ver</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,16 +153,12 @@
     <!-- Modal Add Student -->
     <ng-template #templateAddStudent>
         <div class="modal-body text-center">
-            <form #addModuleForm="ngForm" (ngSubmit)="addStudentToAcademy()">
+            <form #addModuleForm="ngForm" (ngSubmit)="updateAcademy()">
                 <div class="row">
-                    <label style="font-weight: bolder;" for="name">Nome:</label>
-                    <input #nameField="ngModel" [(ngModel)]="student.name" name="name" id="name" type="text"
-                        class="form-control">
-                </div>
-                <div class="row" *ngIf="allStudents$ | async as allStudents">
+                    <!-- *ngIf="studentsDropdown$ | async as studentsDropdown" -->
                     <label for="students" style="font-weight: bolder;">Alunos</label>
-                    <ngx-bootstrap-multiselect name="students" [(ngModel)]="student" [items]="studentDropdownList"
-                        [settings]="studentsDropdownSettings">
+                    <ngx-bootstrap-multiselect name="students" [(ngModel)]="academy.studentsIds"
+                        [items]="studentsDropdown" [settings]="studentsDropdownSettings">
                     </ngx-bootstrap-multiselect>
                     <button class="btn btn-primary">Adicionar Aluno</button>
                 </div>
