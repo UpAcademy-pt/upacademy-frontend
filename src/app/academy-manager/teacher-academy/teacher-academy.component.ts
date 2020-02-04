@@ -63,8 +63,7 @@ export class TeacherAcademyComponent implements OnInit {
   }
 
   public openModuleById(id: number) {
-    this.router.navigate(['academy-manager/academy/' + academy.id + 'module' + module.id]);
+    this.router.navigate(['academy-manager/academy/' + this.academy.id + 'module' + id]);
   }
     // ver se o url precisa de meter 2 Ids no url
 }
-academy/:academyId/module/:moduleId
