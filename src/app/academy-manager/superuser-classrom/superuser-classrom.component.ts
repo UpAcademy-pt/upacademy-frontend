@@ -137,15 +137,14 @@ public getUser(account: Account){
   }
 
   public getTodayMisses(){
-    // let timeInMs = 
-    let today = Date.now() / 100000000;
-    // let date = new Date(timeInMs);
-    // var year = date.getFullYear();
-    // var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    // var day = ("0" + date.getDate()).slice(-2);
+    let timeInMs = Date.now();
+    let date = new Date(timeInMs);
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
 
-    this.missedApi.getByDate(today).subscribe((res: any) => this.missedClassArray.push(res))
-
+    this.missedApi.getByDate(""+year+month+day).subscribe(
+      (res: any) => res.forEach(num => this.missedClassArray.push(num)))
   }
 
   public removeMissed(id: number){
