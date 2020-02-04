@@ -160,9 +160,12 @@ export class AcademyViewComponent implements OnInit {
 
   public addModuleToAcademy() {
     this.moduleService.createModule(this.newModule).subscribe(
-      (res: any) => {
+      (id: number) => {
+        this.newModule.id = id;
         this.academy.moduleDTOs.push(this.newModule);
         this.academy$.next(this.academy);
+        console.log(this.academy);
+        
         this.academyService.updateAcademy(this.academy).subscribe(
           (res: any) => {
             this.modalRef.hide();
