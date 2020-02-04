@@ -1,28 +1,60 @@
-<div>
-<h4>Bem-Vindo</h4>
-</div>
-  <div class= "mr-5">
-   <alert type="warning" class="alert-link container" dismissible="true" onClosed="onClosed(alert)">datatest <!--{{ academy.warning }}--></alert>
+<div class="container mt-4 ml-3 mr-3" *ngIf="academy$| async as academy">
+
+  <div>
+  <h3>Bem-Vindo</h3>
   </div>
-    <div class= "mr-5">
-    <ul class="list-group">
-      <!--  <H3 class="list-group-item">{{academy.usefulInfo}}</H3> -->
-        <li class="list-group-item"> </li>
-        <li class="list-group-item"></li>
-        <li class="list-group-item"></li>
-        <li class="list-group-item"></li>
-      </ul>
-</div>
 
-<p>If you missed alert under me, just press <code>Add more</code> button</p>
-<div *ngFor="let alert of alerts">
-  <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout" (onClosed)="onClosed(alert)">{{ testeeee</alert>
-</div>
-<button type="button" class="btn btn-primary" (click)="add()">Add more</button>
+    <div>
+    <alert type="warning" class="alert-link container" dismissible="true" (onClosed)="onClosed(alert)">
+    <div id="hG"class="alert-heading">Avisos</div> 
+    <p class= "mb-0"> {{ academy.warning }} </p>
+    </alert>
+    </div>
 
+    <div id="InfoBox" class="form-inline">
+        <div class="float-left" style="width: 400px;">
+         <h5>Cliente: <span class="badge badge-secondary"> client {{ academy.client }} </span></h5>
+        <h5>Data de começo: <span class="badge badge-secondary"> startDate {{ academy.startDate }} </span></h5>
+        <h5>Nome da edição: <span class="badge badge-secondary"> edName {{ academy.edName }} </span></h5>
+      </div>
+        
+      <div class="float-left" style="width: 400px;">
+        <h5>Tipo de academia: <span class="badge badge-secondary"> academyType {{ academy.academyType }} </span></h5>
+        <h5>Data de finalização: <span class="badge badge-secondary"> endDate {{ academy.endDate }} </span></h5>
+        <h5>Status: <span class="badge badge-secondary"> status {{ academy.status }} </span></h5>
+      </div>
 
-<alert type="success">
-  <h4 class="alert-heading">Well done!</h4>
-  <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-  <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-</alert>
+    </div>
+
+    <div class= mt-3> 
+    <button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="isCollapsed" aria-controls="collapseBasic">Links
+    </button>
+    <div class= mt-3 id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+    <div class="well well-lg card card-block card-header">{{academy.usefulInfo}}</div>
+    </div>
+  </div>
+
+    <div class= mt-3> 
+      <accordion [isAnimated]="true">
+        <accordion-group heading="Detalhes">
+           <table class="table" *ngFor="let module of academy?.moduleDTOs" >
+          <thead class="thead-dark">
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Modulos</th>
+            <th scope="col">Formadores</th>
+            </tr>
+        </thead>
+          <tbody>
+            <tr>
+            <th scope="row">1</th>
+            <td>TESTE {{module.name}}</td>
+            <td>teste {{module.teacher}}</td>
+            </tr> 
+          </tbody>
+        </table>
+        </accordion-group>
+     </accordion> 
+    </div>
+    </div>

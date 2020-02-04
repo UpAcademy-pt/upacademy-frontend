@@ -8,8 +8,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DeclarationsService {
 
-  public misses: Declarations[];
-  public misses$: ReplaySubject<Declarations[]> = new ReplaySubject(1);
+  public declarations: Declarations[];
+  public declarations$: ReplaySubject<Declarations[]> = new ReplaySubject(1);
 
   readonly URL ="http://localhost:8080/coreFinalProject/academy-manager/declarations";
 
@@ -27,6 +27,9 @@ export class DeclarationsService {
 
   public delete(accountId: number){
     return this.http.delete(this.URL +"/" + accountId)
+  }
+  public update(mClass: Declarations){
+    return this.http.put(this.URL +"/verify/" ,mClass)
   }
 
   // public update(mClass: Declarations){

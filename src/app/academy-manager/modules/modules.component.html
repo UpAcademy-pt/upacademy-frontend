@@ -1,0 +1,167 @@
+<div *ngIf="module$ | async as module">
+  <div class="ml-4">
+    <form #updateModuleForm="ngForm" (ngSubmit)="updateModule()">
+      <button class= "btn btn-borderless float-right" *ngIf="!inUpdate" (click)="toggleUpdateModule()"><fa-icon [icon]="faEdit" size="2x"></fa-icon></button>
+      <button class= "btn btn-borderless float-right mx-2" *ngIf="inUpdate" type="submit"><fa-icon [icon]="faSave" size="2x"></fa-icon></button>
+      <button class= "btn btn-borderless float-right mx-2" *ngIf="inUpdate" (click)="openModal(templateConfirmDeleteModule)"><fa-icon [icon]="faTrashAlt" size="2x"></fa-icon></button>
+      <h3>Módulo</h3>
+      <label style="font-weight: bolder;" for="edName">Nome:</label>
+      <input [readonly]="!inUpdate" #nameField="ngModel" [(ngModel)]="module.name" name="name" id="name" type="text"
+        [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
+        [placeholder]="module.name === null ? '' : module.name">
+      <div>
+        <b>Temas</b>
+        <div *ngIf="!inUpdate">
+          <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
+          <ul *ngIf="module?.themes.length > 0">
+            <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
+          </ul>
+        </div>
+        <div *ngIf="inUpdate" class="row">
+          <div class="row ml-3" *ngIf="allThemes$ | async as allThemes">
+            <ngx-bootstrap-multiselect name="themes" #themesField="ngModel" [(ngModel)]="module.themes"
+              [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+            <button class="btn btn-borderless" (click)="openModal(templateAddTheme)"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <b>Formadores</b>
+        <div *ngIf="!inUpdate">
+          <p *ngIf="module?.teacherIds.length === 0"><i>Sem Formadores</i></p>
+          <ul *ngIf="module?.teacherIds.length > 0">
+            <li *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button class="btn btn-primary"
+                (click)="showProfile(teacher['account'].id)">Perfil</button></li>
+          </ul>
+        </div>
+        <div *ngIf="inUpdate" class="row">
+          <div class="form-inline ml-3">
+            <label for="moduleThemes">Temas do Módulo:</label>
+            <ngx-select [items]="moduleThemeDropdownList" name="moduleThemes" #moduleThemes = "ngModel" [(ngModel)] = "filterTheme" placeholder="Todos os Temas do Módulo" (ngModelChange)="filterTeachers()">
+            </ngx-select>
+              <label for="teachers">Formadores Por Tema:</label>
+            <ngx-bootstrap-multiselect name="teachers" #teachers = "ngModel" [(ngModel)]="chosenTeachers" [items]="filteredTeachers"
+              [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <p><b>Campos de Avaliação: </b> {{module.evaluationSubjects}}</p>
+    <div class="float-left mb-4 ml-3">
+      <button type="button" class="btn btn-primary btn-md mt-4 float-left"
+        (click)="openModal(templateAddEvaluation)">Novo Campo de Avaliação</button>
+    </div>
+
+    <!-- Table -->
+    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;"
+      *ngIf="evaluations$ | async as evaluation">
+
+      <thead class="thead-dark">
+        <tr>
+          <th *ngFor="let column of tableHeaders$ | async">{{column}}</th>
+          <th>Avaliar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of tableRows$ | async; let i = index;" id="{{i}}">
+          <td *ngFor="let column of tableHeaders$ | async">{{row[column]}}</td>
+          <td><button class="btn btn-borderless" (click)="openModalUpdateEvaluation(templateEditEvaluation, row['Evaluation'], i)">
+            <fa-icon [icon]="faClipboardList" size="2x"></fa-icon></button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <button (click)="returnToAcademy()" class="btn btn-secondary mx-auto">Voltar</button>
+    </div>
+
+    <!-- Modal Add Evaluation Subject-->
+    <ng-template #templateAddEvaluation>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Nova Avaliação</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body container">
+        Escolha os temas para avaliação deste módulo:
+        <div class="form-group">
+          <div class="form-inline">
+            <label for="evaluationFields" class="col-sm-2 col-form-label">Tema:</label>
+            <div class="col-sm-8">
+              <input #evaluationSubjectField="ngModel" [(ngModel)]="evaluationField" name="evaluationSubjectField"
+                id="evaluationSubjectField" type="text" class="form-control" placeholder="Digite o tema">
+            </div>
+            <button type="button" class="btn btn-primary mx-auto" (click)="addEvaluationField()">Adicionar</button>
+          </div>
+          <p *ngIf="module?.evaluationSubject !== null">{{module.evaluationSubjects}}</p>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary mx-auto" (click)="updateEvaluationSubjects()">Criar Campos de
+            Avaliação</button>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Modal Add Theme -->
+    <ng-template #templateAddTheme>
+      <div class="modal-header">Adicionar Tema</div>
+      <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
+        <div class="modal-body container">
+          <input type="text" #themeNameField="ngModel" [(ngModel)]="newTheme.name" name="name" required>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit">Adicionar</button>
+
+        </div>
+      </form>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal Delete Module -->
+<ng-template #templateConfirmDeleteModule>
+  <div class="modal-header">Remover Módulo</div>
+  <div class="modal-body container">
+    <p><strong>Tem a certeza que quer remover o módulo <span class="text-primary">"{{module.name}}"?</span></strong>
+    </p>
+    <p>Toda a informação será apagada permanentemente.</p>
+    <p class="text-danger">Esta operação não pode ser revertida!</p>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-outline-secondary mx-2" (click)="modalRef.hide()">Cancelar</button>
+    <button class="btn btn-danger mx-2" (click)="deleteModule()">Sim</button>
+  </div>
+</ng-template>
+
+<!-- Modal Edit Evaluation -->
+<ng-template #templateEditEvaluation>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Editar Avaliação</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body container">
+    <form #updateEvaluationForm="ngForm" (ngSubmit)="updateEvaluation()">
+      Nos campos abaixo, avalie o/a formando/a {{studentToEvaluate}}
+      <div class="form-group form-inline">
+        <label for="commentField" class="col-sm-2 col-form-label">Comentário:</label>
+        <textarea #commentField="ngModel" [(ngModel)]="evaluationToEdit.comment" name="commentField" id="commentField"
+          type="text" class="form-control"
+          [placeholder]="evaluationToEdit.comment === null? 'Escreva um comentário' : evaluationToEdit.comment"></textarea>
+      </div>
+      <div *ngFor="let grade of evaluationToEdit.grades">
+        <label for="grade.subject">{{grade.subject}}:</label>
+        <input #grade.subject="ngModel" [(ngModel)]="grade.mark" name="grade.subject" id="grade.subject" type="number"
+          class="form-control" placeholder="grade.mark">
+      </div>
+      <div class="row">
+        <button type="submit" class="btn btn-primary mx-auto">Actualizar Avaliação</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

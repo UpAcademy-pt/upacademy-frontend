@@ -1,42 +1,76 @@
-<div class="container col-md-12">
-    <div class="row text-center">
-        <div class="col-md-12 mt-2 text-right">
-            <div><button *ngIf="isShown" type="button" class="btn btn-danger" (click)='save()'>Save</button><button type="button" class="btn btn-dark" (click)='MakeEdit()'>Editar</button>
-            <!-- <div *ngIf="isShown"><button type="button" class="btn btn-danger" (click)='save()'>SAVE</button></div> -->
+    <!-- <div class="container col-md-12">
+        <div class="row text-center">
+            <div class="col-md-12 mt-2 text-right">
+                <div><button *ngIf="isShown" type="button" class="btn btn-danger" (click)='save()'>Save</button><button type="button" class="btn btn-dark" (click)='MakeEdit()'>Editar</button>
+                *
+            </div>
         </div>
-    </div>
-</div>
-    <div class="row text-center " >
+    </div> -->
+    <!-- <div *ngIf="isShown"><button type="button" class="btn btn-danger" (click)='save()'>SAVE</button></div> --> 
+
+<div id="profileContainer" class="container-fluid mt-4 ml-4" style="width: 1000px">
+    
+    <div class="row text-center mt-3">
+        
         <div class="col-md-3 mt-1 text-left ">
             <img class="rounded-circle center-block" style="width: auto; max-height: 200px;" alt="100x100"
-                src="https://vignette.wikia.nocookie.net/aleixo/images/7/75/Renato_disco.jpg/revision/latest?cb=20121207145720"
+                src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
                 data-holder-rendered="true">
         </div>
 
-        <div class="col-md-8 text-left mb-3 mt-3 ml-3">
-            <div>
-                <form [formGroup]="profileForm">
-                    <div> <label style="font-weight: bolder;">Nome:<input type="text" placeholder={{name}}
-                                class="form-control" id="formName" formControlName="notEditable"></label> </div>
-                    <div class="h-divider"></div>
-                    <label style="font-weight: bolder;">Data de Nascimento:<input type="date" value={{age}} placeholder={{age}}
-                            class="form-control" id="formAge" formControlName="formAge"></label>
-                    <div class="h-divider"></div>
-                    <label style="font-weight: bolder;">Academic Background:<input type="text" placeholder={{academicB}} 
-                            class="form-control" id="formAcademicB" formControlName="formAcademicB"></label>
-                    <div class="h-divider"></div>
-                    <label style="font-weight: bolder;">Grau académico:<input type="text" placeholder={{academicDegree}}
-                            class="form-control" id="formAcademicD" formControlName="formAcademicD"></label>
-                    <div class="h-divider"></div>
-                    <label style="font-weight: bolder;">NIF:<input type="number" placeholder={{nif}}
-                            class="form-control" id="formNif" formControlName="formNif"></label>
-                    <div class="h-divider"></div>
-                </form>
-               
+        <div class="col-md-8 text-left mb-3 ml-3">
+            <div class="row text-center">
+                <div class="col-md-12 text-right">
+                    <div><button *ngIf="isShown" type="button" class="btn btn-danger" (click)='save()'>Save</button><button type="button" class="btn btn-dark" (click)='MakeEdit()'>Editar</button>
+                    <!-- <div *ngIf="isShown"><button type="button" class="btn btn-danger" (click)='save()'>SAVE</button></div> -->
+                    </div>
+                </div>
             </div>
+            <form [formGroup]="profileForm">
+                <div> <label style="font-weight: bolder;">Nome:<input type="text" placeholder={{name}}
+                            class="form-control" id="formName" formControlName="notEditable"></label> </div>
+                <div class="h-divider"></div>
+                <label style="font-weight: bolder;">Data de Nascimento:<input type="date" value={{currentAccount.age}} placeholder={{age}}
+                        class="form-control" id="formAge" formControlName="formAge"></label>
+                <div class="h-divider"></div>
+                <label style="font-weight: bolder;">Academic Background:<input type="text" placeholder={{currentAccount.academicBackground}} 
+                        class="form-control" id="formAcademicB" formControlName="formAcademicB"></label>
+                <div class="h-divider"></div>
+                <label style="font-weight: bolder;">Grau académico:<input type="text" placeholder={{currentAccount.academicDegree}}
+                        class="form-control" id="formAcademicD" formControlName="formAcademicD"></label>
+                <div class="h-divider"></div>
+                <label style="font-weight: bolder;">NIF:<input type="number" placeholder={{currentAccount.nif}}
+                        class="form-control" id="formNif" formControlName="formNif"></label>
+                <div class="h-divider"></div>
+            
+                <br>
+                <div class="text-left mb-2" >
+                    <div style="font-weight: bolder; font-style: italic; font-size: large;">Contactos:</div>
+                </div>
+
+                <div> <label style="font-weight: bolder;">Email:<input type="text" placeholder={{email}}
+                    class="form-control" id="formEmail" formControlName="notEditable"></label> </div>
+                <div class="h-divider"></div>
+                <label style="font-weight: bolder;">Linkedin:<input type="text" placeholder="{{currentAccount.linkedInAdress}}"
+                        class="form-control" id="formLinkedin" formControlName="formLinkedin"></label>
+                <div class="h-divider"></div>
+                <label style="font-weight: bolder;">Telemovel:<input type="text" placeholder={{currentAccount.mobilePhone}}
+                        class="form-control" id="formPhone" formControlName="formPhone"></label>
+                <div class="h-divider"></div>
+            
+            </form> 
+            
         </div>
-    </div>
-    <div class="row text-center" >
+
+        <!-- <div class="row text-center">
+            <div class="col-md-12 text-right">
+                <div><button *ngIf="isShown" type="button" class="btn btn-danger" (click)='save()'>Save</button><button type="button" class="btn btn-dark" (click)='MakeEdit()'>Editar</button>
+                 <div *ngIf="isShown"><button type="button" class="btn btn-danger" (click)='save()'>SAVE</button></div> -->
+                <!-- </div>
+            </div>
+        </div>  -->
+
+    <!-- <div class="row text-center" >
         <div class="col-md-3 text-right" >
             <div style="font-weight: bolder; font-style: italic; font-size: large;">Contactos:</div>
         </div>
@@ -53,7 +87,11 @@
                 <div class="h-divider"></div>
             </form>
         </div>
+    </div> -->  
+
     </div>
+
+
         <div class="row text-center mt-3" *ngIf="misses?.length > 0">
             <!-- <div class="row text-center" *ngIf="(misses !== undefined) && (misses !== []) && (misses !== null)"></div> -->
             <div class="col-md-3 text-right" >
@@ -61,10 +99,10 @@
             </div>
             <div class="col-md-8 ml-3 text-left">
                 <div *ngFor="let missed of misses$ | async" >
-                <div><p *ngIf="missed.justified == true">Data:{{missed.data}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/accept-47587_960_720.png"></p></div>
-                <div><p *ngIf="missed.justified != true">Data:{{missed.data}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Não Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/cancel-47588_960_720.png"></p></div>
+                    <div><p *ngIf="missed.justified == true">Data:{{missed.data}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/accept-47587_960_720.png"></p></div>
+                    <div><p *ngIf="missed.justified != true">Data:{{missed.data}} <img style="height: 25px; width: auto;" data-toggle="tooltip" title="Não Justificada"  src="https://cdn.pixabay.com/photo/2012/05/07/02/13/cancel-47588_960_720.png"></p></div>
+                </div>
             </div>
-            </div>
-        
-    </div>
+        </div>
+
 </div>

@@ -1,24 +1,35 @@
-<div class="d-flex flex-column vh-100" style="background-color: grey; width: 220px; position: fixed; top: 76px">
+<div class="d-flex flex-column vh-100" style="background-color: grey; width: 220px;">
 
-    <div style="background-color: rgb(59, 59, 59);">
-        <h4 class="mt-3 mb-3 ml-5" style="color: white;">Menu</h4>
+    <div style="background-color: rgb(59, 59, 59); text-align: center;">
+        <h5 class="my-3 mr-5" style="color: white;">Menu</h5>
     </div>
 
     <ul routerLinkActive = "active"  class="nav-item mt-3" style="padding-left: 10px;">
        
+        <!-- <li *ngIf="isTeacher===true">
+            <button routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-2" style="color: white;">Academias</button>
+        </li> -->
         <li *ngIf="isTeacher===true">
-            <button routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-3" style="color: white;">Academias</button>
+            <button routerLink = "teacher-academies" class="btn btn-link btn-md mx-1 my-2" 
+            style="color: white;">MyAcademies</button>
         </li>
         <li *ngIf="isTeacher===false">
-            <button routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-3" style="color: white;">Academia</button>
+            <button routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-2" style="color: white;">Academia</button>
         </li>
         <li>
-            <button routerLink = "my-profile" class="btn btn-link btn-md mx-1 my-3" style="color: white;">Perfil</button>
+            <button routerLink = "my-profile" class="btn btn-link btn-md mx-1 my-2" style="color: white;">Perfil</button>
         </li>
         <li *ngIf="isTeacher===false">
-            <button routerLink = "my-declarations" class="btn btn-link btn-md mx-1 my-3" 
-            style="color: white;">Declarações Recebimento</button>
+            <button routerLink = "my-declarations" class="btn btn-link btn-md mx-1 my-2" 
+            style="color: white;">Declarações<br>Recebimento</button>
         </li>
+        <!-- <li *ngIf="isTeacher===true">
+            <button routerLink = "superuser-classroom" class="btn btn-link btn-md mx-1 my-2" 
+            style="color: white;">Sala</button>
+        </li> -->
+
+       
+        
     </ul>
 
 </div>

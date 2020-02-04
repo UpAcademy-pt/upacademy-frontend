@@ -1,41 +1,42 @@
-<!-- <p>admin-students works!</p> -->
+<div class="mt-4 ml-4">
 
-  <!-- Table -->
-  <h1>Formandos</h1>
+  <h3 class="ml-4 mt-4 mb-3">Formandos</h3>  
 
-  <div>
-  <table class="table table-striped container m-3 col-12 text-center">
-    <thead class="thead-dark">
-    <tr>
-      <th>Nome</th>
-      <th>Ver</th>
-      <th>Editar</th>
-      <th>Eliminar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor = "let student of studentUsers$ | async; let i = index;" id="{{i}}">
-      <td >{{student.name}}</td>
-      <td>
-        <button (click)="openModalShowAccount(templateShowAccount, i)" class="btn btn-success">Ver</button> 
-      </td>
-      <td>
-        <button class="btn btn-primary">Editar</button>
-      </td>
-      <td>
-        <button class="btn btn-danger">Apagar</button>
-      </td>
-    </tr>
-  </tbody>
-  </table>
+  <!-- Filter Fields -->
+
+  <div class="row ml-2 mb-4">
+    <div class= col-4>
+      <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome" (input) = "filterTable()">
+    </div>
+    <ngx-select class=col-4 [items]="allAcademiesNames" name="academy" #academy = "ngModel" [(ngModel)] = "academyFilter" defaultValue={{allAcademiesNames[0].id}} (ngModelChange) = "filterTable()">
+    </ngx-select>
+  </div>
+
+  <!-- Table -->  
+  <div class="ml-2">
+    <table class="table table-sm table-striped container m-3 col-12 text-center" style="width: 1100px;">
+      <thead class="thead-dark">
+        <tr>
+          <th></th>
+          <th (click) = "sortTable()">Nome <fa-icon [icon]="faSort"></fa-icon></th>
+          <th>Academias</th>
+          <th>Perfil</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor = "let student of studentUserAccounts$ | async; let i = index;" id="{{i}}">
+          <td class="text-center"><img alt="" class="rounded-circle" 
+            [src]="student.studentAccount.photoLink === null ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' : student.studentAccount.photoLink" width="40"></td>
+          <td>{{student.studentUser.name}}</td>
+          <td>
+            <div *ngFor="let academy of student.academyNames"><p>{{academy}}</p></div>
+          </td>
+          <td>
+            <button (click)="showProfile(student.studentUser.id)" class="btn btn-success">Ver</button> 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
-
-<!-- Modal Show Profile -->
-<ng-template #templateShowAccount>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Perfil</h4>
-  </div>
-  <div class="modal-body container">
-   
-  </div>
-</ng-template>

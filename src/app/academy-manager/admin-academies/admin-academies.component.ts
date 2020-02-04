@@ -3,6 +3,9 @@ import { ReplaySubject } from 'rxjs';
 import { Academy } from '../shared/models/academy';
 import { AcademyService } from '../shared/services/academy.service';
 import { BsModalService, BsModalRef, BsDropdownConfig } from 'ngx-bootstrap';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-academies',
@@ -12,11 +15,23 @@ import { BsModalService, BsModalRef, BsDropdownConfig } from 'ngx-bootstrap';
 })
 export class AdminAcademiesComponent implements OnInit {
 
+  currentDate = new Date();
+
+  datesForm = new FormGroup({
+    dateRange: new FormControl([
+      new Date(),
+      new Date(this.currentDate.setDate(this.currentDate.getDate() + 7))
+    ])
+  });
+
+  faEdit = faEdit;
+  faTrashAlt = faTrashAlt;
+
   modalRef: BsModalRef;
   public academies$: ReplaySubject<Academy[]> = new ReplaySubject(1);
   public edNameField: string;
-  public startDateField: string;
-  public endDateField: string;
+  public dates: string;
+  public datesArray: string[];
   public clientField: string;
   public modulesField: string[];
   public studentsField: string[];
@@ -30,6 +45,7 @@ export class AdminAcademiesComponent implements OnInit {
   public showTable = false;
 
   constructor(
+    private router: Router,
     private academyService: AcademyService,
     private modalService: BsModalService
   ) {
@@ -41,26 +57,31 @@ export class AdminAcademiesComponent implements OnInit {
 
   public getAllAcademies() {
     this.academyService.getAllAcademies()
-    .subscribe((academies: Academy[]) => {
-      this.academies = academies;
-      this.academies$.next(academies);
-      if (this.academies.length > 0) {
-        this.showTable = true;
-      }
-    });
+      .subscribe((academies: Academy[]) => {
+        this.academies = academies;
+        this.academies$.next(this.academies);
+        if (this.academies.length > 0) {
+          this.showTable = true;
+        }
+      });
   }
 
-  public createAcademy() {
+  public createAcademy(dates: string) {
+    console.log(dates);
+    this.getDates(dates, this.academyToCreate);
     this.academyService.createAcademy(this.academyToCreate).subscribe(
       (msg: string) => {
         this.getAllAcademies();
       }
     );
+    console.log(this.academyToCreate);
     this.modalRef.hide();
     this.academyToCreate = new Academy();
   }
 
-  public updateAcademy() {
+  public updateAcademy(dates: string) {
+    console.log(dates);
+    this.getDates(dates, this.academyToUpdate);
     this.academyService.updateAcademy(this.academyToUpdate).subscribe(
       (msg: string) => {
         this.getAllAcademies();
@@ -68,6 +89,7 @@ export class AdminAcademiesComponent implements OnInit {
       }, (error: string) => {
         console.log(error);
       });
+    console.log(this.academyToUpdate);
     this.modalRef.hide();
   }
 
@@ -96,5 +118,15 @@ export class AdminAcademiesComponent implements OnInit {
   openModalConfirmDeleteAcademy(template: TemplateRef<any>, rowIndex: number) {
     this.academyToDeleteRow = rowIndex;
     this.modalRef = this.modalService.show(template);
+  }
+
+  public getDates(dates: string, academy: Academy) {
+    this.datesArray = dates.split(' - ');
+    academy.startDate = this.datesArray[0];
+    academy.endDate = this.datesArray[1];
+  }
+
+  public openAcademyById(id: number) {
+    this.router.navigate(['academy-manager/academy/' + id]);
   }
 }

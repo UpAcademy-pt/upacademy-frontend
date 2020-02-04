@@ -26,11 +26,11 @@ export class AccountService {
     this.getByUserId(this.userId).subscribe((account:any) => {
       if (account === null) {
         this.newAccount.userId = this.userId;
-        this.newAccount.academyIds =[];
-        this.newAccount.themeIds = [];
         this.setCurrentAccount(this.newAccount);
-        this.create(this.newAccount).subscribe((newAccount:any) => {
-          console.log(newAccount);
+        this.create(this.newAccount).subscribe((id:number) => {
+          this.currentAccount.id = id;
+          this.currentAccount$.next(this.currentAccount);
+          console.log(this.currentAccount);
         });
       } else {
         this.setCurrentAccount(account);
@@ -49,7 +49,7 @@ export class AccountService {
  */
 
   public create(account: Account) {
-    return this.http.post(this.url, account, {responseType: 'text'});
+    return this.http.post(this.url, account);
   }
 
   public getById(id: number) {
@@ -57,7 +57,7 @@ export class AccountService {
   }
 
   public update(account: Account) {
-    return this.http.put(this.url, account, {responseType: 'text'});
+    return this.http.put(this.url, account);
   }
 
   public delete(id: number) {
