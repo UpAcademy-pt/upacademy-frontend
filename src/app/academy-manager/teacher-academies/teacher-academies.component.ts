@@ -47,12 +47,10 @@ public getActiveAcademies (academyId: number) {
     (res: Academy) => {
       console.log(res);
       
-       if (res.status === 'ACTIVE') {
-         console.log('cheguei');
-         
+      //  if (res.status !== 'NOTACTIVE') {    
         this.academies.push(res);
         this.academies$.next(this.academies);
-       }
+      //  }
       console.log(this.academies);
     }
   )
