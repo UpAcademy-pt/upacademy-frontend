@@ -117,21 +117,17 @@ export class AcademyViewComponent implements OnInit {
     this.datesArray = dates.split(' - ');
     academy.startDate = this.datesArray[0];
     academy.endDate = this.datesArray[1];
-    // console.log('de ' + this.academy.startDate + ' a ' + this.academy.endDate);
   }
 
   public updateAcademy(dates: string) {
-    // console.log(dates);
     this.getDates(dates, this.academy);
     this.academyService.updateAcademy(this.academy).subscribe(
       (msg: string) => {
         console.log(msg);
-        // console.log(this.academy);
         this.inUpdate = false;
       }, (error: string) => {
         console.log(error);
       });
-    console.log(this.academy);
   }
 
   public updateAcademy2() {
@@ -168,13 +164,12 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public addModuleToAcademy() {
+    delete this.newModule.userTeacher;
     this.moduleService.createModule(this.newModule).subscribe(
       (id: number) => {
         this.newModule.id = id;
         this.academy.moduleDTOs.push(this.newModule);
         this.academy$.next(this.academy);
-        console.log(this.academy);
-        
         this.academyService.updateAcademy(this.academy).subscribe(
           (res: any) => {
             this.modalRef.hide();
@@ -214,7 +209,6 @@ export class AcademyViewComponent implements OnInit {
 
   public openModalAddStudent(template: TemplateRef<any>) {
     this.studentsDropdown = [];
-    // this.getAllStudents();
     this.getAllStudentsNotinAcademy();
     this.modalRef = this.modalService.show(template);
   }
@@ -227,7 +221,6 @@ export class AcademyViewComponent implements OnInit {
     this.academy.studentsIds = [];
     this.studentToAdd.forEach(student => this.academy.studentsIds.push(student['id']));
     this.modalRef.hide();
-
   }
 
   public getStudentsByAcademy() {
@@ -274,23 +267,21 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public getStudentAccount(studentUser: User) {
-  this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
-    if (account !== null && (account.academyIds.length === 0 || account.academyIds.find(id => id === this.academy.id))) {
-      this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name });
-      this.studentsDropdown$.next(this.studentsDropdown);
-      console.log(this.studentsDropdown);
-    }
-    
-  });
-}
+    this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
+      if (account !== null && (account.academyIds.length === 0 || account.academyIds.find(id => id === this.academy.id))) {
+        this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name });
+        this.studentsDropdown$.next(this.studentsDropdown);
+      }
+    });
+  }
 
   public getAcademyById(id: number) {
-  this.academyService.getbyId(id).subscribe(
-    (res: any) => {
-      if (res !== null) {
-        this.accountAcademies.push(res.edName);
+    this.academyService.getbyId(id).subscribe(
+      (res: any) => {
+        if (res !== null) {
+          this.accountAcademies.push(res.edName);
+        }
       }
-    }
-  );
-}
+    );
+  }
 }

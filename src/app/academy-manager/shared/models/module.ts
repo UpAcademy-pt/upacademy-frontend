@@ -9,7 +9,7 @@ export class Module {
     'name': string;
     'teacherIds': number[] = [];
     'evaluationSubjects': string;
-    'UserTeacher'?: User [] = [];
+    'userTeacher'?: User [] = [];
 
     constructor(data?: any) {
         Object.assign(this, data);

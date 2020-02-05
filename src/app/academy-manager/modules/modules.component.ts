@@ -255,6 +255,7 @@ export class ModulesComponent implements OnInit {
     this.router.navigate(['/academy-manager/profile/' + accountId]);
   }
   public updateModule() {
+    delete this.module.userTeacher;
     this.updateTeachers();
     this.moduleService.updateModule(this.module).subscribe((res: any) => {
       this.module$.next(this.module);

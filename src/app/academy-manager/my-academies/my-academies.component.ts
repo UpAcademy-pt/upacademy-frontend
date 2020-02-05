@@ -29,44 +29,35 @@ export class MyAcademiesComponent implements OnInit {
     private academyService: AcademyService,
 
   ) {
-
     this.currentAccount$ = this.accountService.currentAccount$;
-    this.currentAccount$.subscribe( (account) => {
+    this.currentAccount$.subscribe((account) => {
       this.currentAccount = account;
-      console.log('accountE' + account);
       this.currentAccount.academyIds.forEach(element => {
         this.academyService.getbyId(element).subscribe((academy: any) => {
           this.academies.push(academy);
           this.count++;
-          console.log(academy);
-          console.log(this.academies);
           if (this.count === this.currentAccount.academyIds.length) {
             this.academy = this.academies[0];
-            console.log(this.academy);
             this.academy$.next(this.academy);
           }
-
         }
         );
       });
     });
-
-
-
   }
 
   ngOnInit() {
   }
   public getTeachers() {
-  this.academy.moduleDTOs.forEach(module => {
-    module.teacherIds.forEach(teacher => {
-      this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
-        module.UserTeacher.push(userTeacher);
+    this.academy.moduleDTOs.forEach(module => {
+      module.teacherIds.forEach(teacher => {
+        this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
+          module.userTeacher.push(userTeacher);
 
-  });
- });
-});
+        });
+      });
+    });
 
-}
+  }
 
 }

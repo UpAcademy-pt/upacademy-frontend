@@ -1,11 +1,18 @@
-<!-- <p>teacher-academies works!</p> -->
+  <!-- Filter Fields -->
+
+  <div class="row ml-2 mb-4">
+    <div class="col-12">
+      <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome da Academia" (input) = "filterTable()">
+    </div>
+  </div>
+
+  <!-- Table -->
 
 <div class="ml-4 mt-4">
-  
     <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
       <thead class="thead-dark">
         <tr>
-          <th>Nome</th>
+          <th (click)="sortTableByName()">Nome <fa-icon [icon]="faSort"></fa-icon></th>
           <th>Ver Academia</th>
           <th>Ver Turma</th>
         </tr>
@@ -22,5 +29,4 @@
         </tr>
       </tbody>
     </table>
-  
   </div>
