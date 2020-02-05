@@ -103,27 +103,26 @@ export class SuperuserClassromComponent implements OnInit {
       this.arrayPositions.push({ 'pos': this.index, 'account': account, 'user': res });
       this.arrayPositions$.next(this.arrayPositions);
       this.index++;
-      console.log(this.arrayPositions);
-
+      // console.log(this.arrayPositions);
     });
   }
 
-  public cleanElement(pos: Posbyaccount) {
-    let tempPosAcc2 = new Posbyaccount();
-    tempPosAcc2.pos = pos.pos;
-    tempPosAcc2.account = new Account();
-    tempPosAcc2.user = new User();
-    tempPosAcc2.account.photoLink = 'https://simpleicon.com/wp-content/uploads/plus.png';
-    tempPosAcc2.user.name = 'VAZIO';
-    let index = this.arrayPositions.findIndex(x => x.pos === pos.pos);
-    this.arrayPositions[index] = tempPosAcc2;
-    // pos.pos = '';
-    this.arrayPositionsRemoved.push(pos);
-  }
+  // public cleanElement(pos: Posbyaccount) {
+  //   let tempPosAcc2 = new Posbyaccount();
+  //   tempPosAcc2.pos = pos.pos;
+  //   tempPosAcc2.account = new Account();
+  //   tempPosAcc2.user = new User();
+  //   tempPosAcc2.account.photoLink = 'https://simpleicon.com/wp-content/uploads/plus.png';
+  //   tempPosAcc2.user.name = 'VAZIO';
+  //   let index = this.arrayPositions.findIndex(x => x.pos === pos.pos);
+  //   this.arrayPositions[index] = tempPosAcc2;
+  //   // pos.pos = '';
+  //   this.arrayPositionsRemoved.push(pos);
+  // }
 
-  public addNewElement() {
+  // public addNewElement() {
 
-  }
+  // }
 
   public addMissed(id: number) {
     let timeInMs = Date.now();
@@ -154,10 +153,13 @@ export class SuperuserClassromComponent implements OnInit {
       (res: any) => {
         res.forEach(num => this.missedClassArray.push(num));
         this.missedClassArray$.next(this.missedClassArray);
+        // console.log(this.missedClassArray);
       })
   }
 
   public removeMissed(id: number) {
+
+    this.tempMissed = [];
     let timeInMs = Date.now();
     let date = new Date(timeInMs);
     let year = date.getFullYear();
@@ -168,38 +170,46 @@ export class SuperuserClassromComponent implements OnInit {
 
     this.missedApi.get(id).subscribe((res: any) => {
       res.forEach(el => this.tempMissed.push(el));
-      console.log(this.tempMissed);
-    })
-    for (let i = 0; i < this.tempMissed.length; i++) {
-      if (this.tempMissed[i].verifyDaily == "" + year + month + day) {
-        missID = this.tempMissed[i].id;
-        this.missedApi.delete(missID).subscribe((res: any) => {
-          let index = this.missedClassArray.findIndex(x => x.id == id);
-          this.missedClassArray.splice(index, 1);
-          this.missedClassArray$.next(this.missedClassArray);
-        });
+      for (let i = 0; i < this.tempMissed.length; i++) {
+        if (this.tempMissed[i].verifyDaily == "" + year + month + day) {
+          missID = this.tempMissed[i].id;
+          this.missedApi.delete(missID).subscribe((res: any) => {
+            let index = this.missedClassArray.findIndex(x => x.id == id);
+            this.missedClassArray.splice(index, 1);
+            this.missedClassArray$.next(this.missedClassArray);
+          });
+        }
       }
-    }
-
-
-
+      // console.log(this.tempMissed);
+    })
+    // for (let i = 0; i < this.tempMissed.length; i++) {
+    //   if (this.tempMissed[i].verifyDaily == "" + year + month + day) {
+    //     missID = this.tempMissed[i].id;
+    //     this.missedApi.delete(missID).subscribe((res: any) => {
+    //       let index = this.missedClassArray.findIndex(x => x.id == id);
+    //       this.missedClassArray.splice(index, 1);
+    //       // this.missedClassArray$.next(this.missedClassArray);
+    //     });
+    //   }
+    // }
   }
 
   public chekedIfMissed(id: number) {
-    console.log(this.missedClassArray);
     for (let i = 0; i < this.missedClassArray.length; i++) {
-      if (this.missedClassArray[i].id == id) { return true; }
+      if (this.missedClassArray[i].accountId == id) {
+        return true;
+      }
     }
     return false;
   }
 
-  public changeView() {
-    if (this.view) {
-      this.view = false;
-    }
-    else {
-      this.view = true;
-    }
-  }
+  // public changeView() {
+  //   if (this.view) {
+  //     this.view = false;
+  //   }
+  //   else {
+  //     this.view = true;
+  //   }
+  // }
 }
 
