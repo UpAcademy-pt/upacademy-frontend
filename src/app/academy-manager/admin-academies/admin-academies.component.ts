@@ -76,7 +76,6 @@ export class AdminAcademiesComponent implements OnInit {
   }
 
   public createAcademy(dates: string) {
-    console.log(dates);
     this.getDates(dates, this.academyToCreate);
     this.academyToCreate.status = 'NOTACTIVE';
     this.academyService.createAcademy(this.academyToCreate).subscribe(
@@ -90,7 +89,6 @@ export class AdminAcademiesComponent implements OnInit {
   }
 
   public updateAcademy(dates: string) {
-    console.log(dates);
     this.getDates(dates, this.academyToUpdate);
     this.academyService.updateAcademy(this.academyToUpdate).subscribe(
       (msg: string) => {
