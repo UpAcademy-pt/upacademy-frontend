@@ -12,7 +12,8 @@ import { Theme } from '../shared/models/theme';
 import { Missed } from '../shared/models/missed';
 import { AcademyService } from '../shared/services/academy.service';
 import { Academy } from '../shared/models/academy';
-import { faEdit, faTrashAlt, faSave, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faSave, faMinusCircle, faPlusCircle,
+  faCheckCircle, faTimesCircle, faClock } from '@fortawesome/free-solid-svg-icons';
 import { DeclarationsService } from '../shared/services/declarations.service';
 import { Declarations } from '../shared/models/declarations';
 
@@ -63,6 +64,11 @@ export class AccountProfileComponent implements OnInit {
   public missedDay: string;
   private declarations: Declarations[];
   public declarations$: ReplaySubject<Declarations[]> = new ReplaySubject(1);
+  public newDeclaration: Declarations = new Declarations();
+  private currentAccountId: number;
+  public faCheckCircle = faCheckCircle;
+  public faTimesCircle = faTimesCircle;
+  public faClock = faClock;
 
 
   constructor(
@@ -100,6 +106,11 @@ export class AccountProfileComponent implements OnInit {
             this.getMisses();
           }
         );
+      }
+    );
+    this.accountService.currentAccount$.subscribe(
+      (account: Account) => {
+        this.currentAccountId = account.id;
       }
     );
   }
@@ -239,6 +250,43 @@ export class AccountProfileComponent implements OnInit {
     );
   }
 
+  public addDeclaration() {
+    this.newDeclaration.accountIdSender = this.currentAccountId;
+    this.newDeclaration.accountIdReceiver = this.account.id;
+    this.newDeclaration.verified = false;
+    const dateSent: Date = new Date();
+    const month = dateSent.getMonth() + 1;
+    const day = dateSent.getDate();
+    if (month < 10 && day < 10) {
+      this.newDeclaration.dateSent = dateSent.getFullYear() + "-0" + month + "-0" + dateSent.getDate();
+    } else if (month < 10) {
+      this.newDeclaration.dateSent = dateSent.getFullYear() + "-0" + (dateSent.getMonth() + 1) + "-" + dateSent.getDate();
+    } else if (day < 10) {
+      this.newDeclaration.dateSent = dateSent.getFullYear() + "-" + (dateSent.getMonth() + 1) + "-0" + dateSent.getDate();
+    } else {
+      this.newDeclaration.dateSent = dateSent.getFullYear() + "-" + (dateSent.getMonth() + 1) + "-" + dateSent.getDate();
+    }
+    this.declarationsService.create(this.newDeclaration).subscribe(
+      (id: number) => {
+        this.newDeclaration.id = id;
+        this.declarations.push(this.newDeclaration);
+        this.declarations$.next(this.declarations);
+        this.modalRef.hide();
+        this.newDeclaration = new Declarations();
+      }
+    );
+  }
+
+  public verifyDeclaration(declaration: Declarations, index: number) {
+    declaration.verified = true;
+    this.declarationsService.update(declaration).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.declarations[index] = declaration;
+        this.declarations$.next(this.declarations);
+      }
+    )
+  }
 
 
 }
