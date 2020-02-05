@@ -5,10 +5,10 @@
   <!-- Filter Fields -->
 
   <div class="row ml-2 mb-4">
-    <div class= col-4>
+    <div class= col-6>
       <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome" (input) = "filterTable()">
     </div>
-    <ngx-select class=col-4 [items]="allAcademiesNames" name="academy" #academy = "ngModel" [(ngModel)] = "academyFilter"  placeholder="Todas as Academias" (ngModelChange) = "filterTable()">
+    <ngx-select class=col-6 [items]="allAcademiesNames" name="academy" #academy = "ngModel" [(ngModel)] = "academyFilter"  placeholder="Todas as Academias" (ngModelChange) = "filterTable()">
     </ngx-select>
   </div>
 
@@ -18,9 +18,8 @@
       <thead class="thead-dark">
         <tr>
           <th></th>
-          <th (click)="sortTable()">Nome <fa-icon [icon]="faSort"></fa-icon>
-          </th>
-          <th>Academias</th>
+          <th (click)="sortTableByName()">Nome <fa-icon [icon]="faSort"></fa-icon></th>
+          <th (click)="sortTableByAcademy()">Academias <fa-icon [icon]="faSort"></fa-icon></th>
           <th>Perfil</th>
         </tr>
       </thead>
