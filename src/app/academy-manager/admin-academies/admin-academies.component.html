@@ -1,13 +1,13 @@
-<div class="ml-4 mt-1">
+<div class="ml-5 mt-1">
 
-  <div class="float-left mb-4 ml-4" style="width: 100%;">
+  <div class="float-left mb-4" style="width: 100%;">
     <button type="button" class="btn btn-primary btn-md mt-4 float-left"
       (click)="openModalAddAcademy(templateAddAcademy)">Nova Academia</button>
   </div>
 
   <!-- Filter Fields -->
 
-  <div class="row ml-2 mb-4">
+  <div class="row mb-4">
     <div class="col-12">
       <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome da Academia" (input) = "filterTable()">
     </div>
@@ -15,7 +15,7 @@
 
   <!-- Table -->
 
-  <table class="table table-sm table-striped container mt-3 ml-4 col-12 text-center" style="width: 1100px;">
+  <table class="table table-sm table-striped container mt-3 col-12 text-center">
     <thead class="thead-dark">
       <tr>
         <th (click)="sortTableByName()">Nome <fa-icon [icon]="faSort"></fa-icon></th>
@@ -28,20 +28,25 @@
     <tbody>
       <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
         <td>{{academy.edName}}</td>
-        <td>{{academy.status}}</td>
+        <td *ngIf="academy.status === 'ACTIVE'">
+          <fa-icon [icon]="faLightbulb" style="color:gold;"></fa-icon>
+        </td>
+        <td *ngIf="academy.status === 'NOTACTIVE'">
+          <fa-icon [icon]="faLightbulb" style="color: grey;"></fa-icon>
+        </td>
         <td>
-          <button (click)="openAcademyById(academy.id)" class="btn-borderless">
+          <button (click)="openAcademyById(academy.id)" class="btn btn-borderless">
             <fa-icon [icon]="faEye"></fa-icon>
           </button>
         </td>
         <td>
-          <button (click)="openModalUpdateAcademy(templateUpdateAcademy, academy)" class="btn-borderless">
+          <button (click)="openModalUpdateAcademy(templateUpdateAcademy, academy)" class="btn btn-borderless">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
         </td>
         <td>
           <button (click)="openModalConfirmDeleteAcademy(templateConfirmDeleteAcademy, i)"
-            class="btn-borderless">
+            class="btn btn-borderless">
             <fa-icon [icon]="faTrashAlt"></fa-icon>
           </button>
         </td>
