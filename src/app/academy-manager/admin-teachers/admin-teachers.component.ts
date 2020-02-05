@@ -20,8 +20,10 @@ export class AdminTeachersComponent implements OnInit {
   private teacherUserAccounts: {}[] = [];
   public teacherUserAccounts$: ReplaySubject<{}[]> = new ReplaySubject(1);
   private accountAcademies: string[] = [];
-  private sorted = false;
-  private filterSorted = false;
+  private sortedByName = false;
+  private filterSortedByName = false;
+  private sortedByAcademy = false;
+  private filterSortedByAcademy = false;
   public faSort = faSort;
   public allAcademiesNames: {}[] = [{ 'id': 'Todas', 'text': 'Todas' }];
   private filteredTeachers: {}[] = [];
@@ -54,28 +56,37 @@ export class AdminTeachersComponent implements OnInit {
   public getTeacherAccount(teacherUser: User) {
     this.accountService.getByUserId(teacherUser.id).subscribe((account: any) => {
       if (account !== null) {
+        let count = 0;
         for (const academyId of account.academyIds) {
-          this.getAcademyById(academyId);
+          this.academyService.getbyId(academyId).subscribe(
+            (res: any) => {
+              count++;
+              if (res !== null) {
+                this.accountAcademies.push(res.edName);
+              }
+              if (count === account.academyIds.length) {
+                this.teacherUserAccounts.push({ 'teacherUser': teacherUser,
+                'teacherAccount': account, 'academyNames': this.accountAcademies });
+                this.teacherUserAccounts$.next(this.teacherUserAccounts);
+                this.accountAcademies = [];
+              }
+            }
+          );
         }
-        this.teacherUserAccounts.push({ 'teacherUser': teacherUser, 'teacherAccount': account, 'academyNames': this.accountAcademies });
-        this.teacherUserAccounts$.next(this.teacherUserAccounts);
-        this.accountAcademies = [];
+        if (account.academyIds.length === 0) {
+          this.teacherUserAccounts.push({
+            'studentUser': teacherUser,
+            'studentAccount': account, 'academyNames': []
+          });
+          this.teacherUserAccounts$.next(this.teacherUserAccounts);
+        }
+
       }
     });
   }
 
   public showProfile(userId: number) {
     this.router.navigate(['/academy-manager/profile/' + userId]);
-  }
-
-  public getAcademyById(id: number) {
-    this.academyService.getbyId(id).subscribe(
-      (res: any) => {
-        if (res !== null) {
-          this.accountAcademies.push(res.edName);
-        }
-      }
-    );
   }
 
   public getAllAcademies() {
@@ -88,23 +99,49 @@ export class AdminTeachersComponent implements OnInit {
     );
   }
 
-  public sortTable() {
+  public sortTableByName() {
     if (this.nameFilter !== '' || this.academyFilter !== 'Todas') {
-      if (this.filterSorted) {
+      if (this.filterSortedByName) {
         this.filteredTeachers.reverse();
       } else {
         this.filteredTeachers.sort((a, b) =>
           ((a['teacherUser'].name === b['teacherUser'].name) ? 0 : ((a['teacherUser'].name > b['teacherUser'].name) ? 1 : -1)));
-        this.sorted = true;
+        this.filterSortedByName = true;
+        this.filterSortedByAcademy = false;
       }
       this.teacherUserAccounts$.next(this.filteredTeachers);
     } else {
-      if (this.sorted) {
+      if (this.sortedByName) {
         this.teacherUserAccounts.reverse();
       } else {
         this.teacherUserAccounts.sort((a, b) =>
           ((a['teacherUser'].name === b['teacherUser'].name) ? 0 : ((a['teacherUser'].name > b['teacherUser'].name) ? 1 : -1)));
-        this.sorted = true;
+        this.sortedByName = true;
+        this.sortedByAcademy = false;
+      }
+      this.teacherUserAccounts$.next(this.teacherUserAccounts);
+    }
+  }
+
+  public sortTableByAcademy() {
+    if (this.nameFilter !== '' || this.academyFilter !== 'Todas') {
+      if (this.filterSortedByAcademy) {
+        this.filteredTeachers.reverse();
+      } else {
+        this.filteredTeachers.sort((a, b) =>
+          ((a['teacherUser'].name === b['teacherUser'].name) ? 0 : ((a['teacherUser'].name > b['teacherUser'].name) ? 1 : -1)));
+        this.filterSortedByAcademy = true;
+        this.filterSortedByName = false;
+      }
+      this.teacherUserAccounts$.next(this.filteredTeachers);
+    } else {
+      if (this.sortedByAcademy) {
+        this.teacherUserAccounts.reverse();
+      } else {
+        this.teacherUserAccounts.sort((a, b) =>
+          ((a['teacherUser'].name === b['teacherUser'].name) ? 0 : ((a['teacherUser'].name > b['teacherUser'].name) ? 1 : -1)));
+        this.sortedByAcademy = true;
+        this.sortedByName = false;
       }
       this.teacherUserAccounts$.next(this.teacherUserAccounts);
     }

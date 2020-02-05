@@ -22,6 +22,9 @@ import { Account } from '../shared/models/account';
 })
 export class AcademyViewComponent implements OnInit {
 
+  public students: any[] = [];
+  public studentsIds2: any[] = [];
+
   private academy: Academy;
   public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public inUpdate = false;
@@ -114,21 +117,23 @@ export class AcademyViewComponent implements OnInit {
     this.datesArray = dates.split(' - ');
     academy.startDate = this.datesArray[0];
     academy.endDate = this.datesArray[1];
-    // console.log('de ' + this.academy.startDate + ' a ' + this.academy.endDate);
   }
 
   public updateAcademy(dates: string) {
-    // console.log(dates);
     this.getDates(dates, this.academy);
     this.academyService.updateAcademy(this.academy).subscribe(
       (msg: string) => {
         console.log(msg);
-        // console.log(this.academy);
         this.inUpdate = false;
       }, (error: string) => {
         console.log(error);
       });
-    console.log(this.academy);
+  }
+
+  public updateAcademy2() {
+    this.studentsIds2.forEach(numz => this.academy.studentsIds.push(numz.id));
+    this.academyService.updateAcademy(this.academy).subscribe(
+      (res: Academy) => console.log(res));
   }
 
   public deleteAcademy() {
@@ -159,8 +164,10 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public addModuleToAcademy() {
+    delete this.newModule.userTeacher;
     this.moduleService.createModule(this.newModule).subscribe(
-      (res: any) => {
+      (id: number) => {
+        this.newModule.id = id;
         this.academy.moduleDTOs.push(this.newModule);
         this.academy$.next(this.academy);
         this.academyService.updateAcademy(this.academy).subscribe(
@@ -201,7 +208,8 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public openModalAddStudent(template: TemplateRef<any>) {
-    this.getAllStudents();
+    this.studentsDropdown = [];
+    this.getAllStudentsNotinAcademy();
     this.modalRef = this.modalService.show(template);
   }
 
@@ -220,7 +228,7 @@ export class AcademyViewComponent implements OnInit {
       this.accountService.getById(student).subscribe((account: Account) => {
         this.userService.getUserById(account.userId).subscribe(
           (studentUser: User) => {
-            this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account});
+            this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account });
             this.academyStudents$.next(this.academyStudents);
           });
       });
@@ -237,12 +245,32 @@ export class AcademyViewComponent implements OnInit {
     );
   }
 
+  public getAllStudentsNotinAcademy() {
+    this.userService.getUsers('', '', 'USER').subscribe(
+      (students: User[]) => {
+        students.forEach(student => {
+          this.getStudentAccountNotInAcademy(student);
+        });
+      }
+    );
+  }
+
+  public getStudentAccountNotInAcademy(studentUser: User) {
+    let ze: number[] = this.academy.studentsIds;
+    this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
+      if (account !== null && (account.academyIds.length === 0 && (!ze.includes(account.id)))) {
+        this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name });
+        this.studentsDropdown$.next(this.studentsDropdown);
+        console.log(this.studentsDropdown);
+      }
+    });
+  }
+
   public getStudentAccount(studentUser: User) {
     this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
       if (account !== null && (account.academyIds.length === 0 || account.academyIds.find(id => id === this.academy.id))) {
-        this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name});
+        this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name });
         this.studentsDropdown$.next(this.studentsDropdown);
-        console.log(this.studentsDropdown);
       }
     });
   }

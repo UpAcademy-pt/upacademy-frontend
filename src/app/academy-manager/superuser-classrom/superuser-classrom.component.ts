@@ -11,6 +11,7 @@ import { User } from 'src/app/core/models/user';
 import { MissedclassesService } from '../shared/services/missedclasses.service';
 import { Missed } from '../shared/models/missed';
 import { ActivatedRoute } from '@angular/router';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-superuser-classrom',
@@ -21,6 +22,7 @@ export class SuperuserClassromComponent implements OnInit {
   // private academy: Academy;
   // public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public view = false;
+  public tempMissed: Missed[] = [];
 
   public tempAccount: Account;
   public tempAccount$: ReplaySubject<Account> = new ReplaySubject(1);
@@ -36,14 +38,15 @@ export class SuperuserClassromComponent implements OnInit {
   private index = 0;
 
   public arrayPositions: any[] = [];
-  
+
   public arrayPositions$: ReplaySubject<any[]> = new ReplaySubject(1);
 
   public arrayPositionsRemoved: any[] = [];
 
-   public missedClassArray: number[] = [];
+  public missedClassArray: Missed[] = [];
+  public missedClassArray$: ReplaySubject<Missed[]> = new ReplaySubject(1);
 
-//  public cleanArrayPos  = {'pos': '','account': {id: 0},'user': {id: 0}};
+  //  public cleanArrayPos  = {'pos': '','account': {id: 0},'user': {id: 0}};
   // public tempPosAcc2 = new Posbyaccount();
 
   constructor(
@@ -53,16 +56,18 @@ export class SuperuserClassromComponent implements OnInit {
     private missedApi: MissedclassesService,
     private route: ActivatedRoute,
     private http: HttpClient) {
-      this.route.params.subscribe(
-        params => {
-          this.academyApi.getbyId(Number(params.academyId)).subscribe(
-            (res: Academy) => {
-              this.academyAccountIds = res.studentsIds;
-              this.academyAccountIds.forEach(student => this.getStudentAccounts(student));
-            }
-          ); });
-          // console.log(this.cleanArrayPos);
-          
+    this.route.params.subscribe(
+      params => {
+        this.academyApi.getbyId(Number(params.academyId)).subscribe(
+          (res: Academy) => {
+            this.academyAccountIds = res.studentsIds;
+            this.academyAccountIds.forEach(student => this.getStudentAccounts(student));
+          }
+        );
+      });
+    this.getTodayMisses();
+    // console.log(this.cleanArrayPos);
+
     // this.getAllStudents();
     // this.getUserAccount();
     // console.log(this.arrayPositions);
@@ -72,6 +77,7 @@ export class SuperuserClassromComponent implements OnInit {
     // });
     // this.arrayPositions$.next(this.arrayPositions)
     // console.log(this.tempAccount);
+
   }
 
   ngOnInit() {
@@ -85,20 +91,22 @@ export class SuperuserClassromComponent implements OnInit {
   //     }
   //   );
   // }
-public getStudentAccounts(id: number){
-  this.accountApi.getById(id).subscribe(
-    (res: Account) => {
-      this.getUser(res);   
-})}
+  public getStudentAccounts(id: number) {
+    this.accountApi.getById(id).subscribe(
+      (res: Account) => {
+        this.getUser(res);
+      })
+  }
 
-public getUser(account: Account){
-  this.userApi.getUserById(account.userId).subscribe((res: User) => { this.arrayPositions.push({'pos': this.index,'account': account,'user': res});
-  this.arrayPositions$.next(this.arrayPositions);
-  this.index++;
-  console.log(this.arrayPositions);
-  
-});
-}
+  public getUser(account: Account) {
+    this.userApi.getUserById(account.userId).subscribe((res: User) => {
+      this.arrayPositions.push({ 'pos': this.index, 'account': account, 'user': res });
+      this.arrayPositions$.next(this.arrayPositions);
+      this.index++;
+      console.log(this.arrayPositions);
+
+    });
+  }
 
   public cleanElement(pos: Posbyaccount) {
     let tempPosAcc2 = new Posbyaccount();
@@ -113,52 +121,80 @@ public getUser(account: Account){
     this.arrayPositionsRemoved.push(pos);
   }
 
-  public addNewElement(){
+  public addNewElement() {
 
   }
 
-  public addMissed(id: number){
+  public addMissed(id: number) {
     let timeInMs = Date.now();
     let date = new Date(timeInMs);
-    // var year = date.getFullYear();
-    // var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    // var day = ("0" + date.getDate()).slice(-2);
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
 
     let missedClass = new Missed;
-    // missedClass.data = "" + year+"-"+month+"-"+day;
-    missedClass.data = date;
+    missedClass.date = timeInMs;
     missedClass.accountId = id;
     missedClass.justified = false;
+    missedClass.verifyDaily = "" + year + month + day;
 
     this.missedApi.create(missedClass).subscribe(
-      (res: any) =>  console.log(res))
+      (res: any) => console.log(res))
 
-    this.missedClassArray.push(id);
+    this.missedClassArray.push(missedClass);
   }
 
-  public getTodayMisses(){
-    // let timeInMs = 
-    let today = Date.now() / 100000000;
-    // let date = new Date(timeInMs);
-    // var year = date.getFullYear();
-    // var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    // var day = ("0" + date.getDate()).slice(-2);
+  public getTodayMisses() {
+    let timeInMs = Date.now();
+    let date = new Date(timeInMs);
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+    this.missedApi.getByDate("" + year + month + day).subscribe(
+      (res: any) => {
+        res.forEach(num => this.missedClassArray.push(num));
+        this.missedClassArray$.next(this.missedClassArray);
+      })
+  }
 
-    this.missedApi.getByDate(today).subscribe((res: any) => this.missedClassArray.push(res))
+  public removeMissed(id: number) {
+    let timeInMs = Date.now();
+    let date = new Date(timeInMs);
+    let year = date.getFullYear();
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let day = ("0" + date.getDate()).slice(-2);
+
+    let missID: number;
+
+    this.missedApi.get(id).subscribe((res: any) => {
+      res.forEach(el => this.tempMissed.push(el));
+      console.log(this.tempMissed);
+    })
+    for (let i = 0; i < this.tempMissed.length; i++) {
+      if (this.tempMissed[i].verifyDaily == "" + year + month + day) {
+        missID = this.tempMissed[i].id;
+        this.missedApi.delete(missID).subscribe((res: any) => {
+          let index = this.missedClassArray.findIndex(x => x.id == id);
+          this.missedClassArray.splice(index, 1);
+          this.missedClassArray$.next(this.missedClassArray);
+        });
+      }
+    }
+
+
 
   }
 
-  public removeMissed(id: number){
-    let index = this.missedClassArray.findIndex(x => x == id);
-    this.missedClassArray.splice(index,1);
+  public chekedIfMissed(id: number) {
+    console.log(this.missedClassArray);
+    for (let i = 0; i < this.missedClassArray.length; i++) {
+      if (this.missedClassArray[i].id == id) { return true; }
+    }
+    return false;
   }
 
-  public chekedIfMissed(id: number){
-    return this.missedClassArray.includes(id);
-  }
-
-  public changeView(){
-    if (this.view){
+  public changeView() {
+    if (this.view) {
       this.view = false;
     }
     else {
