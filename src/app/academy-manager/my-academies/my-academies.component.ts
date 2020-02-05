@@ -51,6 +51,7 @@ export class MyAcademiesComponent implements OnInit {
   }
   public getTeachers() {
     this.academy.moduleDTOs.forEach(module => {
+      module.userTeacher = [];
       module.teacherIds.forEach(teacher => {
         this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
           module.userTeacher.push(userTeacher);
