@@ -47,10 +47,10 @@
             </tr>
         </thead>
           <tbody>
-            <tr *ngFor="let module of academy?.moduleDTOs">
+            <tr *ngFor="let module of academy.moduleDTOs">
             <th scope="row">1</th>
             <td> TESTE {{module.name}}</td>
-            <td> {{module.userTeacher.name}} </td>
+            <td><p *ngFor="let teacher of module.userTeacher">{{teacher.name}}</p> </td>
             </tr> 
           </tbody>
         </table>

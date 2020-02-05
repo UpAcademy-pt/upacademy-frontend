@@ -102,6 +102,8 @@ export class AccountProfileComponent implements OnInit {
             this.declarationsService.get(this.account.id).subscribe(
               (declarations: Declarations[]) => {
                 this.declarations = declarations;
+                console.log(this.declarations);
+                
                 this.declarations$.next(this.declarations);
               }
             );

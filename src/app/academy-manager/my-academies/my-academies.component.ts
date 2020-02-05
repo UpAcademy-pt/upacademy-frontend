@@ -39,6 +39,7 @@ export class MyAcademiesComponent implements OnInit {
           if (this.count === this.currentAccount.academyIds.length) {
             this.academy = this.academies[0];
             this.academy$.next(this.academy);
+            this.getTeachers();
           }
         }
         );
@@ -53,7 +54,6 @@ export class MyAcademiesComponent implements OnInit {
       module.teacherIds.forEach(teacher => {
         this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
           module.userTeacher.push(userTeacher);
-
         });
       });
     });
