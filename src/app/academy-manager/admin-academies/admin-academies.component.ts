@@ -3,7 +3,7 @@ import { ReplaySubject } from 'rxjs';
 import { Academy } from '../shared/models/academy';
 import { AcademyService } from '../shared/services/academy.service';
 import { BsModalService, BsModalRef, BsDropdownConfig } from 'ngx-bootstrap';
-import { faEdit, faTrashAlt, faEye, faSort } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faEye, faSort, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,7 @@ export class AdminAcademiesComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   faEye = faEye;
   faSort = faSort;
+  faLightbulb = faLightbulb;
 
   modalRef: BsModalRef;
   public academies: Academy[];

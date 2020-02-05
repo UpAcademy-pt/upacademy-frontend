@@ -28,7 +28,12 @@
     <tbody>
       <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
         <td>{{academy.edName}}</td>
-        <td>{{academy.status}}</td>
+        <td *ngIf="academy.status === 'ACTIVE'">
+          <fa-icon [icon]="faLightbulb" style="color: yellow;"></fa-icon>
+        </td>
+        <td *ngIf="academy.status === 'NOTACTIVE'">
+          <fa-icon [icon]="faLightbulb" style="color: grey;"></fa-icon>
+        </td>
         <td>
           <button (click)="openAcademyById(academy.id)" class="btn-borderless">
             <fa-icon [icon]="faEye"></fa-icon>
