@@ -55,12 +55,24 @@ export class AdminStudentsComponent implements OnInit {
   public getStudentAccount(studentUser: User) {
     this.accountService.getByUserId(studentUser.id).subscribe((account: any) => {
       if (account !== null) {
+        let count = 0;
         for (const academyId of account.academyIds) {
-          this.getAcademy(academyId);
+          this.academyService.getbyId(academyId).subscribe(
+            (res: any) => {
+              count++;
+              if (res !== null) {
+                this.accountAcademies.push(res.edName);
+              }
+              if (count === account.academyIds) {
+                this.studentUserAccounts.push({ 'studentUser': studentUser,
+                'studentAccount': account, 'academyNames': this.accountAcademies });
+                this.studentUserAccounts$.next(this.studentUserAccounts);
+                this.accountAcademies = [];
+              }
+            }
+          );
         }
-        this.studentUserAccounts.push({ 'studentUser': studentUser, 'studentAccount': account, 'academyNames': this.accountAcademies });
-        this.studentUserAccounts$.next(this.studentUserAccounts);
-        this.accountAcademies = [];
+
       }
     });
   }
@@ -70,13 +82,7 @@ export class AdminStudentsComponent implements OnInit {
   }
 
   public getAcademy(id: number) {
-    this.academyService.getbyId(id).subscribe(
-      (res: any) => {
-        if (res !== null) {
-          this.accountAcademies.push(res.edName);
-        }
-      }
-    );
+
   }
 
   public getAllAcademies() {
