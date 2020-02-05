@@ -40,7 +40,7 @@
             <div class="col-5">
                 <div class="form-group row">
                     <p *ngIf="inUpdate===false"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
-                    <div  [formGroup]="datesForm">
+                    <div [hidden]="inUpdate===false" [formGroup]="datesForm">
                         <!-- *ngIf="inUpdate===true" -->
                         <label for="datesArray" class="col-sm-2 col-form-label"
                             style="font-weight: bolder;">Datas:</label>
@@ -160,9 +160,9 @@
                     <ngx-bootstrap-multiselect name="students" [(ngModel)]="studentsIds2"
                         [items]="studentsDropdown" [settings]="studentsDropdownSettings">
                     </ngx-bootstrap-multiselect>
-                    <button class="btn btn-primary">Adicionar Aluno</button>
+                    <!-- <button class="btn btn-primary">Adicionar Aluno</button> -->
                 </div>
-                <button class="btn btn-primary" type="submit">Criar</button>
+                <button class="btn btn-primary" type="submit">Adicionar Aluno</button>
             </form>
         </div>
     </ng-template>

@@ -100,7 +100,9 @@ export class AcademyViewComponent implements OnInit {
           (academy: Academy) => {
             this.academy = academy;
             this.academy$.next(this.academy);
-            this.getStudentsByAcademy();
+            this.academy.studentsIds.forEach(student => {
+            this.getStudentsByAcademy(student);
+          });
           }
         );
       });
@@ -131,9 +133,16 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public updateAcademy2() {
-    this.studentsIds2.forEach(numz => this.academy.studentsIds.push(numz.id));
+    this.studentsIds2.forEach(numz => {
+      this.academy.studentsIds.push(numz.id);
+      this.getStudentsByAcademy(numz.id);
+    });
     this.academyService.updateAcademy(this.academy).subscribe(
-      (res: Academy) => console.log(res));
+      (res: Academy) => {
+        console.log(res);
+        this.academy$.next(this.academy);
+        this.modalRef.hide();
+      });
   }
 
   public deleteAcademy() {
@@ -223,16 +232,14 @@ export class AcademyViewComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  public getStudentsByAcademy() {
-    this.academy.studentsIds.forEach(student => {
-      this.accountService.getById(student).subscribe((account: Account) => {
+  public getStudentsByAcademy(studentId: number) {
+      this.accountService.getById(studentId).subscribe((account: Account) => {
         this.userService.getUserById(account.userId).subscribe(
           (studentUser: User) => {
             this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account });
             this.academyStudents$.next(this.academyStudents);
           });
       });
-    });
   }
 
   public getAllStudents() {
