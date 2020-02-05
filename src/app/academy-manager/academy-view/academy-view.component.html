@@ -153,11 +153,20 @@
     <!-- Modal Add Student -->
     <ng-template #templateAddStudent>
         <div class="modal-body text-center">
+<<<<<<< HEAD
             <form #addModuleForm="ngForm" (ngSubmit)="addStudentToAcademy()">
                 <div class="row">
                     <!-- *ngIf="studentsDropdown$ | async as studentsDropdown" -->
                     <label for="students" style="font-weight: bolder;">Alunos</label>
                     <ngx-bootstrap-multiselect name="students" [(ngModel)]="studentToAdd" [items]="studentsDropdown" [settings]="studentsDropdownSettings">
+=======
+            <form #addModuleForm="ngForm" (ngSubmit)="updateAcademy2()">
+                <div class="row">
+                    <!-- *ngIf="studentsDropdown$ | async as studentsDropdown" -->
+                    <label for="students" style="font-weight: bolder;">Alunos</label>
+                    <ngx-bootstrap-multiselect name="students" [(ngModel)]="studentsIds2"
+                        [items]="studentsDropdown" [settings]="studentsDropdownSettings">
+>>>>>>> Cristiano
                     </ngx-bootstrap-multiselect>
                     <button class="btn btn-primary">Adicionar Aluno</button>
                 </div>

@@ -22,6 +22,9 @@ import { Account } from '../shared/models/account';
 })
 export class AcademyViewComponent implements OnInit {
 
+  public students: any[] = [];
+  public studentsIds2: any[] = [];
+
   private academy: Academy;
   public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public inUpdate = false;
@@ -131,6 +134,12 @@ export class AcademyViewComponent implements OnInit {
     console.log(this.academy);
   }
 
+  public updateAcademy2() {
+    this.studentsIds2.forEach(numz => this.academy.studentsIds.push(numz.id));
+    this.academyService.updateAcademy(this.academy).subscribe(
+      (res: Academy) => console.log(res));
+  }
+
   public deleteAcademy() {
     this.academyService.deleteAcademy(this.academy.id).subscribe(
       (msg: string) => {
@@ -204,7 +213,9 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public openModalAddStudent(template: TemplateRef<any>) {
-    this.getAllStudents();
+    this.studentsDropdown = [];
+    // this.getAllStudents();
+    this.getAllStudentsNotinAcademy();
     this.modalRef = this.modalService.show(template);
   }
 
@@ -216,6 +227,7 @@ export class AcademyViewComponent implements OnInit {
     this.academy.studentsIds = [];
     this.studentToAdd.forEach(student => this.academy.studentsIds.push(student['id']));
     this.modalRef.hide();
+
   }
 
   public getStudentsByAcademy() {
@@ -223,7 +235,7 @@ export class AcademyViewComponent implements OnInit {
       this.accountService.getById(student).subscribe((account: Account) => {
         this.userService.getUserById(account.userId).subscribe(
           (studentUser: User) => {
-            this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account});
+            this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account });
             this.academyStudents$.next(this.academyStudents);
           });
       });
@@ -240,23 +252,47 @@ export class AcademyViewComponent implements OnInit {
     );
   }
 
-  public getStudentAccount(studentUser: User) {
+  public getAllStudentsNotinAcademy() {
+    this.userService.getUsers('', '', 'USER').subscribe(
+      (students: User[]) => {
+        students.forEach(student => {
+          this.getStudentAccountNotInAcademy(student);
+        });
+      }
+    );
+  }
+
+  // tive de fazer este metodo porque o academyId nao ta a ser adicionado ao user
+  // provelmente e preciso fazer custom edit e post no controller para adicionar
+  public getStudentAccountNotInAcademy(studentUser: User) {
+    let ze: number[] = this.academy.studentsIds;
     this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
-      if (account !== null && (account.academyIds.length === 0 || account.academyIds.find(id => id === this.academy.id))) {
-        this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name});
+      if (account !== null && (account.academyIds.length === 0 && (!ze.includes(account.id)))) {
+        this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name });
         this.studentsDropdown$.next(this.studentsDropdown);
         console.log(this.studentsDropdown);
       }
     });
   }
 
+  public getStudentAccount(studentUser: User) {
+  this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
+    if (account !== null && (account.academyIds.length === 0 || account.academyIds.find(id => id === this.academy.id))) {
+      this.studentsDropdown.push({ 'id': account.id, 'name': studentUser.name });
+      this.studentsDropdown$.next(this.studentsDropdown);
+      console.log(this.studentsDropdown);
+    }
+    
+  });
+}
+
   public getAcademyById(id: number) {
-    this.academyService.getbyId(id).subscribe(
-      (res: any) => {
-        if (res !== null) {
-          this.accountAcademies.push(res.edName);
-        }
+  this.academyService.getbyId(id).subscribe(
+    (res: any) => {
+      if (res !== null) {
+        this.accountAcademies.push(res.edName);
       }
-    );
-  }
+    }
+  );
+}
 }
