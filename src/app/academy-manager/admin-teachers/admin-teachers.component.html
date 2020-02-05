@@ -1,10 +1,10 @@
-<div class="mt-4 ml-4">
+<div class="mt-4 ml-5">
 
-  <h3 class="ml-4 mt-4 mb-3">Formadores</h3>
+  <h3 class="mt-4 mb-3">Formadores</h3>
 
   <!-- Filter Fields -->
 
-  <div class="row ml-2 mb-4">
+  <div class="row mb-4">
     <div class= col-6>
       <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome" (input) = "filterTable()">
     </div>
@@ -13,8 +13,7 @@
   </div>
 
   <!-- Table -->
-  <div class="ml-2">
-    <table class="table table-sm table-striped container m-3 col-12 text-center" style="width: 1100px;">
+    <table class="table table-sm table-striped container mt-3 col-12 text-center">
       <thead class="thead-dark">
         <tr>
           <th></th>
@@ -40,7 +39,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-
 
 </div>

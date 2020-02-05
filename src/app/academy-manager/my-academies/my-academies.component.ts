@@ -39,10 +39,14 @@ export class MyAcademiesComponent implements OnInit {
           if (this.count === this.currentAccount.academyIds.length) {
             this.academy = this.academies[0];
             this.academy$.next(this.academy);
+<<<<<<< HEAD
             console.log(
               this.academy
             );
             
+=======
+            this.getTeachers();
+>>>>>>> a9740776d7bc5c8b4d789403feee7e8667f8bb55
           }
         }
         );
@@ -54,10 +58,10 @@ export class MyAcademiesComponent implements OnInit {
   }
   public getTeachers() {
     this.academy.moduleDTOs.forEach(module => {
+      module.userTeacher = [];
       module.teacherIds.forEach(teacher => {
         this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
           module.userTeacher.push(userTeacher);
-
         });
       });
     });

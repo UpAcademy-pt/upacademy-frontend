@@ -102,6 +102,8 @@ export class AccountProfileComponent implements OnInit {
             this.declarationsService.get(this.account.id).subscribe(
               (declarations: Declarations[]) => {
                 this.declarations = declarations;
+                console.log(this.declarations);
+                
                 this.declarations$.next(this.declarations);
               }
             );
@@ -256,6 +258,7 @@ export class AccountProfileComponent implements OnInit {
     this.newDeclaration.accountIdSender = this.currentAccountId;
     this.newDeclaration.accountIdReceiver = this.account.id;
     this.newDeclaration.verified = false;
+    this.newDeclaration.dateReceived = null;
     const dateSent: Date = new Date();
     const month = dateSent.getMonth() + 1;
     const day = dateSent.getDate();
@@ -272,6 +275,8 @@ export class AccountProfileComponent implements OnInit {
       (id: number) => {
         this.newDeclaration.id = id;
         this.declarations.push(this.newDeclaration);
+        console.log(this.newDeclaration);
+        
         this.declarations$.next(this.declarations);
         this.modalRef.hide();
         this.newDeclaration = new Declarations();

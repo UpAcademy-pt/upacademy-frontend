@@ -1,7 +1,7 @@
 <div *ngIf="module$ | async as module">
   <div class="ml-4">
     <form #updateModuleForm="ngForm" (ngSubmit)="updateModule()">
-      <button class= "btn btn-borderless float-right" *ngIf="!inUpdate" (click)="toggleUpdateModule()"><fa-icon [icon]="faEdit" size="2x"></fa-icon></button>
+      <button class= "btn btn-borderless float-right" *ngIf="!inUpdate && !isSuperUser" (click)="toggleUpdateModule()"><fa-icon [icon]="faEdit" size="2x"></fa-icon></button>
       <button class= "btn btn-borderless float-right mx-2" *ngIf="inUpdate" type="submit"><fa-icon [icon]="faSave" size="2x"></fa-icon></button>
       <button class= "btn btn-borderless float-right mx-2" *ngIf="inUpdate" (click)="openModal(templateConfirmDeleteModule)"><fa-icon [icon]="faTrashAlt" size="2x"></fa-icon></button>
       <h3>Módulo</h3>
@@ -50,7 +50,7 @@
 
     <div><b>Campos de Avaliação: </b> <ul class="list-inline">
       <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
-        {{evaluationSubject}} <button type="button" *ngIf="inUpdate" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
+        {{evaluationSubject}} <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
           <span aria-hidden="true"> ×</span></button></li></ul></div>
     <div class="float-left mb-4 ml-3">
       <button type="button" class="btn btn-primary btn-md mt-4 float-left"

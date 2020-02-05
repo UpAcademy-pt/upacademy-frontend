@@ -75,8 +75,8 @@ export class AdminTeachersComponent implements OnInit {
         }
         if (account.academyIds.length === 0) {
           this.teacherUserAccounts.push({
-            'studentUser': teacherUser,
-            'studentAccount': account, 'academyNames': []
+            'teacherUser': teacherUser,
+            'teacherAccount': account, 'academyNames': []
           });
           this.teacherUserAccounts$.next(this.teacherUserAccounts);
         }
