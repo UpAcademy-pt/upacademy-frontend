@@ -30,19 +30,18 @@
         <td>{{academy.edName}}</td>
         <td>{{academy.status}}</td>
         <td>
-          <button (click)="openAcademyById(academy.id)" class="btn-borderless btn-edit">
+          <button (click)="openAcademyById(academy.id)" class="btn-borderless">
             <fa-icon [icon]="faEye"></fa-icon>
-            <!-- <i class="far fa-eye"></i> -->
           </button>
         </td>
         <td>
-          <button (click)="openModalUpdateAcademy(templateUpdateAcademy, academy)" class="btn-borderless btn-edit">
+          <button (click)="openModalUpdateAcademy(templateUpdateAcademy, academy)" class="btn-borderless">
             <fa-icon [icon]="faEdit"></fa-icon>
           </button>
         </td>
         <td>
           <button (click)="openModalConfirmDeleteAcademy(templateConfirmDeleteAcademy, i)"
-            class="btn-borderless btn-delete">
+            class="btn-borderless">
             <fa-icon [icon]="faTrashAlt"></fa-icon>
           </button>
         </td>

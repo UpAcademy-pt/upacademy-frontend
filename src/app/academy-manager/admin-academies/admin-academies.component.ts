@@ -45,8 +45,10 @@ export class AdminAcademiesComponent implements OnInit {
   public academyToUpdate: Academy = new Academy();
   public academyToDeleteRow: number;
   public showTable = false;
-  private sorted = false;
-  private filterSorted = false;
+  private sortedByName = false;
+  private filterSortedByName = false;
+  private sortedByStatus = false;
+  private filterSortedByStatus = false;
   private filteredAcademies: Academy[] = [];
   public nameFilter = '';
   public statusFilter = '';
@@ -140,21 +142,25 @@ export class AdminAcademiesComponent implements OnInit {
 
   public sortTableByName() {
     if (this.nameFilter !== '') {
-      if (this.filterSorted) {
+      if (this.filterSortedByName) {
         this.filteredAcademies.reverse();
       } else {
         this.filteredAcademies.sort((a, b) =>
           ((a.edName === b.edName) ? 0 : ((a.edName > b.edName) ? 1 : -1)));
-        this.sorted = true;
+        this.sortedByName = true;
+        this.sortedByStatus = false;
+        this.filterSortedByStatus = false;
       }
       this.academies$.next(this.filteredAcademies);
     } else {
-      if (this.sorted) {
+      if (this.sortedByName) {
         this.academies.reverse();
       } else {
         this.academies.sort((a, b) =>
           ((a.edName === b.edName) ? 0 : ((a.edName > b.edName) ? 1 : -1)));
-        this.sorted = true;
+        this.sortedByName = true;
+        this.sortedByStatus = false;
+        this.filterSortedByStatus = false;
       }
       this.academies$.next(this.academies);
     }
@@ -162,21 +168,25 @@ export class AdminAcademiesComponent implements OnInit {
 
   public sortTableByStatus() {
     if (this.statusFilter !== '') {
-      if (this.filterSorted) {
+      if (this.filterSortedByStatus) {
         this.filteredAcademies.reverse();
       } else {
         this.filteredAcademies.sort((a, b) =>
           ((a.status === b.status) ? 0 : ((a.status > b.status) ? 1 : -1)));
-        this.sorted = true;
+        this.sortedByStatus = true;
+        this.sortedByName = false;
+        this.filterSortedByName = false;
       }
       this.academies$.next(this.filteredAcademies);
     } else {
-      if (this.sorted) {
+      if (this.sortedByStatus) {
         this.academies.reverse();
       } else {
         this.academies.sort((a, b) =>
           ((a.status === b.status) ? 0 : ((a.status > b.status) ? 1 : -1)));
-        this.sorted = true;
+        this.sortedByStatus = true;
+        this.sortedByName = false;
+        this.filterSortedByName = false;
       }
       this.academies$.next(this.academies);
     }
