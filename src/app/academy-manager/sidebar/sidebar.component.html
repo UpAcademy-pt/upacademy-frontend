@@ -1,4 +1,4 @@
-<div class="d-flex flex-column vh-100" style="background-color: grey; width: 220px;">
+<div class="d-flex flex-column" style="background-color: grey; width: 220px; height: 100%;">
 
     <div style="background-color: rgb(59, 59, 59); text-align: center;">
         <h5 class="my-3 mr-5" style="color: white;">Menu</h5>
@@ -6,9 +6,6 @@
 
     <ul routerLinkActive = "active"  class="nav-item mt-3" style="padding-left: 10px;">
        
-        <!-- <li *ngIf="isTeacher===true">
-            <button routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-2" style="color: white;">Academias</button>
-        </li> -->
         <li *ngIf="isTeacher===true">
             <button routerLink = "teacher-academies" class="btn btn-link btn-md mx-1 my-2" 
             style="color: white;">MyAcademies</button>
@@ -23,13 +20,7 @@
             <button routerLink = "my-declarations" class="btn btn-link btn-md mx-1 my-2" 
             style="color: white;">Declarações<br>Recebimento</button>
         </li>
-        <!-- <li *ngIf="isTeacher===true">
-            <button routerLink = "superuser-classroom" class="btn btn-link btn-md mx-1 my-2" 
-            style="color: white;">Sala</button>
-        </li> -->
 
-       
-        
     </ul>
 
 </div>

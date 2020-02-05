@@ -39,6 +39,10 @@ export class MyAcademiesComponent implements OnInit {
           if (this.count === this.currentAccount.academyIds.length) {
             this.academy = this.academies[0];
             this.academy$.next(this.academy);
+            console.log(
+              this.academy
+            );
+            
           }
         }
         );
