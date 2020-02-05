@@ -262,8 +262,6 @@ export class AcademyViewComponent implements OnInit {
     );
   }
 
-  // tive de fazer este metodo porque o academyId nao ta a ser adicionado ao user
-  // provelmente e preciso fazer custom edit e post no controller para adicionar
   public getStudentAccountNotInAcademy(studentUser: User) {
     let ze: number[] = this.academy.studentsIds;
     this.accountService.getByUserId(studentUser.id).subscribe((account: Account) => {
