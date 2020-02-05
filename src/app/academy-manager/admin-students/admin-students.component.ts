@@ -20,8 +20,10 @@ export class AdminStudentsComponent implements OnInit {
   private studentUserAccounts: {}[] = [];
   public studentUserAccounts$: ReplaySubject<{}[]> = new ReplaySubject(1);
   private accountAcademies: string[] = [];
-  private sorted = false;
-  private filterSorted = false;
+  private sortedByName = false;
+  private filterSortedByName = false;
+  private sortedByAcademy = false;
+  private filterSortedByAcademy = false;
   public faSort = faSort;
   public allAcademiesNames: {}[] = [{ 'id': 'Todas', 'text': 'Todas' }];
   private filteredStudents: {}[] = [];
@@ -63,16 +65,24 @@ export class AdminStudentsComponent implements OnInit {
               if (res !== null) {
                 this.accountAcademies.push(res.edName);
               }
-              if (count === account.academyIds) {
-                this.studentUserAccounts.push({ 'studentUser': studentUser,
-                'studentAccount': account, 'academyNames': this.accountAcademies });
+              if (count === account.academyIds.length) {
+                this.studentUserAccounts.push({
+                  'studentUser': studentUser,
+                  'studentAccount': account, 'academyNames': this.accountAcademies
+                });
                 this.studentUserAccounts$.next(this.studentUserAccounts);
                 this.accountAcademies = [];
               }
             }
           );
         }
-
+        if (account.academyIds.length === 0) {
+          this.studentUserAccounts.push({
+            'studentUser': studentUser,
+            'studentAccount': account, 'academyNames': []
+          });
+          this.studentUserAccounts$.next(this.studentUserAccounts);
+        }
       }
     });
   }
@@ -95,23 +105,49 @@ export class AdminStudentsComponent implements OnInit {
     );
   }
 
-  public sortTable() {
+  public sortTableByName() {
     if (this.nameFilter !== '' || this.academyFilter !== 'Todas') {
-      if (this.filterSorted) {
+      if (this.filterSortedByName) {
         this.filteredStudents.reverse();
       } else {
         this.filteredStudents.sort((a, b) =>
           ((a['studentUser'].name === b['studentUser'].name) ? 0 : ((a['studentUser'].name > b['studentUser'].name) ? 1 : -1)));
-        this.sorted = true;
+        this.filterSortedByName = true;
+        this.filterSortedByAcademy = false;
       }
       this.studentUserAccounts$.next(this.filteredStudents);
     } else {
-      if (this.sorted) {
+      if (this.sortedByName) {
         this.studentUserAccounts.reverse();
       } else {
         this.studentUserAccounts.sort((a, b) =>
           ((a['studentUser'].name === b['studentUser'].name) ? 0 : ((a['studentUser'].name > b['studentUser'].name) ? 1 : -1)));
-        this.sorted = true;
+        this.sortedByName = true;
+        this.sortedByAcademy = false;
+      }
+      this.studentUserAccounts$.next(this.studentUserAccounts);
+    }
+  }
+
+  public sortTableByAcademy() {
+    if (this.nameFilter !== '' || this.academyFilter !== 'Todas') {
+      if (this.filterSortedByAcademy) {
+        this.filteredStudents.reverse();
+      } else {
+        this.filteredStudents.sort((a, b) =>
+          ((a['studentUser'].name === b['studentUser'].name) ? 0 : ((a['studentUser'].name > b['studentUser'].name) ? 1 : -1)));
+        this.filterSortedByAcademy = true;
+        this.filterSortedByName = false;
+      }
+      this.studentUserAccounts$.next(this.filteredStudents);
+    } else {
+      if (this.sortedByAcademy) {
+        this.studentUserAccounts.reverse();
+      } else {
+        this.studentUserAccounts.sort((a, b) =>
+          ((a['studentUser'].name === b['studentUser'].name) ? 0 : ((a['studentUser'].name > b['studentUser'].name) ? 1 : -1)));
+        this.sortedByAcademy = true;
+        this.sortedByName = false;
       }
       this.studentUserAccounts$.next(this.studentUserAccounts);
     }
