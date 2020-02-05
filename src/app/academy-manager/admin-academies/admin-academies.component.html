@@ -29,7 +29,7 @@
       <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
         <td>{{academy.edName}}</td>
         <td *ngIf="academy.status === 'ACTIVE'">
-          <fa-icon [icon]="faLightbulb" style="color: yellow;"></fa-icon>
+          <fa-icon [icon]="faLightbulb" style="color:gold;"></fa-icon>
         </td>
         <td *ngIf="academy.status === 'NOTACTIVE'">
           <fa-icon [icon]="faLightbulb" style="color: grey;"></fa-icon>
