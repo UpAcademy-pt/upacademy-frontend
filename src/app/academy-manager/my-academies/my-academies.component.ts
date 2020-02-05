@@ -12,6 +12,7 @@ import { User } from 'src/app/core/models/user';
   styleUrls: ['./my-academies.component.scss']
 })
 export class MyAcademiesComponent implements OnInit {
+
   private teacherUsers: User[];
   public teacherUsers$: ReplaySubject<User[]> = new ReplaySubject(1);
   public isCollapsed = true;
@@ -23,6 +24,7 @@ export class MyAcademiesComponent implements OnInit {
   private count = 0;
 
   constructor(
+
     private accountService: AccountService,
     private academyService: AcademyService,
 
@@ -43,7 +45,6 @@ export class MyAcademiesComponent implements OnInit {
             console.log(this.academy);
             this.academy$.next(this.academy);
           }
-          this.academy$.next(this.academy);
 
         }
         );
@@ -54,25 +55,18 @@ export class MyAcademiesComponent implements OnInit {
 
   }
 
-
-
+  ngOnInit() {
+  }
   public getTeachers() {
   this.academy.moduleDTOs.forEach(module => {
     module.teacherIds.forEach(teacher => {
       this.accountService.getUserbyAccount(teacher).subscribe((userTeacher: User) => {
-        this.teacherUsers.push(userTeacher);
-        this.teacherUsers$.next(this.teacherUsers);
-
-      });
-
-
-    });
+        module.UserTeacher.push(userTeacher);
 
   });
+ });
+});
+
 }
-ngOnInit(){ }
 
-  }
-
-
-
+}

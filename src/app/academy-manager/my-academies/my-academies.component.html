@@ -38,8 +38,7 @@
     <div class= mt-3> 
       <accordion [isAnimated]="true">
         <accordion-group heading="Detalhes">
-           <table class="table" *ngFor="let module of academy?.moduleDTOs" >
-    <!--         *ngFor="let teacher of account?. " -->
+           <table class="table">
           <thead class="thead-dark">
             <tr>
             <th scope="col">#</th>
@@ -48,10 +47,10 @@
             </tr>
         </thead>
           <tbody>
-            <tr>
+            <tr *ngFor="let module of academy?.moduleDTOs">
             <th scope="row">1</th>
-            <td>TESTE {{module.name}}</td>
-            <td>teste {{teacher.name}}</td>
+            <td> TESTE {{module.name}}</td>
+            <td> {{module.userTeacher.name}} </td>
             </tr> 
           </tbody>
         </table>

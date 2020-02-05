@@ -3,7 +3,7 @@ import { ReplaySubject } from 'rxjs';
 import { Academy } from '../shared/models/academy';
 import { AcademyService } from '../shared/services/academy.service';
 import { BsModalService, BsModalRef, BsDropdownConfig } from 'ngx-bootstrap';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faEye, faSort } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -26,8 +26,11 @@ export class AdminAcademiesComponent implements OnInit {
 
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
+  faEye = faEye;
+  faSort = faSort;
 
   modalRef: BsModalRef;
+  public academies: Academy[];
   public academies$: ReplaySubject<Academy[]> = new ReplaySubject(1);
   public edNameField: string;
   public dates: string;
@@ -38,11 +41,15 @@ export class AdminAcademiesComponent implements OnInit {
   public warningField: string;
   public usefulInfoField: string;
   public academyTypeField: string;
-  public academies: Academy[];
   public academyToCreate: Academy = new Academy();
   public academyToUpdate: Academy = new Academy();
   public academyToDeleteRow: number;
   public showTable = false;
+  private sorted = false;
+  private filterSorted = false;
+  private filteredAcademies: Academy[] = [];
+  public nameFilter = '';
+  public statusFilter = '';
 
   constructor(
     private router: Router,
@@ -129,5 +136,59 @@ export class AdminAcademiesComponent implements OnInit {
 
   public openAcademyById(id: number) {
     this.router.navigate(['academy-manager/academy/' + id]);
+  }
+
+  public sortTableByName() {
+    if (this.nameFilter !== '') {
+      if (this.filterSorted) {
+        this.filteredAcademies.reverse();
+      } else {
+        this.filteredAcademies.sort((a, b) =>
+          ((a.edName === b.edName) ? 0 : ((a.edName > b.edName) ? 1 : -1)));
+        this.sorted = true;
+      }
+      this.academies$.next(this.filteredAcademies);
+    } else {
+      if (this.sorted) {
+        this.academies.reverse();
+      } else {
+        this.academies.sort((a, b) =>
+          ((a.edName === b.edName) ? 0 : ((a.edName > b.edName) ? 1 : -1)));
+        this.sorted = true;
+      }
+      this.academies$.next(this.academies);
+    }
+  }
+
+  public sortTableByStatus() {
+    if (this.statusFilter !== '') {
+      if (this.filterSorted) {
+        this.filteredAcademies.reverse();
+      } else {
+        this.filteredAcademies.sort((a, b) =>
+          ((a.status === b.status) ? 0 : ((a.status > b.status) ? 1 : -1)));
+        this.sorted = true;
+      }
+      this.academies$.next(this.filteredAcademies);
+    } else {
+      if (this.sorted) {
+        this.academies.reverse();
+      } else {
+        this.academies.sort((a, b) =>
+          ((a.status === b.status) ? 0 : ((a.status > b.status) ? 1 : -1)));
+        this.sorted = true;
+      }
+      this.academies$.next(this.academies);
+    }
+  }
+
+  public filterTable() {
+    if (this.nameFilter !== '') {
+      this.filteredAcademies = this.academies.filter(
+        academy => academy.edName.toLowerCase().includes(this.nameFilter.toLowerCase()));
+      this.academies$.next(this.filteredAcademies);
+    } else {
+      this.academies$.next(this.academies);
+    }
   }
 }
