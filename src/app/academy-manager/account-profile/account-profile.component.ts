@@ -202,7 +202,7 @@ export class AccountProfileComponent implements OnInit {
   public validateMissedDate() {
     let uniqueDate = true;
     this.misses.forEach(missed => {
-      if (this.newMissedClass.data === missed.data) {
+      if (this.newMissedClass.date === missed.date) {
         uniqueDate = false;
       }
     });
@@ -210,7 +210,7 @@ export class AccountProfileComponent implements OnInit {
   }
 
   public addMissedDay() {
-    this.newMissedClass.data = new Date(this.missedDay);
+    this.newMissedClass.date = new Date(this.missedDay).getTime();
     this.newMissedClass.accountId = this.account.id;
     this.newMissedClass.justified = false;
     if (this.validateMissedDate()) {
