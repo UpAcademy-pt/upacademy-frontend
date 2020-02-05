@@ -69,6 +69,7 @@ export class AdminAcademiesComponent implements OnInit {
   public createAcademy(dates: string) {
     console.log(dates);
     this.getDates(dates, this.academyToCreate);
+    this.academyToCreate.status = 'NOTACTIVE';
     this.academyService.createAcademy(this.academyToCreate).subscribe(
       (msg: string) => {
         this.getAllAcademies();
