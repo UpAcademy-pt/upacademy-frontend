@@ -14,6 +14,7 @@ import { AcademyService } from '../shared/services/academy.service';
 import { Academy } from '../shared/models/academy';
 import { faEdit, faTrashAlt, faSave, faMinusCircle, faPlusCircle,
   faCheckCircle, faTimesCircle, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { DeclarationsService } from '../shared/services/declarations.service';
 import { Declarations } from '../shared/models/declarations';
 
@@ -69,6 +70,7 @@ export class AccountProfileComponent implements OnInit {
   public faCheckCircle = faCheckCircle;
   public faTimesCircle = faTimesCircle;
   public faClock = faClock;
+  public faLinkedin = faLinkedin;
 
 
   constructor(
