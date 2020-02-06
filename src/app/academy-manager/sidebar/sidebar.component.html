@@ -7,17 +7,17 @@
        
         <li *ngIf="isTeacher===true">
             <a [routerLinkActive] = "['active']" routerLink = "teacher-academies" class="btn btn-link btn-md mx-1 my-2" 
-            style="color: white;" witdth: 100% >MyAcademies</a>
+            style="color: white; witdth: 100%" >MyAcademies</a>
         </li>
         <li *ngIf="isTeacher===false">
-            <a [routerLinkActive] = "['active']" routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-2" style="color: white;" witdth: 100% >Academia</a>
+            <a [routerLinkActive] = "['active']" routerLink = "my-academies" class="btn btn-link btn-md mx-1 my-2" style="color: white; witdth: 100%" >Academia</a>
         </li>
         <li>
-            <a [routerLinkActive] = "['active']"  routerLink = "my-profile" class="btn btn-link btn-md mx-1 my-2" style="color: white;" witdth: 100% >Perfil</a>
+            <a [routerLinkActive] = "['active']"  routerLink = "my-profile" class="btn btn-link btn-md mx-1 my-2" style="color: white; witdth: 100%" >Perfil</a>
         </li>
         <li *ngIf="isTeacher===false">
             <a [routerLinkActive] = "['active']" routerLink = "my-declarations" class="btn btn-link btn-md mx-1 my-2" 
-            style="color: white;" witdth: 100% >Declarações<br>Recebimento</a>
+            style="color: white; witdth: 100%" >Declarações<br>Recebimento</a>
         </li>
 
     </ul>   
