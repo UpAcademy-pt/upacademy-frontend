@@ -9,70 +9,67 @@
             <h3>Academia</h3>
         </div>
 
-        <div class="form-group row" style="margin-bottom: 0;">
-            <div class="col-6 d-flex align-items-start float-left" style="display: flex">
-                <label class="col-4 d-flex align-items-start float-left" style="font-weight: bolder; padding-left: 0px;" for="edName">Nome da edição: </label>
-                <div class="col-8 d-flex align-items-start float-left" style="padding-top: 0px;">
-                <input style="padding-top: 0px;" [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName" name="edName"
+        <div class="form-group row">
+            <div class="col-3 form-inline">
+                <label style="font-weight: bolder;" for="edName">Nome da edição: </label>
+                <input class="w-50 ml-1" [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName" name="edName"
                     id="edName" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.edName === null ? '' : academy.edName">
-                </div>
             </div>
 
-            <div class="col-2 text-left">
+            <div class="col-3 form-inline">
                 <p *ngIf="!inUpdate"><b>Estado: </b><span *ngIf="academy.status=='ACTIVE'">Activa</span>
                     <span *ngIf="academy.status=='NOTACTIVE'">Inactiva</span></p>
                 <div *ngIf="inUpdate">
                     <label style="font-weight: bolder;" for="status">Estado: </label>
-                    <select name="satus" id="status" #statusField="ngModel" [(ngModel)]="academy.status" de>
+                    <select name="satus" class="form-control" id="status" #statusField="ngModel"
+                        [(ngModel)]="academy.status" de>
                         <option value="ACTIVE">Activa</option>
                         <option value="NOTACTIVE">Inactiva</option>
                     </select>
                 </div>
             </div>
 
-            <div class="col-4 form-group">
-                <p *ngIf="inUpdate===false" class="col-12" style="margin-bottom: 0px;"><b>Datas: </b>   De {{academy.startDate}} a {{academy.endDate}}</p>
-                <div [hidden]="inUpdate===false" [formGroup]="datesForm">
-                    <label for="datesArray" class="col-form-label" style="font-weight: bolder;">Datas:</label>
-                    <input type="text" class="form-control" name="datesArray" #datesArray formControlName="dateRange"
-                        #daterangepicker="bsDaterangepicker" bsDaterangepicker
-                        placeholder="Escolha as datas de duração da Academia" placement="bottom"
-                        [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }"
-                        (change)="getDates()">
+            <div class="col-6 form-inline">
+                <div>
+                    <p *ngIf="inUpdate===false"><b>Datas: </b> De {{academy.startDate}} a {{academy.endDate}}</p>
+                    <div [hidden]="inUpdate===false" [formGroup]="datesForm">
+                        <label for="datesArray" class="col-form-label" style="font-weight: bolder;">Datas:</label>
+                        <input type="text" class="form-control" name="datesArray" #datesArray
+                            formControlName="dateRange" #daterangepicker="bsDaterangepicker" bsDaterangepicker
+                            placeholder="Escolha as datas de duração da Academia" placement="bottom"
+                            [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }"
+                            (change)="getDates()">
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="form-group row">
-            
-        </div>
-
-        <div class="form-group row">
-            <div class="col-6">
+            <div class="col-6 form-inline">
                 <label style="font-weight: bolder;" for="academyType">Tipo de Academia:</label>
-                <input [readonly]="!inUpdate" #academyTypeField="ngModel" [(ngModel)]="academy.academyType"
+                <input class="w-50 ml-1" [readonly]="!inUpdate" #academyTypeField="ngModel" [(ngModel)]="academy.academyType"
                     id="academyType" name="academyType" type="text"
                     [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.academyType === null ? '' : academy.academyType">
             </div>
-            <div class="col-6">
+            <div class="col-6 form-inline">
                 <label style="font-weight: bolder;" for="client">Cliente:</label>
-                <input [readonly]="!inUpdate" #clientField="ngModel" [(ngModel)]="academy.client" name="client"
+                <input class="w-50 ml-1" [readonly]="!inUpdate" #clientField="ngModel" [(ngModel)]="academy.client" name="client"
                     id="client" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.client === null ? '' : academy.client">
             </div>
         </div>
 
         <div class="form-group row" style="margin-bottom: 0;">
-            <div class="col-6">
+            <div class="col-6 form-inline">
                 <label style="font-weight: bolder;" for="warning">Avisos:</label>
                 <textarea [readonly]="!inUpdate" #warningField="ngModel" [(ngModel)]="academy.warning" id="warning"
                     name="warning" type="text"
                     [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.warning === null ? '' : academy.warning"></textarea>
             </div>
-            <div class="col-6">
+            <div class="col-6 form-inline">
                 <label style="font-weight: bolder;" for="usefulInfo">Informações úteis:</label>
                 <textarea [readonly]="!inUpdate" #usefulInfoField="ngModel" [(ngModel)]="academy.usefulInfo"
                     id="ausefulInfo" name="ausefulInfo" type="text"
@@ -149,26 +146,21 @@
 
     <!-- Modal Add Module -->
     <ng-template #templateAddModule>
-        <div class="modal-body container text-center">
-            <form #addModuleForm="ngForm" (ngSubmit)="addModuleToAcademy()">
-                <div class="row">
-                    <label style="font-weight: bolder;" for="name">Nome:</label>
-                    <input #nameField="ngModel" [(ngModel)]="newModule.name" name="name" id="name" type="text"
-                        class="form-control">
-                </div>
-                <!--                 <div class="row" *ngIf="allThemes$ | async as allThemes">
-                    <label for="themes" style="font-weight: bolder;">Temas</label>
-                    <ngx-bootstrap-multiselect name="themes" [(ngModel)]="newModule.themes" [items]="themeDropdownList"
-                        [settings]="dropdownSettings">
-                    </ngx-bootstrap-multiselect>
-                    <button class="btn btn-primary" (click)="toggleAddTheme">Novo tema</button>
-                </div> -->
-                <button class="btn btn-primary m-3" type="submit">Criar</button>
-            </form>
+        <div class="modal-body text-center">
+            <div class="container">
+                <form #addModuleForm="ngForm" (ngSubmit)="addModuleToAcademy()">
+                    <div class="row">
+                        <label style="font-weight: bolder;" for="name">Nome:</label>
+                        <input #nameField="ngModel" [(ngModel)]="newModule.name" name="name" id="name" type="text"
+                            class="form-control">
+                    </div>
+                    <button class="btn btn-success m-3" type="submit">Criar</button>
+                </form>
+            </div>
             <div *ngIf="addingTheme">
                 <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
                     <input type="text" [(ngModel)]="newTheme.name" name="name" required>
-                    <button class="btn btn-primary" type="submit">Adicionar Tema</button>
+                    <button class="btn btn-success" type="submit">Adicionar Tema</button>
                 </form>
             </div>
         </div>
@@ -177,16 +169,17 @@
     <!-- Modal Add Student -->
     <ng-template #templateAddStudent>
         <div class="modal-body text-center">
-            <form #addModuleForm="ngForm" (ngSubmit)="updateAcademy2()">
-                <div class="row">
-                    <!-- *ngIf="studentsDropdown$ | async as studentsDropdown" -->
-                    <label for="students" style="font-weight: bolder;">Alunos</label>
-                    <ngx-bootstrap-multiselect class="m-3" name="students" [(ngModel)]="studentsIds2"
-                        [items]="studentsDropdown" [settings]="studentsDropdownSettings">
-                    </ngx-bootstrap-multiselect>
-                </div>
-                <button class="btn btn-primary m-3" type="submit">Adicionar Aluno</button>
-            </form>
+            <div class="container">
+                <form #addModuleForm="ngForm" (ngSubmit)="updateAcademy2()">
+                    <div class="form-inline">
+                        <label for="students" style="font-weight: bolder;">Alunos</label>
+                        <ngx-bootstrap-multiselect class="m-3" name="students" [(ngModel)]="studentsIds2"
+                            [items]="studentsDropdown" [settings]="studentsDropdownSettings">
+                        </ngx-bootstrap-multiselect>
+                    </div>
+                    <button class="btn btn-success m-3" type="submit">Adicionar Aluno</button>
+                </form>
+            </div>
         </div>
     </ng-template>
 
