@@ -1,26 +1,114 @@
-<div class="container col-md-12" >
-    <div class="row text-center" >
-        <div class="col-md-12 mt-2 text-left"><p style="font-weight: bolder; font-size: larger;">Declarações de Recebimento</p></div>
+<div class="container col-md-12">
+    <!-- <div class="row text-center">
+        <div class="col-md-12 mt-2 text-left">
+            <p style="font-weight: bolder; font-size: larger;">Declarações de Recebimento</p>
+        </div>
     </div>
     <div class="row text-center">
         <div class="col-md-12 mt-2 text-left">
-        <!-- <div class="row"> -->
-        <div *ngFor="let declararion of declarations$ | async">
-            <div class="row" *ngIf="declararion.dateReceived != null && declararion.dateReceived != '' "><fa-icon [icon]="faArrowDown" style="color:red;"></fa-icon>{{declararion.dateSent}} / <fa-icon [icon]="faArrowUp" style="color:green"></fa-icon>{{declararion.dateReceived}}<fa-icon [icon]="faCheckCircle" style="color:green" *ngIf="declararion.verified == true"></fa-icon><fa-icon [icon]="faTimesCircle" style="color:red" *ngIf="declararion.verified == false"></fa-icon></div>
-            <div class="row" *ngIf="declararion.dateReceived == null"><fa-icon [icon]="faArrowDown" style="color:red;"></fa-icon>{{declararion.dateSent}} / <span class="badge badge-danger">NÃO ENVIADO</span></div>
-            <div class="row"><fa-icon [icon]="faArrowDown" style="color:red;"></fa-icon>URL:<a href="declararion.fileUrlSent">{{declararion.fileUrlSent}}</a></div>
-            <!-- <div class="row" *ngIf="declararion.dateReceived != null && declararion.dateReceived != '' "><fa-icon [icon]="faArrowUp" style="color:green"></fa-icon>URL:<a href="declararion.fileUrlReturned">{{declararion.fileUrlReturned}}</a></div> -->
+            <div *ngFor="let declararion of declarations$ | async">
+                <div class="row" *ngIf="declararion.dateReceived != null && declararion.dateReceived != '' ">
+                    <fa-icon [icon]="faArrowDown" style="color:red;"></fa-icon>{{declararion.dateSent}} / <fa-icon
+                        [icon]="faArrowUp" style="color:green"></fa-icon>{{declararion.dateReceived}}<fa-icon
+                        [icon]="faCheckCircle" style="color:green" *ngIf="declararion.verified == true"></fa-icon>
+                    <fa-icon [icon]="faTimesCircle" style="color:red" *ngIf="declararion.verified == false"></fa-icon>
+                </div>
+                <div class="row" *ngIf="declararion.dateReceived == null">
+                    <fa-icon [icon]="faArrowDown" style="color:red;"></fa-icon>{{declararion.dateSent}} / <span
+                        class="badge badge-danger">NÃO ENVIADO</span>
+                </div>
+                <div class="row">
+                    <fa-icon [icon]="faArrowDown" style="color:red;"></fa-icon>URL:<a
+                        href="declararion.fileUrlSent">{{declararion.fileUrlSent}}</a>
+                </div>
+                <div class="row" *ngIf="declararion.verified == true">
+                    <fa-icon [icon]="faArrowUp" style="color:green"></fa-icon>URL:<a
+                        href="declararion.fileUrlReturned">{{declararion.fileUrlReturned}}</a>
+                </div>
 
-            <div class="row" *ngIf="declararion.verified == true">
-            <fa-icon [icon]="faArrowUp" style="color:green"></fa-icon>URL:<a href="declararion.fileUrlReturned">{{declararion.fileUrlReturned}}</a></div>
-            
-            <div class="row" *ngIf="declararion.verified == false">
-                <form [formGroup]="declarationsForm" class="form-inline">
-                    <label style="font-weight: bolder;"><fa-icon [icon]="faArrowUp" style="color:green"></fa-icon>URL:<input type="text" placeholder='{{declararion.fileUrlReturned}}'
-                                class="form-control" id="editabledec" formControlName="editabledec"></label><button type="button" class="btn btn-warning" (click)='send(declararion)'>Send</button>
-                </form>
-                <!-- URL:<a href="declararion.fileUrlReturned">{{declararion.fileUrlReturned}}</a> -->
-            </div><div class="h-divider mb-3"></div>
-        </div></div>
-    <!-- </div> -->
-</div></div>
+                <div class="row" *ngIf="declararion.verified == false">
+                    <form [formGroup]="declarationsForm" class="form-inline">
+                        <label style="font-weight: bolder;">
+                            <fa-icon [icon]="faArrowUp" style="color:green"></fa-icon>URL:<input type="text"
+                                placeholder='{{declararion.fileUrlReturned}}' class="form-control" id="editabledec"
+                                formControlName="editabledec">
+                        </label><button type="button" class="btn btn-warning" (click)='send(declararion)'>Send</button>
+                    </form>
+                </div>
+                <div class="h-divider mb-3"></div>
+            </div>
+        </div>
+    </div> -->
+    <div class="container col-md-12">
+        <div class="inline mt-2 text-left">
+            <span style="font-weight: bolder; font-size: larger;"><i> Declarações de Recebimento </i></span>
+            <!-- <button class="btn btn-borderless" (click)="openModal(templateAddDeclaration)"><fa-icon [icon]="faPlusCircle" style="color:#007bff" size="2x"></fa-icon></button> -->
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12 mt-2 text-left">
+                <table class="table table-sm table-striped container m-3 col-12 text-center">
+                    <thead class="thead-dark">
+                        <th>Declaração Recebida</th>
+                        <th>Data de Recepção</th>
+                        <th>Declaração Enviada</th>
+                        <th>Data Envio</th>
+                        <th>Estado de Verificação</th>
+                        <th>Enviar Declaração</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let declaration of declarations$ | async; let i=index" id={{i}}>
+                            <td><a href="declaration.fileUrlSent">{{declaration.fileUrlSent}}</a></td>
+                            <td>{{declaration.dateSent}}</td>
+                            <td><a *ngIf="declaration.dateReceived !== null && declaration.dateReceived !== ''"
+                                    href="declaration.fileUrlReturned">{{declaration.fileUrlReturned}}</a>
+                                <p *ngIf="declaration.dateReceived === null || declaration.dateReceived === ''">
+                                    <!-- <fa-icon [icon]="faClock" size="2x"></fa-icon> -->
+                                    <span class="badge badge-danger">NÃO ENVIADO</span>
+                                </p>
+                            </td>
+                            <td>
+                                <p *ngIf="declaration.dateReceived === null || declaration.dateReceived === ''">
+                                    <!-- <fa-icon [icon]="faClock" size="2x"></fa-icon> -->
+                                    <span class="badge badge-danger">NÃO ENVIADO</span>
+                                </p>
+                                <p *ngIf="declaration.dateReceived !== null || declaration.dateReceived !== ''">
+                                    {{declaration.dateReceived}}</p>
+                            </td>
+                            <td>
+                                <p *ngIf="declaration.dateReceived === null || declaration.dateReceived === ''">
+                                    <fa-icon [icon]="faClock" size="2x"></fa-icon>
+                                </p>
+                                <p
+                                    *ngIf="declaration.dateReceived !== null && declaration.dateReceived !== '' && declaration.verified===true">
+                                    <fa-icon [icon]="faCheckCircle" style="color:green" size="2x"></fa-icon>
+                                </p>
+                                <p
+                                    *ngIf="declaration.dateReceived !== null && declaration.dateReceived !== '' && declaration.verified===false">
+
+                                    <fa-icon [icon]="faTimesCircle" style="color:red" size="2x"></fa-icon>
+                                </p>
+                            </td>
+                            <td><button *ngIf="declaration.verified===false" class="btn btn-borderless"
+                                    (click)="openModal(templateAddDeclaration,declaration)">
+                                    <fa-icon [icon]="faPlusCircle" size="2x"></fa-icon>
+                                </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <ng-template #templateAddDeclaration>
+        <div class="modal-header">Adicione Declaração</div>
+        <form #addDeclarationForm="ngForm" (ngSubmit)="addDeclaration()">
+            <div class="modal-body container">
+                <label for="fileUrlReturned">Nova declaração:</label>
+                <input type="text" [(ngModel)]="modalDeclaration.fileUrlReturned" name="fileUrlReturned" required>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Adicionar</button>
+
+            </div>
+        </form>
+    </ng-template>
+</div>
