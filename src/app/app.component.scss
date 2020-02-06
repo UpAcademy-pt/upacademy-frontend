@@ -12,15 +12,9 @@
   .maincontent {
     flex-grow: 1;
     overflow: auto;
-    min-height: 2em;
-    height: 100%;
-    overflow-y: scroll;
   }
 
   app-footer {
     flex-shrink: 0;
   }
-
 }
-
-
