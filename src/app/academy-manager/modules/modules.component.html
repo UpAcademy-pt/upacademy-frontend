@@ -1,127 +1,154 @@
-<div *ngIf="module$ | async as module">
-  <div class="ml-4">
-    <form #updateModuleForm="ngForm" (ngSubmit)="updateModule()">
-      <button class= "btn btn-borderless float-right" *ngIf="!inUpdate && !isSuperUser" (click)="toggleUpdateModule()"><fa-icon [icon]="faEdit" size="2x"></fa-icon></button>
-      <button class= "btn btn-borderless float-right mx-2" *ngIf="inUpdate" type="submit"><fa-icon [icon]="faSave" size="2x"></fa-icon></button>
-      <button class= "btn btn-borderless float-right mx-2" *ngIf="inUpdate" (click)="openModal(templateConfirmDeleteModule)"><fa-icon [icon]="faTrashAlt" size="2x"></fa-icon></button>
+<div class="ml-5 mt-3" *ngIf="module$ | async as module">
+  <form #updateModuleForm="ngForm" (ngSubmit)="updateModule()">
+    <div class="py-2">
+      <button class="btn btn-borderless float-right" *ngIf="!inUpdate && !isSuperUser" (click)="toggleUpdateModule()">
+        <fa-icon [icon]="faEdit" size="2x"></fa-icon>
+      </button>
+      <button class="btn btn-borderless float-right mx-2" *ngIf="inUpdate" type="submit">
+        <fa-icon [icon]="faSave" size="2x"></fa-icon>
+      </button>
+      <button class="btn btn-borderless float-right mx-2" *ngIf="inUpdate"
+        (click)="openModal(templateConfirmDeleteModule)">
+        <fa-icon [icon]="faTrashAlt" size="2x"></fa-icon>
+      </button>
       <h3>Módulo</h3>
-      <label style="font-weight: bolder;" for="edName">Nome:</label>
-      <input [readonly]="!inUpdate" #nameField="ngModel" [(ngModel)]="module.name" name="name" id="name" type="text"
-        [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
-        [placeholder]="module.name === null ? '' : module.name">
-      <div>
-        <b>Temas</b>
-        <div *ngIf="!inUpdate">
-          <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
-          <ul *ngIf="module?.themes.length > 0">
-            <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
-          </ul>
-        </div>
-        <div *ngIf="inUpdate" class="row">
-          <div class="row ml-3" *ngIf="allThemes$ | async as allThemes">
-            <ngx-bootstrap-multiselect name="themes" #themesField="ngModel" [(ngModel)]="module.themes"
-              [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
-            <button class="btn btn-borderless" (click)="openModal(templateAddTheme)"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <b>Formadores</b>
-        <div *ngIf="!inUpdate">
-          <p *ngIf="module?.teacherIds.length === 0"><i>Sem Formadores</i></p>
-          <ul *ngIf="module?.teacherIds.length > 0">
-            <li *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button class="btn btn-primary"
-                (click)="showProfile(teacher['account'].id)">Perfil</button></li>
-          </ul>
-        </div>
-        <div *ngIf="inUpdate" class="row">
-          <div class="form-inline ml-3">
-            <label for="moduleThemes">Temas do Módulo:</label>
-            <ngx-select [items]="moduleThemeDropdownList" name="moduleThemes" #moduleThemes = "ngModel" [(ngModel)] = "filterTheme" placeholder="Todos os Temas do Módulo" (ngModelChange)="filterTeachers()">
-            </ngx-select>
-              <label for="teachers">Formadores Por Tema:</label>
-            <ngx-bootstrap-multiselect name="teachers" #teachers = "ngModel" [(ngModel)]="chosenTeachers" [items]="filteredTeachers"
-              [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <div><b>Campos de Avaliação: </b> <ul class="list-inline">
-      <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
-        {{evaluationSubject}} <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
-          <span aria-hidden="true"> ×</span></button></li></ul></div>
-    <div class="float-left mb-4 ml-3">
-      <button type="button" class="btn btn-primary btn-md mt-4 float-left"
-        (click)="openModal(templateAddEvaluation)">Novo Campo de Avaliação</button>
     </div>
 
-    <!-- Table -->
-    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;"
-      *ngIf="evaluations$ | async as evaluation">
-
-      <thead class="thead-dark">
-        <tr>
-          <th *ngFor="let column of tableHeaders$ | async">{{column}}</th>
-          <th *ngIf="isSuperUser">Avaliar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of tableRows$ | async; let i = index;" id="{{i}}">
-          <td *ngFor="let column of tableHeaders$ | async">{{row[column]}}</td>
-          <td *ngIf="isSuperUser"><button class="btn btn-borderless" (click)="openModalUpdateEvaluation(templateEditEvaluation, row['Evaluation'], i)">
-            <fa-icon [icon]="faClipboardList" size="2x"></fa-icon></button></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="row">
-      <button (click)="returnToAcademy()" class="btn btn-secondary mx-auto">Voltar</button>
+    <label style="font-weight: bolder;" for="edName">Nome:</label>
+    <input [readonly]="!inUpdate" #nameField="ngModel" [(ngModel)]="module.name" name="name" id="name" type="text"
+      [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
+      [placeholder]="module.name === null ? '' : module.name">
+    <div>
+      <b>Temas</b>
+      <div *ngIf="!inUpdate">
+        <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
+        <ul *ngIf="module?.themes.length > 0">
+          <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
+        </ul>
+      </div>
+      <div *ngIf="inUpdate" class="row">
+        <div class="row ml-3" *ngIf="allThemes$ | async as allThemes">
+          <ngx-bootstrap-multiselect name="themes" #themesField="ngModel" [(ngModel)]="module.themes"
+            [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+          <button class="btn btn-borderless" (click)="openModal(templateAddTheme)">
+            <fa-icon [icon]="faPlusCircle" size="2x"></fa-icon>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Modal Add Evaluation Subject-->
-    <ng-template #templateAddEvaluation>
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Nova Avaliação</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-          <span aria-hidden="true">&times;</span>
+    <div>
+      <b>Formadores</b>
+      <div *ngIf="!inUpdate">
+        <p *ngIf="module?.teacherIds.length === 0"><i>Sem Formadores</i></p>
+        <ul *ngIf="module?.teacherIds.length > 0">
+          <li *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button class="btn btn-primary"
+              (click)="showProfile(teacher['account'].id)">Perfil</button></li>
+        </ul>
+      </div>
+      <div *ngIf="inUpdate" class="row">
+        <div class="form-inline ml-3">
+          <label for="moduleThemes">Temas do Módulo:</label>
+          <ngx-select [items]="moduleThemeDropdownList" name="moduleThemes" #moduleThemes="ngModel"
+            [(ngModel)]="filterTheme" placeholder="Todos os Temas do Módulo" (ngModelChange)="filterTeachers()">
+          </ngx-select>
+          <label for="teachers">Formadores Por Tema:</label>
+          <ngx-bootstrap-multiselect name="teachers" #teachers="ngModel" [(ngModel)]="chosenTeachers"
+            [items]="filteredTeachers" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div><b>Campos de Avaliação: </b>
+    <ul class="list-inline">
+      <li class="list-inline-item btn bg-secondary text-white"
+        *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
+        {{evaluationSubject}} <button type="button" class="btn btn-secondary close"
+          (click)="deleteEvaluationSubject(i, evaluationSubject)">
+          <span aria-hidden="true"> ×</span></button></li>
+    </ul>
+  </div>
+  <div class="float-left mb-4">
+    <button type="button" class="btn btn-primary btn-md mt-4 float-left" (click)="openModal(templateAddEvaluation)">Novo
+      Campo de Avaliação</button>
+  </div>
+
+  <!-- Table -->
+  <table class="table table-sm table-striped container mt-3 col-12 text-center"
+    *ngIf="evaluations$ | async as evaluation">
+
+    <thead class="thead-dark">
+      <tr>
+        <th *ngFor="let column of tableHeaders$ | async">{{column}}</th>
+        <th *ngIf="isSuperUser">Avaliar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableRows$ | async; let i = index;" id="{{i}}">
+        <td *ngFor="let column of tableHeaders$ | async">{{row[column]}}</td>
+        <td *ngIf="isSuperUser"><button class="btn btn-borderless"
+            (click)="openModalUpdateEvaluation(templateEditEvaluation, row['Evaluation'], i)">
+            <fa-icon [icon]="faClipboardList" size="2x"></fa-icon>
+          </button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <button (click)="returnToAcademy()" class="btn btn-secondary mx-auto">Voltar</button>
+  </div>
+
+  <!-- Modal Add Evaluation Subject-->
+  <ng-template #templateAddEvaluation>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Nova Avaliação</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body container">
+      Escolha os temas para avaliação deste módulo:
+      <div class="form-group">
+        <div class="form-inline">
+          <label for="evaluationFields" class="col-sm-2 col-form-label">Tema:</label>
+          <input #evaluationSubjectField="ngModel" [(ngModel)]="evaluationField" name="evaluationSubjectField"
+            id="evaluationSubjectField" type="text" class="form-control" placeholder="Digite o tema">
+          <button type="button" class="btn btn-borderless mx-auto" (click)="addEvaluationField()">
+            <fa-icon [icon]="faPlusCircle" size="2x"></fa-icon>
+          </button>
+        </div>
+        <div *ngIf="module?.evaluationSubject !== null">
+          <ul class="list-inline">
+            <li class="list-inline-item btn bg-secondary text-white"
+              *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>{{evaluationSubject}}
+              <button type="button" class="btn btn-secondary close"
+                (click)="deleteEvaluationSubject(i, evaluationSubject)">
+                <span aria-hidden="true"> ×</span></button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <button type="button" class="btn btn-borderless mx-auto" (click)="updateEvaluationSubjects()">
+          <fa-icon [icon]="faSave" size="2x"></fa-icon>
         </button>
       </div>
+    </div>
+  </ng-template>
+
+  <!-- Modal Add Theme -->
+  <ng-template #templateAddTheme>
+    <div class="modal-header">Adicionar Tema</div>
+    <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
       <div class="modal-body container">
-        Escolha os temas para avaliação deste módulo:
-        <div class="form-group">
-          <div class="form-inline">
-            <label for="evaluationFields" class="col-sm-2 col-form-label">Tema:</label>
-              <input #evaluationSubjectField="ngModel" [(ngModel)]="evaluationField" name="evaluationSubjectField"
-                id="evaluationSubjectField" type="text" class="form-control" placeholder="Digite o tema">
-            <button type="button" class="btn btn-borderless mx-auto" (click)="addEvaluationField()"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
-          </div>
-          <div *ngIf="module?.evaluationSubject !== null"><ul class="list-inline">
-            <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>{{evaluationSubject}}
-              <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
-                <span aria-hidden="true"> ×</span></button></li></ul></div>
-        </div>
-        <div class="row">
-          <button type="button" class="btn btn-borderless mx-auto" (click)="updateEvaluationSubjects()"><fa-icon [icon]="faSave" size="2x"></fa-icon></button>
-        </div>
+        <input type="text" #themeNameField="ngModel" [(ngModel)]="newTheme.name" name="name" required>
       </div>
-    </ng-template>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Adicionar</button>
 
-    <!-- Modal Add Theme -->
-    <ng-template #templateAddTheme>
-      <div class="modal-header">Adicionar Tema</div>
-      <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
-        <div class="modal-body container">
-          <input type="text" #themeNameField="ngModel" [(ngModel)]="newTheme.name" name="name" required>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit">Adicionar</button>
-
-        </div>
-      </form>
-    </ng-template>
-  </div>
+      </div>
+    </form>
+  </ng-template>
 </div>
 
 <!-- Modal Delete Module -->
