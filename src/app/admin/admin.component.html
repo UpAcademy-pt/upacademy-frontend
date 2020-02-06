@@ -1,3 +1,4 @@
+<div style="height: 80px;"></div>
 <div class="container-flat row mx-auto w-75 my-2">
   <div class="container mb-4">
     <button type="button" class="btn-borderless btn-edit" (click)="openModalAddUser(templateAddUser)">
@@ -5,115 +6,115 @@
     </button>
   </div>
 
-    <!-- Filter Fields -->
-    <form class="col-12 mx-auto">
-      <div class="form-row">
-        <div class="col-4">
-          <input [(ngModel)]="nameField" name="nameFiled" type="text" class="form-control" placeholder="Nome">
-        </div>
-        <div class="col-4">
-          <input [(ngModel)]="emailField" name="emailField" type="text" class="form-control" placeholder="Email">
-        </div>
-        <ngx-select [items]="roles" [(ngModel)]="roleField" name="roleField" defaultValue={{roles[0].id}} class="col-3"></ngx-select>
-        <button (click)="getUsers()" type="button" class="btn-borderless col-1"><fa-icon [icon]="faSearch" size="2x"></fa-icon></button>
+  <!-- Filter Fields -->
+  <form class="col-12 mx-auto">
+    <div class="form-row">
+      <div class="col-4">
+        <input [(ngModel)]="nameField" name="nameFiled" type="text" class="form-control" placeholder="Nome">
       </div>
-      <ngx-select [items]="rolesWithAll" [(ngModel)]="roleField" name="roleField" defaultValue={{rolesWithAll[0].id}} class="col-md-3"></ngx-select>
-      <button (click)="getUsers()" type="button" class="btn-borderless btn-edit col-1"><fa-icon [icon]="faSearch" size="2x"></fa-icon></button>
+      <div class="col-4">
+        <input [(ngModel)]="emailField" name="emailField" type="text" class="form-control" placeholder="Email">
+      </div>
+      <ngx-select [items]="rolesWithAll" [(ngModel)]="roleField" name="roleField" defaultValue={{rolesWithAll[0].id}}
+        class="col-md-3"></ngx-select>
+      <button (click)="getUsers()" type="button" class="btn-borderless btn-edit col-1">
+        <fa-icon [icon]="faSearch" size="2x"></fa-icon>
+      </button>
     </div>
   </form>
 
   <!-- Table -->
-  <table *ngIf = "showTable" class="table table-responsive-md table-hover table-striped container m-3 col-12 text-center">
+  <table *ngIf="showTable" class="table table-responsive-md table-hover table-striped container m-3 col-12 text-center">
     <thead class="thead-dark">
-    <tr>
-      <th scope="col"></th>
-      <th scope="col-5">Nome</th>
-      <th scope="col-3">Email</th>
-      <th scope="col-2">Role</th>
-      <th scope="col-1">Editar</th>
-      <th scope="col-1">Eliminar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor = "let row of users; let i = index;" id="{{i}}">
-      <th scope="row"></th>
-      <td *ngFor = "let column of headers; let j = index;">
-        <span *ngIf="j <= 1">{{row[column]}}</span>
-        <span *ngIf="row[column] == 'ADMIN'">Admin</span>
-        <span *ngIf="row[column] == 'USER'">Formando</span>
-        <span *ngIf="row[column] == 'SUPERUSER'">Tutor</span>
-      </td>
-      <td>
-        <button (click)="openModalUpdateUser(templateUpdateUser, i)" type="button" class="btn-borderless btn-edit">
-          <fa-icon [icon]="faEdit" size="lg"></fa-icon>
-        </button>
-      </td>
-      <td>
-        <button (click)="openModalConfirmDeleteUser(templateConfirmDeleteUser, i)" type="button" class="btn-borderless btn-delete">
-          <fa-icon [icon]="faTrashAlt" size="lg"></fa-icon>
-        </button>
-      </td>
-    </tr>
-  </tbody>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col-5">Nome</th>
+        <th scope="col-3">Email</th>
+        <th scope="col-2">Role</th>
+        <th scope="col-1">Editar</th>
+        <th scope="col-1">Eliminar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of users; let i = index;" id="{{i}}">
+        <th scope="row"></th>
+        <td *ngFor="let column of headers; let j = index;">
+          <span *ngIf="j <= 1">{{row[column]}}</span>
+          <span *ngIf="row[column] == 'ADMIN'">Admin</span>
+          <span *ngIf="row[column] == 'USER'">Formando</span>
+          <span *ngIf="row[column] == 'SUPERUSER'">Tutor</span>
+        </td>
+        <td>
+          <button (click)="openModalUpdateUser(templateUpdateUser, i)" type="button" class="btn-borderless btn-edit">
+            <fa-icon [icon]="faEdit" size="lg"></fa-icon>
+          </button>
+        </td>
+        <td>
+          <button (click)="openModalConfirmDeleteUser(templateConfirmDeleteUser, i)" type="button"
+            class="btn-borderless btn-delete">
+            <fa-icon [icon]="faTrashAlt" size="lg"></fa-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>
 
+<!-- Modal Confirm Delete User -->
+<ng-template #templateConfirmDeleteUser>
+  <div class="modal-body text-center">
+    <p>Tem a certeza que deseja remover o utilizador?</p>
+    <button type="button" class="btn btn-danger" (click)="deleteUser()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Não</button>
   </div>
+</ng-template>
 
-  <!-- Modal Confirm Delete User -->
-  <ng-template #templateConfirmDeleteUser>
-    <div class="modal-body text-center">
-      <p>Tem a certeza que deseja remover o utilizador?</p>
-      <button type="button" class="btn btn-danger" (click)="deleteUser()" >Sim</button>
-      <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Não</button>
-    </div>
-  </ng-template>
-
-  <!-- Modal Add User -->
-  <ng-template #templateAddUser>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Adicionar Utilizador</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body container">
-      Preencha os dados abaixo:
-      <form class="mg-5 mt-3 container" #addUserForm="ngForm" (ngSubmit) = "createUser()">
-        <div class="form-group row">
-          <label for="name" class="col-sm-2 col-form-label">Nome:</label>
-          <div class="col-sm-10">
-            <input #nameField="ngModel" [(ngModel)]="userToCreate.name" name="name" id="name" type="text" required
+<!-- Modal Add User -->
+<ng-template #templateAddUser>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Adicionar Utilizador</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body container">
+    Preencha os dados abaixo:
+    <form class="mg-5 mt-3 container" #addUserForm="ngForm" (ngSubmit)="createUser()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Nome:</label>
+        <div class="col-sm-10">
+          <input #nameField="ngModel" [(ngModel)]="userToCreate.name" name="name" id="name" type="text" required
             minlength="2" placeholder="Digite o nome aqui" class="form-control" required>
-            <small class="text-danger" [hidden] = "nameField.valid || !nameField.touched">Digite o Nome!</small>
-          </div>
+          <small class="text-danger" [hidden]="nameField.valid || !nameField.touched">Digite o Nome!</small>
         </div>
-        <div class="form-group row">
-          <label for="email" class="col-sm-2 col-form-label">Email:</label>
-          <div class="col-sm-10">
-            <input email #emailField="ngModel" [(ngModel)]="userToCreate.email" id="email" name="email" type="email"
+      </div>
+      <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+        <div class="col-sm-10">
+          <input email #emailField="ngModel" [(ngModel)]="userToCreate.email" id="email" name="email" type="email"
             class="form-control" placeholder="Digite o Email aqui" required>
-            <small class="text-danger" [hidden] = "emailField.valid || !emailField.touched">Email inválido!</small>
-          </div>
+          <small class="text-danger" [hidden]="emailField.valid || !emailField.touched">Email inválido!</small>
         </div>
-        <div class="form-group row">
-          <label for="role" class="col-sm-2 col-form-label">Role:</label>
-          <div class="col-sm-10">
-            <ngx-select [items]="roles" [(ngModel)]="userToCreate.role" name="role" defaultValue={{roles[0].id}}></ngx-select>
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="role" class="col-sm-2 col-form-label">Role:</label>
+        <div class="col-sm-10">
+          <ngx-select [items]="roles" [(ngModel)]="userToCreate.role" name="role" defaultValue={{roles[0].id}}>
+          </ngx-select>
         </div>
-        <div class="row">
-          <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-primary mx-auto">Adicionar</button>
-        </div>
-      </form>
-    </div>
-  </ng-template>
+      </div>
+      <div class="row">
+        <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-primary mx-auto">Adicionar</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
 
-  <!-- Modal Update User -->
-  <ng-template #templateUpdateUser>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Atualizar Utilizador</h4>
-      <!-- <button *ngIf="resetPasswordConfirm" type="button" class="btn btn-danger btn-sm ml-auto col-4" aria-label="Editar" (click)="resetPasswordConfirm = !resetPasswordConfirm">Reset Password</button>
+<!-- Modal Update User -->
+<ng-template #templateUpdateUser>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Atualizar Utilizador</h4>
+    <!-- <button *ngIf="resetPasswordConfirm" type="button" class="btn btn-danger btn-sm ml-auto col-4" aria-label="Editar" (click)="resetPasswordConfirm = !resetPasswordConfirm">Reset Password</button>
       <div *ngIf="!resetPasswordConfirm" class="ml-auto row">
         <button class="btn btn-danger col-sm-6 btn-sm" (click)="resetPassword()">Comfirmar</button>
         <button class="btn btn-secondary col-sm-5 btn-sm ml-1" (click)="resetPasswordConfirm = !resetPasswordConfirm">Cancelar</button>
@@ -121,37 +122,36 @@
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button> -->
-    </div>
-    <div class="modal-body container">
-      Atualize os dados abaixo:
-      <form class="mg-5 mt-3 container" #updateUserForm="ngForm" (ngSubmit) = "updateUser()">
-        <div class="form-group row">
-          <label for="name" class="col-sm-2 col-form-label">Nome:</label>
-          <div class="col-sm-10">
-            <input #nameField="ngModel" [(ngModel)]="userToUpdate.name" name="name" id="name" type="text"
+  </div>
+  <div class="modal-body container">
+    Atualize os dados abaixo:
+    <form class="mg-5 mt-3 container" #updateUserForm="ngForm" (ngSubmit)="updateUser()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Nome:</label>
+        <div class="col-sm-10">
+          <input #nameField="ngModel" [(ngModel)]="userToUpdate.name" name="name" id="name" type="text"
             class="form-control" required minlength="2" placeholder="Digite o nome aqui" required>
-            <small class="text-danger" [hidden] = "nameField.valid || !nameField.touched">Digite o Nome!</small>
-          </div>
+          <small class="text-danger" [hidden]="nameField.valid || !nameField.touched">Digite o Nome!</small>
         </div>
-        <div class="form-group row">
-          <label for="email" class="col-sm-2 col-form-label">Email:</label>
-          <div class="col-sm-10">
-            <input email #emailField="ngModel" [(ngModel)]="userToUpdate.email" id="email" name="email" type="email"
+      </div>
+      <div class="form-group row">
+        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+        <div class="col-sm-10">
+          <input email #emailField="ngModel" [(ngModel)]="userToUpdate.email" id="email" name="email" type="email"
             class="form-control" placeholder="Digite o Email aqui" required>
-            <small class="text-danger" [hidden] = "emailField.valid || !emailField.touched">Email inválido!</small>
-          </div>
+          <small class="text-danger" [hidden]="emailField.valid || !emailField.touched">Email inválido!</small>
         </div>
-        <div class="form-group row">
-          <label for="role" class="col-sm-2 col-form-label">Role:</label>
-          <div class="col-sm-10">
-            <ngx-select [items]="roles" [(ngModel)]="userToUpdate.role" name="role" defaultValue={{roles[0].id}}></ngx-select>
-          </div>
+      </div>
+      <div class="form-group row">
+        <label for="role" class="col-sm-2 col-form-label">Role:</label>
+        <div class="col-sm-10">
+          <ngx-select [items]="roles" [(ngModel)]="userToUpdate.role" name="role" defaultValue={{roles[0].id}}>
+          </ngx-select>
         </div>
-        <div class="row">
-          <button type="submit" [disabled]="!updateUserForm.valid" class="btn btn-primary mx-auto">Atualizar</button>
-        </div>
-      </form>
-    </div>
-  </ng-template>
-
-
+      </div>
+      <div class="row">
+        <button type="submit" [disabled]="!updateUserForm.valid" class="btn btn-primary mx-auto">Atualizar</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
