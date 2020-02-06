@@ -9,59 +9,70 @@
             <h3>Academia</h3>
         </div>
 
-        <div class="row">
-            <div class="col-6">
-                <label style="font-weight: bolder;" for="edName">Nome da edição:</label>
+        <div class="form-group row">
+            <div class="col-6 form-group float-center" style="display: flex">
+                <label style="font-weight: bolder;" for="edName">Nome da edição: </label>
                 <input [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName" name="edName"
                     id="edName" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.edName === null ? '' : academy.edName">
-                <div class="h-divider"></div>
-                <p *ngIf="!inUpdate"><b>Status: </b><span *ngIf="academy.status=='ACTIVE'">Activa</span>
+            </div>
+            <div class="col-6">
+                <p *ngIf="inUpdate===false"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
+                <div [hidden]="inUpdate===false" [formGroup]="datesForm">
+                    <label for="datesArray" class="col-form-label" style="font-weight: bolder;">Datas:</label>
+                    <input type="text" class="form-control" name="datesArray" #datesArray formControlName="dateRange"
+                        #daterangepicker="bsDaterangepicker" bsDaterangepicker
+                        placeholder="Escolha as datas de duração da Academia" placement="bottom"
+                        [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }"
+                        (change)="getDates()">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-6">
+                <p *ngIf="!inUpdate"><b>Estado: </b><span *ngIf="academy.status=='ACTIVE'">Activa</span>
                     <span *ngIf="academy.status=='NOTACTIVE'">Inactiva</span></p>
                 <div *ngIf="inUpdate">
-                    <label style="font-weight: bolder;" for="status">Status:</label>
+                    <label style="font-weight: bolder;" for="status">Estado: </label>
                     <select name="satus" id="status" #statusField="ngModel" [(ngModel)]="academy.status" de>
                         <option value="ACTIVE">Activa</option>
                         <option value="NOTACTIVE">Inactiva</option>
                     </select>
                 </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-6">
                 <label style="font-weight: bolder;" for="academyType">Tipo de Academia:</label>
                 <input [readonly]="!inUpdate" #academyTypeField="ngModel" [(ngModel)]="academy.academyType"
                     id="academyType" name="academyType" type="text"
                     [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.academyType === null ? '' : academy.academyType">
-                <div class="h-divider"></div>
+            </div>
+            <div class="col-6">
                 <label style="font-weight: bolder;" for="client">Cliente:</label>
                 <input [readonly]="!inUpdate" #clientField="ngModel" [(ngModel)]="academy.client" name="client"
                     id="client" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.client === null ? '' : academy.client">
-                <div class="h-divider"></div>
             </div>
+        </div>
+
+        <div class="form-group row">
             <div class="col-6">
-                <div class="form-group row">
-                    <p *ngIf="inUpdate===false"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
-                    <div [hidden]="inUpdate===false" [formGroup]="datesForm">
-                        <label for="datesArray" class="col-form-label" style="font-weight: bolder;">Datas:</label>
-                        <input type="text" class="form-control" name="datesArray" #datesArray
-                            formControlName="dateRange" #daterangepicker="bsDaterangepicker" bsDaterangepicker
-                            placeholder="Escolha as datas de duração da Academia" placement="bottom"
-                            [bsConfig]="{ rangeInputFormat : 'YYYY-MM-DD', dateInputFormat: 'YYYY-MM-DD' }"
-                            (change)="getDates()">
-                    </div>
-                </div>
-                <div class="h-divider"></div>
                 <label style="font-weight: bolder;" for="warning">Avisos:</label>
                 <textarea [readonly]="!inUpdate" #warningField="ngModel" [(ngModel)]="academy.warning" id="warning"
                     name="warning" type="text"
                     [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.warning === null ? '' : academy.warning"></textarea>
-                <div class="h-divider"></div>
+            </div>
+            <div class="col-6">
                 <label style="font-weight: bolder;" for="usefulInfo">Informações úteis:</label>
                 <textarea [readonly]="!inUpdate" #usefulInfoField="ngModel" [(ngModel)]="academy.usefulInfo"
                     id="ausefulInfo" name="ausefulInfo" type="text"
                     [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.usefulInfo === null ? '' : academy.usefulInfo"></textarea>
-                <div class="h-divider"></div>
             </div>
         </div>
 
@@ -165,8 +176,8 @@
                 <div class="row">
                     <!-- *ngIf="studentsDropdown$ | async as studentsDropdown" -->
                     <label for="students" style="font-weight: bolder;">Alunos</label>
-                    <ngx-bootstrap-multiselect class="m-3" name="students" [(ngModel)]="studentsIds2" [items]="studentsDropdown"
-                        [settings]="studentsDropdownSettings">
+                    <ngx-bootstrap-multiselect class="m-3" name="students" [(ngModel)]="studentsIds2"
+                        [items]="studentsDropdown" [settings]="studentsDropdownSettings">
                     </ngx-bootstrap-multiselect>
                 </div>
                 <button class="btn btn-primary m-3" type="submit">Adicionar Aluno</button>
