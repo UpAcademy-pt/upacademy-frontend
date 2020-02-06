@@ -12,31 +12,29 @@
         <fa-icon [icon]="faTrashAlt" size="2x"></fa-icon>
       </button>
       <h3>Módulo</h3>
-    </div>
-
-    <label style="font-weight: bolder;" for="edName">Nome:</label>
-    <input [readonly]="!inUpdate" #nameField="ngModel" [(ngModel)]="module.name" name="name" id="name" type="text"
-      [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
-      [placeholder]="module.name === null ? '' : module.name">
-    <div>
-      <b>Temas</b>
-      <div *ngIf="!inUpdate">
-        <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
-        <ul *ngIf="module?.themes.length > 0">
-          <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
-        </ul>
-      </div>
-      <div *ngIf="inUpdate" class="row">
-        <div class="row ml-3" *ngIf="allThemes$ | async as allThemes">
-          <ngx-bootstrap-multiselect name="themes" #themesField="ngModel" [(ngModel)]="module.themes"
-            [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
-          <button class="btn btn-borderless" (click)="openModal(templateAddTheme)">
-            <fa-icon [icon]="faPlusCircle" size="2x"></fa-icon>
-          </button>
+      <label style="font-weight: bolder;" for="edName">Nome:</label>
+      <input [readonly]="!inUpdate" #nameField="ngModel" [(ngModel)]="module.name" name="name" id="name" type="text"
+        [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
+        [placeholder]="module.name === null ? '' : module.name">
+      <div>
+        <b>Temas</b>
+        <div *ngIf="!inUpdate">
+          <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
+          <ul *ngIf="module?.themes.length > 0" class="list-unstyled">
+            <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
+          </ul>
+        </div>
+        <div *ngIf="inUpdate" class="row">
+          <div class="row ml-3" *ngIf="allThemes$ | async as allThemes">
+            <ngx-bootstrap-multiselect name="themes" #themesField="ngModel" [(ngModel)]="module.themes"
+              [items]="themeDropdownList" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+            <button class="btn btn-borderless" (click)="openModal(templateAddTheme)"><fa-icon [icon]="faPlusCircle" size="2x"></fa-icon></button>
+          </div>
         </div>
       </div>
     </div>
 
+<<<<<<< HEAD
     <div>
       <b>Formadores</b>
       <div *ngIf="!inUpdate">
@@ -57,6 +55,38 @@
             [items]="filteredTeachers" [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
         </div>
       </div>
+=======
+      <div>
+        <b>Formadores</b>
+        <div *ngIf="!inUpdate">
+          <p *ngIf="module?.teacherIds.length === 0"><i>Sem Formadores</i></p>
+          <ul *ngIf="module?.teacherIds.length > 0" class="list-inline">
+            <li class="list-inline-item" *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button type="button" class="btn btn-secondary close" (click)="deleteTeacher(teacher['account'])">
+              <span aria-hidden="true">  ×</span></button></li><button class="btn btn-primary"
+              (click)="showProfile(teacher['account'].id)">Perfil</button><br>
+          </ul>
+        </div>
+        <div *ngIf="inUpdate" class="row">
+          <div class="form-inline ml-3">
+            <label for="moduleThemes">Temas do Módulo:</label>
+            <ngx-select [items]="moduleThemeDropdownList" name="moduleThemes" #moduleThemes = "ngModel" [(ngModel)] = "filterTheme" placeholder="Todos os Temas do Módulo" (ngModelChange)="filterTeachers()">
+            </ngx-select>
+              <label for="teachers">Formadores Por Tema:</label>
+            <ngx-bootstrap-multiselect name="teachers" #teachers = "ngModel" [(ngModel)]="chosenTeachers" [items]="filteredTeachers"
+              [settings]="dropdownSettings"></ngx-bootstrap-multiselect>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div><b>Campos de Avaliação: </b> <ul class="list-inline">
+      <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
+        {{evaluationSubject}}  <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
+          <span aria-hidden="true">  ×</span></button></li></ul></div>
+    <div class="float-left mb-4 ml-3">
+      <button type="button" class="btn btn-primary btn-md mt-4 float-left"
+        (click)="openModal(templateAddEvaluation)">Novo Campo de Avaliação</button>
+>>>>>>> bf0da118158e9be2eee6771540fc67e0fd824faa
     </div>
   </form>
 

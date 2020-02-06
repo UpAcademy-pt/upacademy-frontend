@@ -9,15 +9,30 @@
             <h3>Academia</h3>
         </div>
 
-        <div class="form-group row">
-            <div class="col-6 form-group float-center" style="display: flex">
-                <label style="font-weight: bolder;" for="edName">Nome da edição: </label>
-                <input [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName" name="edName"
+        <div class="form-group row" style="margin-bottom: 0;">
+            <div class="col-6 d-flex align-items-start float-left" style="display: flex">
+                <label class="col-4 d-flex align-items-start float-left" style="font-weight: bolder; padding-left: 0px;" for="edName">Nome da edição: </label>
+                <div class="col-8 d-flex align-items-start float-left" style="padding-top: 0px;">
+                <input style="padding-top: 0px;" [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName" name="edName"
                     id="edName" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.edName === null ? '' : academy.edName">
+                </div>
             </div>
-            <div class="col-6">
-                <p *ngIf="inUpdate===false"><b>Datas: </b>De {{academy.startDate}} a {{academy.endDate}}</p>
+
+            <div class="col-2 text-left">
+                <p *ngIf="!inUpdate"><b>Estado: </b><span *ngIf="academy.status=='ACTIVE'">Activa</span>
+                    <span *ngIf="academy.status=='NOTACTIVE'">Inactiva</span></p>
+                <div *ngIf="inUpdate">
+                    <label style="font-weight: bolder;" for="status">Estado: </label>
+                    <select name="satus" id="status" #statusField="ngModel" [(ngModel)]="academy.status" de>
+                        <option value="ACTIVE">Activa</option>
+                        <option value="NOTACTIVE">Inactiva</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-4 form-group">
+                <p *ngIf="inUpdate===false" class="col-12" style="margin-bottom: 0px;"><b>Datas: </b>   De {{academy.startDate}} a {{academy.endDate}}</p>
                 <div [hidden]="inUpdate===false" [formGroup]="datesForm">
                     <label for="datesArray" class="col-form-label" style="font-weight: bolder;">Datas:</label>
                     <input type="text" class="form-control" name="datesArray" #datesArray formControlName="dateRange"
@@ -30,17 +45,7 @@
         </div>
 
         <div class="form-group row">
-            <div class="col-6">
-                <p *ngIf="!inUpdate"><b>Estado: </b><span *ngIf="academy.status=='ACTIVE'">Activa</span>
-                    <span *ngIf="academy.status=='NOTACTIVE'">Inactiva</span></p>
-                <div *ngIf="inUpdate">
-                    <label style="font-weight: bolder;" for="status">Estado: </label>
-                    <select name="satus" id="status" #statusField="ngModel" [(ngModel)]="academy.status" de>
-                        <option value="ACTIVE">Activa</option>
-                        <option value="NOTACTIVE">Inactiva</option>
-                    </select>
-                </div>
-            </div>
+            
         </div>
 
         <div class="form-group row">
@@ -59,7 +64,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row" style="margin-bottom: 0;">
             <div class="col-6">
                 <label style="font-weight: bolder;" for="warning">Avisos:</label>
                 <textarea [readonly]="!inUpdate" #warningField="ngModel" [(ngModel)]="academy.warning" id="warning"
