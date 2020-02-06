@@ -1,4 +1,4 @@
-<body style="background-color: rgb(101, 159, 207) " class="vh-100 d-flex" >
+<body style="background-color: rgba(101, 101, 104, 0.58);" class="vh-100 d-flex" >
 
   <form #updateProfileForm="ngForm" (ngSubmit)="login()" id="containerMain" class="container-fluid m-auto text-center"
   style="background-color: white; width: 500px; height: 500px; align-content: center; border-radius: 25px">
@@ -20,7 +20,7 @@
       <small class="text-danger mx-auto">Email ou password errado, tente novamente</small>
     </div>
     
-    <button [disabled]="!updateProfileForm.valid" id="LogInButton" class="btn btn-primary btn-md mt-4" type="submit"> LOG IN </button>
+    <button [disabled]="!updateProfileForm.valid" id="LogInButton" class="btn btn-primary btn-lg mt-4" type="submit" style="background-color: #e18a39; border-color: #e18a39;"> LOG IN </button>
 
 </form>
 
