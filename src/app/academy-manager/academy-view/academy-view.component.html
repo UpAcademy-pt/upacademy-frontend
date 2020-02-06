@@ -1,19 +1,25 @@
 <div class="ml-5 mt-3" *ngIf="academy$ | async as academy">
     <form #updateAcademyForm="ngForm" (ngSubmit)="updateAcademy(datesArray.value)">
         <div class="py-2">
-            <button class="btn btn-primary float-right" *ngIf="inUpdate===false"
-                (click)="toggleUpdateAcademy()">Editar</button>
-            <button *ngIf="inUpdate===true" type="submit" class="btn btn-primary float-right mx-2">Atualizar</button>
-            <button class="btn btn-danger float-right mx-2" *ngIf="inUpdate===true"
-                (click)="openModalConfirmDelete(templateConfirmDeleteAcademy)">Remover Academia</button>
+            <button class="btn btn-borderless float-right" *ngIf="inUpdate===false" (click)="toggleUpdateAcademy()">
+                <fa-icon [icon]="faEdit" size="2x"></fa-icon>
+            </button>
+            <button *ngIf="inUpdate===true" type="submit" class="btn btn-borderless float-right mx-2">
+                <fa-icon [icon]="faSave" size="2x"></fa-icon>
+            </button>
+            <button class="btn btn-borderless float-right mx-2" *ngIf="inUpdate===true"
+                (click)="openModalConfirmDelete(templateConfirmDeleteAcademy)">
+                <fa-icon [icon]="faTrashAlt" size="2x"></fa-icon>
+            </button>
             <h3>Academia</h3>
         </div>
 
         <div class="form-group row">
             <div class="col-3 form-inline">
                 <label style="font-weight: bolder;" for="edName">Nome da edição: </label>
-                <input class="w-50 ml-1" [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName" name="edName"
-                    id="edName" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
+                <input class="w-50 ml-1" [readonly]="!inUpdate" #edNameField="ngModel" [(ngModel)]="academy.edName"
+                    name="edName" id="edName" type="text"
+                    [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.edName === null ? '' : academy.edName">
             </div>
 
@@ -48,15 +54,16 @@
         <div class="form-group row">
             <div class="col-6 form-inline">
                 <label style="font-weight: bolder;" for="academyType">Tipo de Academia:</label>
-                <input class="w-50 ml-1" [readonly]="!inUpdate" #academyTypeField="ngModel" [(ngModel)]="academy.academyType"
-                    id="academyType" name="academyType" type="text"
+                <input class="w-50 ml-1" [readonly]="!inUpdate" #academyTypeField="ngModel"
+                    [(ngModel)]="academy.academyType" id="academyType" name="academyType" type="text"
                     [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.academyType === null ? '' : academy.academyType">
             </div>
             <div class="col-6 form-inline">
                 <label style="font-weight: bolder;" for="client">Cliente:</label>
-                <input class="w-50 ml-1" [readonly]="!inUpdate" #clientField="ngModel" [(ngModel)]="academy.client" name="client"
-                    id="client" type="text" [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
+                <input class="w-50 ml-1" [readonly]="!inUpdate" #clientField="ngModel" [(ngModel)]="academy.client"
+                    name="client" id="client" type="text"
+                    [ngClass]="{'form-control': inUpdate, 'form-control-plaintext': !inUpdate}"
                     [placeholder]="academy.client === null ? '' : academy.client">
             </div>
         </div>
@@ -81,8 +88,8 @@
         <div class="row">
             <div class="col-6">
                 <p><b>Módulos</b>
-                    <button (click)="openModalAddModule(templateAddModule)" class="btn btn-success m-2">
-                        <fa-icon [icon]="faPlus"></fa-icon>
+                    <button (click)="openModalAddModule(templateAddModule)" class="btn btn-borderless">
+                        <fa-icon [icon]="faPlusCircle" size="2x"></fa-icon>
                     </button>
                 </p>
                 <table class="table table-sm table-striped container text-center">
@@ -105,9 +112,9 @@
                 </table>
             </div>
             <div class="col-6">
-                <p><b>Formandos</b><button class="btn btn-primary" (click)="openModalAddStudent(templateAddStudent)"
-                        class="btn btn-success m-2">
-                        <fa-icon [icon]="faPlus"></fa-icon>
+                <p><b>Formandos</b>
+                    <button class="btn btn-borderless" (click)="openModalAddStudent(templateAddStudent)">
+                        <fa-icon [icon]="faPlusCircle" size="2x"></fa-icon>
                     </button>
                 </p>
                 <table class="table table-sm table-striped container text-center">
@@ -151,16 +158,9 @@
                 <form #addModuleForm="ngForm" (ngSubmit)="addModuleToAcademy()">
                     <div class="row">
                         <label style="font-weight: bolder;" for="name">Nome:</label>
-                        <input #nameField="ngModel" [(ngModel)]="newModule.name" name="name" id="name" type="text"
-                            class="form-control">
+                        <input #nameField="ngModel" [(ngModel)]="newModule.name" name="name" id="name" type="text" class="form-control ml-2">
                     </div>
-                    <button class="btn btn-success m-3" type="submit">Criar</button>
-                </form>
-            </div>
-            <div *ngIf="addingTheme">
-                <form #addThemeForm="ngForm" (ngSubmit)="addTheme()">
-                    <input type="text" [(ngModel)]="newTheme.name" name="name" required>
-                    <button class="btn btn-success" type="submit">Adicionar Tema</button>
+                    <button class="btn btn-primary m-3" type="submit">Criar</button>
                 </form>
             </div>
         </div>
@@ -177,7 +177,7 @@
                             [items]="studentsDropdown" [settings]="studentsDropdownSettings">
                         </ngx-bootstrap-multiselect>
                     </div>
-                    <button class="btn btn-success m-3" type="submit">Adicionar Aluno</button>
+                    <button class="btn btn-primary m-3" type="submit">Adicionar Aluno</button>
                 </form>
             </div>
         </div>
