@@ -22,10 +22,14 @@
       <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
         <td>{{academy.edName}}</td>
         <td>
-          <button (click)="openAcademyById(academy.id)" class="btn btn-success">Ver</button>
+          <button (click)="openAcademyById(academy.id)" class="btn btn-borderless">
+            <fa-icon [icon]="faEye"></fa-icon>
+          </button>
         </td>
         <td>
-          <button (click)="openClassByAcademyId(academy.id)" class="btn btn-success">Ver</button>
+          <button (click)="openClassByAcademyId(academy.id)" class="btn btn-borderless">
+            <fa-icon [icon]="faEye"></fa-icon>
+          </button>
         </td>
       </tr>
     </tbody>

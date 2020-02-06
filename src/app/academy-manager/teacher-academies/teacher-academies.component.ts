@@ -6,7 +6,7 @@ import { AccountService } from '../shared/services/account.service';
 import { Account } from '../shared/models/account';
 import { AcademyService } from '../shared/services/academy.service';
 import { Router } from '@angular/router';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-teacher-academies',
@@ -16,6 +16,7 @@ import { faSort } from '@fortawesome/free-solid-svg-icons';
 export class TeacherAcademiesComponent implements OnInit {
 
   faSort = faSort;
+  faEye = faEye;
 
   public currentAccount: Account;
   public currentAccount$: ReplaySubject<Account> = new ReplaySubject(1);
