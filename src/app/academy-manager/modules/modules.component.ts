@@ -266,12 +266,15 @@ export class ModulesComponent implements OnInit {
 
   public updateTeachers() {
     this.chosenTeachers.forEach(teacher => {
+      console.log(teacher['id']);
       if (!this.module.teacherIds.includes(teacher['id'])) {
+        console.log('entrei no if');
         const teacherAccount = this.allTeachers.filter(completeTeacher => completeTeacher['account'].id = teacher['id'])[0]['account'];
+        this.module.teacherIds.push(teacher['id']);
+        console.log(teacherAccount);
         teacherAccount.academyIds.push(this.academyId);
         this.accountService.update(teacherAccount).subscribe(
           (res: any) => {
-            this.module.teacherIds.push(teacher['id']);
             this.getUserAccountById(teacher['id'], 'teacher');
           }
         );
@@ -381,9 +384,7 @@ export class ModulesComponent implements OnInit {
                 if (include === true) {
                   this.allTeachers.push({ 'account': teacherAccount, 'name': teacher.name });
                   this.allTeachers$.next(this.allTeachers);
-                  this.allTeachers.forEach(academyTeacher => {
-                    this.filteredTeachers.push({ 'id': academyTeacher['account'].id, 'name': academyTeacher['name'] });
-                  });
+                  this.filteredTeachers.push({ 'id': teacherAccount.id, 'name': teacher.name });
                 }
               });
           });
