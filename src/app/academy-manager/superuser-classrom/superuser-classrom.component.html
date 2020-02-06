@@ -1,5 +1,5 @@
-<div class="container mt-2 ml-4 d-flex justify-content-center">
-  <div>
+<div class="ml-5 mt-1">
+  <!-- <div> -->
     <!-- <div><button type="button" class="btn btn-danger" (click)="changeView()">change view</button></div> -->
 
     <!-- <div id="zemanel">
@@ -57,7 +57,7 @@
     </div>
 
     <div *ngIf="view === false">
-      <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
+      <table class="table table-sm table-striped container mt-3 col-12 text-center">
         <thead class="thead-dark">
           <tr>
             <th>Foto</th>
@@ -74,13 +74,18 @@
             <td>{{position.user.name}}</td>
             <td>
               <button *ngIf="chekedIfMissed(position.account.id) == false" (click)="addMissed(position.account.id)"
-                class="btn btn-danger">Falta</button>
+                class="btn btn-borderless" style="color: red;">
+                <fa-icon [icon]="faUserTimes"></fa-icon>
+              </button>
               <button *ngIf="chekedIfMissed(position.account.id) == true" (click)="removeMissed(position.account.id)"
-                class="btn btn-success">Remover Falta</button>
+                class="btn btn-borderless" style="color:green">
+                <fa-icon [icon]="faUserCheck"></fa-icon>
+              </button>
             </td>
             <td>
-              <button (click)="showProfileModal(templateViewStudentProfile,position.account,position.user)"
-                class="btn btn-info">Perfil</button>
+              <button (click)="showProfileModal(templateViewStudentProfile,position.account,position.user)" class="btn btn-borderless">
+                <fa-icon [icon]="faEye"></fa-icon>
+              </button>
             </td>
           </tr>
         </tbody>

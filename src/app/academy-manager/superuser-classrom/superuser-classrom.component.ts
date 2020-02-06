@@ -13,6 +13,7 @@ import { Missed } from '../shared/models/missed';
 import { ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { faEye, faUserTimes, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-superuser-classrom',
@@ -20,6 +21,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
   styleUrls: ['./superuser-classrom.component.scss']
 })
 export class SuperuserClassromComponent implements OnInit {
+  
+  faEye = faEye;
+  faUserTimes = faUserTimes;
+  faUserCheck = faUserCheck;
   // private academy: Academy;
   // public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public view = false;
