@@ -13,7 +13,7 @@
         <b>Temas</b>
         <div *ngIf="!inUpdate">
           <p *ngIf="module?.themes.length === 0"><i>Sem temas</i></p>
-          <ul *ngIf="module?.themes.length > 0">
+          <ul *ngIf="module?.themes.length > 0" class="list-unstyled">
             <li *ngFor="let theme of module?.themes">{{theme.name}}</li>
           </ul>
         </div>
@@ -30,9 +30,10 @@
         <b>Formadores</b>
         <div *ngIf="!inUpdate">
           <p *ngIf="module?.teacherIds.length === 0"><i>Sem Formadores</i></p>
-          <ul *ngIf="module?.teacherIds.length > 0">
-            <li *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button class="btn btn-primary"
-                (click)="showProfile(teacher['account'].id)">Perfil</button></li>
+          <ul *ngIf="module?.teacherIds.length > 0" class="list-inline">
+            <li class="list-inline-item" *ngFor="let teacher of teachers$ | async">{{teacher["user"].name}} <button type="button" class="btn btn-secondary close" (click)="deleteTeacher(teacher['account'])">
+              <span aria-hidden="true">  ×</span></button></li><button class="btn btn-primary"
+              (click)="showProfile(teacher['account'].id)">Perfil</button><br>
           </ul>
         </div>
         <div *ngIf="inUpdate" class="row">
@@ -50,8 +51,8 @@
 
     <div><b>Campos de Avaliação: </b> <ul class="list-inline">
       <li class="list-inline-item btn bg-secondary text-white" *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
-        {{evaluationSubject}} <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
-          <span aria-hidden="true"> ×</span></button></li></ul></div>
+        {{evaluationSubject}}  <button type="button" class="btn btn-secondary close" (click)="deleteEvaluationSubject(i, evaluationSubject)">
+          <span aria-hidden="true">  ×</span></button></li></ul></div>
     <div class="float-left mb-4 ml-3">
       <button type="button" class="btn btn-primary btn-md mt-4 float-left"
         (click)="openModal(templateAddEvaluation)">Novo Campo de Avaliação</button>
