@@ -145,7 +145,7 @@ export class ModulesComponent implements OnInit {
       (res: any) => {
         this.allThemes = res;
         this.allThemes$.next(this.allThemes);
-        if (this.allThemes !== []) {
+        if (this.allThemes.length > 0) {
           this.themeDropdownList = [];
         }
         this.allThemes.forEach(theme => {
@@ -254,6 +254,7 @@ export class ModulesComponent implements OnInit {
   public showProfile(accountId: number) {
     this.router.navigate(['/academy-manager/profile/' + accountId]);
   }
+
   public updateModule() {
     delete this.module.userTeacher;
     this.updateTeachers();
@@ -350,6 +351,7 @@ export class ModulesComponent implements OnInit {
   }
 
   public getModuleThemes() {
+    this.moduleThemeDropdownList = [{ 'id': 0, 'text': 'Todos os Temas' }];
     this.module.themes.forEach(theme => {
       this.moduleThemeDropdownList.push({ 'id': theme.id, 'text': theme.name });
     });
@@ -358,40 +360,40 @@ export class ModulesComponent implements OnInit {
   public getAllTeachers() {
     this.userService.getUsers('', '', 'SUPERUSER').subscribe(
       (teachers: User[]) => {
-        if (teachers !== []) {
+        if (teachers.length > 0) {
           this.allTeachers = [];
+          this.filteredTeachers = [];
           teachers.forEach(teacher => {
             let include = false;
             this.accountService.getByUserId(teacher.id).subscribe(
               (teacherAccount: Account) => {
-                teacherAccount.themes.forEach(teacherTheme => {
-                  if (this.module.themes.length > 0) {
-                    this.module.themes.forEach(moduleTheme => {
-                      if (moduleTheme.id === teacherTheme.id) {
+                if (this.module.themes.length > 0) {
+                  teacherAccount.themes.forEach(teacherTheme => {
+                    if (this.module.themes.find(moduleTheme => moduleTheme.id === teacherTheme.id)) {
+                    // this.module.themes.forEach(moduleTheme => {
+                    //   if (moduleTheme.id === teacherTheme.id) {
                         include = true;
                       }
-                    });
-                  } else {
-                    include = true;
-                  }
-                });
+                  });
+                } else {
+                  include = true;
+                }
                 if (include === true) {
                   this.allTeachers.push({ 'account': teacherAccount, 'name': teacher.name });
                   this.allTeachers$.next(this.allTeachers);
-                  this.allTeachers.forEach(teacher => {
-                    this.filteredTeachers.push({ 'id': teacher['account'].id, 'name': teacher['name'] });
+                  this.allTeachers.forEach(academyTeacher => {
+                    this.filteredTeachers.push({ 'id': academyTeacher['account'].id, 'name': academyTeacher['name'] });
                   });
                 }
-              }
-            );
+              });
           });
         }
-      }
-    );
+      });
   }
 
   public filterTeachers() {
     this.filteredTeachers = [];
+    this.chosenTeachers = [];
     let teachersByTheme: {}[];
     if (this.filterTheme !== null && this.filterTheme !== 0) {
       teachersByTheme = this.allTeachers.filter(teacher => teacher['account'].themes.find(theme => theme.id === this.filterTheme));
@@ -429,6 +431,16 @@ export class ModulesComponent implements OnInit {
         this.module$.next(this.module);
       }
     );
+  }
+
+  public deleteTeacher(account: Account) {
+    account.academyIds = account.academyIds.filter(academyId => academyId !== this.academyId);
+    this.accountService.update(account).subscribe((res: any) => console.log(res));
+    this.module.teacherIds = this.module.teacherIds.filter(teacherId => teacherId !== account.id);
+    this.moduleService.updateModule(this.module).subscribe((res: any) => {
+    this.teachers = this.teachers.filter(teacher => teacher['account'].id !== account.id);
+    this.teachers$.next(this.teachers);
+  });
   }
 
 }
