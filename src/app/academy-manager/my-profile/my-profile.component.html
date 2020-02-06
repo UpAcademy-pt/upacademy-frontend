@@ -77,4 +77,17 @@
             </div>
         </div>
     </div>
+
+    <div class="row text-center mt-3" *ngIf="role == 'SUPERUSER'">
+        <div class="col-md-3 text-right">
+            <div style="font-weight: bolder; font-style: italic; font-size: large;">Temas:</div>
+        </div>
+        <div class="col-md-8 ml-3 text-left">
+            <div *ngIf="currentAccount$ | async as c">
+                <div *ngFor="let theme of c?.themes">
+                    <p>{{theme.name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

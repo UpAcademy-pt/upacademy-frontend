@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, Renderer, TemplateRef } from '@angular/core';
 import { Posbyaccount } from '../shared/models/posbyaccount';
 import { ReplaySubject } from 'rxjs';
 import { AccountService } from '../shared/services/account.service';
@@ -12,6 +12,7 @@ import { MissedclassesService } from '../shared/services/missedclasses.service';
 import { Missed } from '../shared/models/missed';
 import { ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-superuser-classrom',
@@ -23,6 +24,10 @@ export class SuperuserClassromComponent implements OnInit {
   // public academy$: ReplaySubject<Academy> = new ReplaySubject(1);
   public view = false;
   public tempMissed: Missed[] = [];
+  private modalRef: BsModalRef;
+ 
+  public modalAccount: Account;
+  public modalUser: User;
 
   public tempAccount: Account;
   public tempAccount$: ReplaySubject<Account> = new ReplaySubject(1);
@@ -55,6 +60,7 @@ export class SuperuserClassromComponent implements OnInit {
     private userApi: UserServiceService,
     private missedApi: MissedclassesService,
     private route: ActivatedRoute,
+    private modalService: BsModalService,
     private http: HttpClient) {
     this.route.params.subscribe(
       params => {
@@ -211,5 +217,11 @@ export class SuperuserClassromComponent implements OnInit {
   //     this.view = true;
   //   }
   // }
+
+  public showProfileModal(template: TemplateRef<any>,account: Account,user: User) {
+    this.modalUser = user;
+    this.modalAccount = account;
+    this.modalRef = this.modalService.show(template);
+  }
 }
 

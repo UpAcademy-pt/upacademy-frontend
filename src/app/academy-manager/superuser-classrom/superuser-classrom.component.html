@@ -62,18 +62,37 @@
           <th>Foto</th>
           <th>Nome</th>
           <th>Falta</th>
+          <th>Perfil</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let position of arrayPositions$ | async; let i = index;" id="{{position.position}}">
-          <td><img src="{{position.account.photoLink}}" class="rounded-circle" alt="" style="max-height: 50px;max-width: auto;"></td>
+          <td><img [src]="position.account.photoLink === null ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' : position.account.photoLink" class="rounded-circle center-block" width="40" alt="100x100"></td>
           <td>{{position.user.name}}</td>
           <td>
             <button *ngIf="chekedIfMissed(position.account.id) == false" (click)="addMissed(position.account.id)" class="btn btn-danger">Falta</button>
             <button *ngIf="chekedIfMissed(position.account.id) == true" (click)="removeMissed(position.account.id)" class="btn btn-success">Remover Falta</button>
           </td>
+          <td>
+            <button (click)="showProfileModal(templateViewStudentProfile,position.account,position.user)" class="btn btn-info">Perfil</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+      <!-- Modal View Student Profile -->
+      <ng-template #templateViewStudentProfile>
+        <div class="modal-body text-center">
+              <!-- <div class="row"><img src="position.account.photoLink" class="rounded-circle"></div> -->
+                <div class="row">
+                <div>{{modalUser.name}}</div>
+                <!-- <div class="row">
+                  <div class="col"></div>
+                  <div class="col"></div>
+                </div> -->
+                </div>
+        </div>
+    </ng-template>
+
 </div>
