@@ -94,16 +94,34 @@
 
     <!-- Modal View Student Profile -->
     <ng-template #templateViewStudentProfile>
-      <div class="modal-body text-center">
-        <div class="text-center" style="font-weight: bolder;">
-          <div class="row">{{modalUser.name}}</div>
-          <div class="row"><img
+      <div class="modal-body text-center container">
+        <div class="text-center">
+          <div class="m-1 mb-2"><p style="font-weight: bolder; font-size:larger;">{{modalUser.name}}</p></div>
+          <div class="m-1"><img
               [src]="modalAccount.photoLink === null ? 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png' : modalAccount.photoLink"
               class="rounded-circle center-block" width="150" alt="100x100"></div>
-          <div class="row">Data Nascimento:{{modalAccount.age}}</div>
-          <div class="row">Email:{{modalUser.email}}</div>
-          <div class="row">Linkedin:{{modalAccount.linkedInAdress}}</div>
-          <div class="row">Area Academica:{{modalAccount.academicBackground}}</div>
+          <div class="text-left m-auto" style="width: fit-content;">
+            <div>
+              <div class="m-1 mt-3">
+                <span style="font-weight: bolder;">Data Nascimento:</span>  {{modalAccount.age}}
+              </div>
+            </div>
+            <div>
+              <div class="m-1">
+                <span style="font-weight: bolder;">Email:</span>  {{modalUser.email}}
+              </div>
+            </div>
+            <div>
+              <div class="m-1">
+                <span style="font-weight: bolder;">Linkedin:</span>  {{modalAccount.linkedInAdress}}
+              </div>
+            </div>
+            <div>
+              <div class="m-1">
+                <span style="font-weight: bolder;">Area Academica:</span>  {{modalAccount.academicBackground}}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </ng-template>
