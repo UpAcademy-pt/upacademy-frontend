@@ -34,7 +34,9 @@
             </div>
           </td>
           <td>
-            <button (click)="showProfile(teacher.teacherUser.id)" class="btn btn-success">Ver</button>
+            <button (click)="showProfile(teacher.teacherUser.id)" class="btn btn-borderless">
+              <fa-icon [icon]="faEye"></fa-icon>
+            </button>
           </td>
         </tr>
       </tbody>

@@ -1,16 +1,16 @@
-<div class="d-flex flex-column" style="background-color: grey; width: 220px; height: 100%;">
+<div  id="sidebar"class="d-flex flex-column" style="background-color: grey; width: 220px; height: 100%;">
 
     <div style="background-color: rgb(59, 59, 59);">
         <h4 class="mt-3 mb-3 ml-5" style="color: white;">Menu</h4>
     </div>
 
-    <div routerLinkActive = "active" class="nav-item mt-3" style="padding-left: 10px;">
+    <div  class="nav-item mt-3" style="padding-left: 10px;">
 
-            <button routerLink = "admin-academies" id="adminAcademies" class="btn btn-link btn-md mx-1 my-3 " style="color: white;">Gerir Academias</button> 
+            <a [routerLinkActive] = "['active']" routerLink = "admin-academies" id="adminAcademies" class="btn btn-link btn-md mx-1 my-3 " style="color: white;">Gerir Academias</a> 
         <br>
-            <button routerLink = "admin-students" id="adminStudents" class="btn btn-link btn-md mx-1 my-3" style="color: white;"> Gerir Formandos</button>        
+            <a [routerLinkActive] = "['active']" button routerLink = "admin-students" id="adminStudents" class="btn btn-link btn-md mx-1 my-3" style="color: white;"> Gerir Formandos</a>
         <br>
-            <button routerLink = "admin-teachers" id="adminTeachers" class="btn btn-link btn-md mx-1 my-3" style="color: white;"> Gerir Formadores</button> 
+            <a [routerLinkActive] = "['active']"  routerLink = "admin-teachers" id="adminTeachers" class="btn btn-link btn-md mx-1 my-3" style="color: white;"> Gerir Formadores</a> 
         <br>
 
     </div>

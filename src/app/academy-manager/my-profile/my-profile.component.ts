@@ -7,6 +7,7 @@ import {Account} from '../shared/models/account';
 import { ReplaySubject } from 'rxjs';
 import { Missed } from '../shared/models/missed';
 import { MissedclassesService } from '../shared/services/missedclasses.service';
+import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-my-profile',
@@ -20,15 +21,18 @@ export class MyProfileComponent implements OnInit {
 
   public name: string;
   public email: string;
+  public role: string;
   public misses: Missed[];
   public misses$: ReplaySubject<Missed[]> = new ReplaySubject(1);
+  public faEdit = faEdit;
+  public faSave = faSave;
 
 
 
   readonly URL ="http://localhost:8080/coreFinalProject/academy-manager/missed/account";
   
 
-  profileForm  = new FormGroup({
+    profileForm  = new FormGroup({
     editable: new FormControl(),
     notEditable: new FormControl(),
     formAge: new FormControl(),
@@ -50,10 +54,11 @@ export class MyProfileComponent implements OnInit {
     this.currentAccount$.subscribe((account) => {
       this.currentAccount = account;
       });
-      console.log(this.currentAccount);
+      // console.log(this.currentAccount);
       
     this.name = this.userApi.getCurrentName();
     this.email = this.userApi.getCurrentUser().email;
+    this.role = this.userApi.getCurrentUser().role;
     this.profileForm.controls['notEditable'].disable();
     this.profileForm.controls['editable'].disable();
     this.profileForm.controls['formAge'].disable();
@@ -110,7 +115,7 @@ export class MyProfileComponent implements OnInit {
 
     this.toggleShowSaveBtn();
     this.profileForm.controls['editable'].disable();
-    // this.profileForm.controls['formAge'].disable();
+    this.profileForm.controls['formAge'].disable();
     this.profileForm.controls['formAcademicB'].disable();
     this.profileForm.controls['formAcademicD'].disable();
     // this.profileForm.controls['formNif'].disable();

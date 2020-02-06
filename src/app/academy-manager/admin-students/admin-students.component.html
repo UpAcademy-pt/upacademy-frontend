@@ -38,7 +38,9 @@
           </div>
         </td>
         <td>
-          <button (click)="showProfile(student.studentUser.id)" class="btn btn-success">Ver</button>
+          <button (click)="showProfile(student.studentUser.id)" class="btn btn-borderless">
+            <fa-icon [icon]="faEye"></fa-icon>
+          </button>
         </td>
       </tr>
     </tbody>

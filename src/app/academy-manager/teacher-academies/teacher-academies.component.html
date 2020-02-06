@@ -1,32 +1,37 @@
-  <!-- Filter Fields -->
+<div class="ml-5 mt-1">
 
-  <div class="row ml-2 mb-4">
-    <div class="col-12">
-      <input name="name" #name = "ngModel" type="text" class="form-control" [(ngModel)] = "nameFilter" placeholder="Nome da Academia" (input) = "filterTable()">
+  <!-- Filter Fields -->
+  <div class="row mb-4">
+    <div class="col-12 mt-4">
+      <input name="name" #name="ngModel" type="text" class="form-control" [(ngModel)]="nameFilter"
+        placeholder="Nome da Academia" (input)="filterTable()">
     </div>
   </div>
 
   <!-- Table -->
-
-<div class="ml-4 mt-4">
-    <table class="table table-sm table-striped container m-3 ml-3 col-12 text-center" style="width: 1100px;">
-      <thead class="thead-dark">
-        <tr>
-          <th (click)="sortTableByName()">Nome <fa-icon [icon]="faSort"></fa-icon></th>
-          <th>Ver Academia</th>
-          <th>Ver Turma</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
-          <td>{{academy.edName}}</td>
-          <td>
-            <button (click)="openAcademyById(academy.id)" class="btn btn-success">Ver</button>
-          </td>
-          <td>
-            <button (click)="openClassByAcademyId(academy.id)" class="btn btn-success">Ver</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table class="table table-sm table-striped container mt-3 col-12 text-center">
+    <thead class="thead-dark">
+      <tr>
+        <th (click)="sortTableByName()">Nome <fa-icon [icon]="faSort"></fa-icon>
+        </th>
+        <th>Ver Academia</th>
+        <th>Ver Turma</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let academy of academies$ | async; let i = index;" id="{{i}}">
+        <td>{{academy.edName}}</td>
+        <td>
+          <button (click)="openAcademyById(academy.id)" class="btn btn-borderless">
+            <fa-icon [icon]="faEye"></fa-icon>
+          </button>
+        </td>
+        <td>
+          <button (click)="openClassByAcademyId(academy.id)" class="btn btn-borderless">
+            <fa-icon [icon]="faEye"></fa-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
