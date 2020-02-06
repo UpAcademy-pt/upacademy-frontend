@@ -13,6 +13,7 @@ import { User } from 'src/app/core/models/user';
 import { UserServiceService } from 'src/app/core/services/user-service/user-service.service';
 import { AccountService } from '../shared/services/account.service';
 import { Account } from '../shared/models/account';
+import { faPlus, faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-academy-view',
@@ -21,6 +22,9 @@ import { Account } from '../shared/models/account';
   providers: [{ provide: BsDropdownConfig, useValue: { isAnimated: true, autoClose: true } }]
 })
 export class AcademyViewComponent implements OnInit {
+
+  faPlus = faPlus;
+  faEye = faEye;
 
   public students: any[] = [];
   public studentsIds2: any[] = [];
