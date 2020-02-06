@@ -27,8 +27,8 @@ export class AdminComponent implements OnInit {
   private userToUpdate: User = new User();
   private rowUserToDelete: number;
   private headers = ["name", "email", "role"];
-  private roles = [{ 'id': "USER", 'text': "User" }, { 'id': "SUPERUSER", 'text': "Super User" }, { 'id': "ADMIN", 'text': "Admin" }];
-  private rolesWithAll = [{ 'id': "todos", 'text': "Todos" },{ 'id': "USER", 'text': "User" }, { 'id': "SUPERUSER", 'text': "Super User" }, { 'id': "ADMIN", 'text': "Admin" }];
+  private roles = [{ 'id': "USER", 'text': "Formando" }, { 'id': "SUPERUSER", 'text': "Tutor" }, { 'id': "ADMIN", 'text': "Admin" }];
+  private rolesWithAll = [{ 'id': "todos", 'text': "Todos" },{ 'id': "USER", 'text': "Formando" }, { 'id': "SUPERUSER", 'text': "Tutor" }, { 'id': "ADMIN", 'text': "Admin" }];
   private showTable: boolean = false;
   private resetPasswordConfirm: boolean = true;
   faSearch = faSearch;
