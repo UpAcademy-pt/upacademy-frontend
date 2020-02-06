@@ -5,7 +5,7 @@ import { User } from 'src/app/core/models/user';
 import { AccountService } from '../shared/services/account.service';
 import { Router } from '@angular/router';
 import { AcademyService } from '../shared/services/academy.service';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Academy } from '../shared/models/academy';
 
 @Component({
@@ -25,6 +25,7 @@ export class AdminTeachersComponent implements OnInit {
   private sortedByAcademy = false;
   private filterSortedByAcademy = false;
   public faSort = faSort;
+  public faEye = faEye;
   public allAcademiesNames: {}[] = [{ 'id': 'Todas', 'text': 'Todas' }];
   private filteredTeachers: {}[] = [];
   public nameFilter = '';

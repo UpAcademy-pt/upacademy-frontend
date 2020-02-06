@@ -7,6 +7,7 @@ import {Account} from '../shared/models/account';
 import { ReplaySubject } from 'rxjs';
 import { Missed } from '../shared/models/missed';
 import { MissedclassesService } from '../shared/services/missedclasses.service';
+import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-my-profile',
