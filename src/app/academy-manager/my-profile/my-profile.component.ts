@@ -24,13 +24,15 @@ export class MyProfileComponent implements OnInit {
   public role: string;
   public misses: Missed[];
   public misses$: ReplaySubject<Missed[]> = new ReplaySubject(1);
+  public faEdit = faEdit;
+  public faSave = faSave;
 
 
 
   readonly URL ="http://localhost:8080/coreFinalProject/academy-manager/missed/account";
   
 
-  profileForm  = new FormGroup({
+    profileForm  = new FormGroup({
     editable: new FormControl(),
     notEditable: new FormControl(),
     formAge: new FormControl(),

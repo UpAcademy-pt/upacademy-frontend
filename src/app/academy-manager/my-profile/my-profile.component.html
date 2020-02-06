@@ -8,9 +8,12 @@
         <div class="col-md-8 text-left mb-3 ml-3">
             <div class="row text-center">
                 <div class="col-md-12 text-right">
-                    <div><button *ngIf="isShown" type="button" class="btn btn-danger"
-                            (click)='save()'>Save</button><button type="button" class="btn btn-dark"
-                            (click)='MakeEdit()'>Editar</button>
+                    <div><button *ngIf="isShown" type="button" class="btn btn-borderless"
+                            (click)='save()'> <fa-icon [icon]="faSave" size="2x"></fa-icon>
+                        </button>
+                        <button type="button" class="btn btn-borderless"
+                            (click)='MakeEdit()'> <fa-icon [icon]="faEdit"></fa-icon>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -73,19 +76,6 @@
                     <p *ngIf="missed.justified != true">{{missed.date | date:'fullDate'}} <img
                             style="height: 25px; width: auto;" data-toggle="tooltip" title="Não Justificada"
                             src="https://cdn.pixabay.com/photo/2012/05/07/02/13/cancel-47588_960_720.png"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row text-center mt-3" *ngIf="role == 'SUPERUSER'">
-        <div class="col-md-3 text-right">
-            <div style="font-weight: bolder; font-style: italic; font-size: large;">Temas:</div>
-        </div>
-        <div class="col-md-8 ml-3 text-left">
-            <div *ngIf="currentAccount$ | async as c">
-                <div *ngFor="let theme of c?.themes">
-                    <p>{{theme.name}}</p>
                 </div>
             </div>
         </div>
