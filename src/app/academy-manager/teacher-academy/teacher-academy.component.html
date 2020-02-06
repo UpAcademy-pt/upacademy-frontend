@@ -5,23 +5,20 @@
     <h4 class="mb-4">Academia do Formador</h4>
 
     <div *ngIf = "academy$ | async as academy" class="mb-4">
-      <div id="InfoBox" class="form-inline">
-          <div class="float-left" style="width: 500px;">
-              <h5>Cliente: <span class="badge badge-secondary"> {{ academy.client }} </span></h5>
-                  
-              <h5>Data de começo: <span class="badge badge-secondary"> {{ academy.startDate }} </span></h5>
-                  
-              <h5>Nome da edição: <span class="badge badge-secondary"> {{ academy.edName }} </span></h5>
-          </div>
+        
+  <div id="InfoBox" class="form-inline">
+    <div class="float-left" style="width: 400px;">
+      <h6 style="font-weight: bolder;">Cliente:  <span> {{ academy.client }} </span></h6>
+      <h6 style="font-weight: bolder;">Data de começo:  <span> {{ academy.startDate }} </span></h6>
+      <h6 style="font-weight: bolder;">Nome da edição:  <span> {{ academy.edName }} </span></h6>
+    </div>
 
-          <div class="float-left" style="width: 400px;">
-              <h5>Tipo de academia: <span class="badge badge-secondary"> {{ academy.academyType }} </span></h5>
-                  
-              <h5>Data de finalização: <span class="badge badge-secondary"> {{ academy.endDate }} </span></h5>
-                  
-              <h5>Status: <span class="badge badge-secondary"> {{ academy.status }} </span></h5>
-          </div>
-      </div>
+    <div class="float-left" style="width: 400px;">
+      <h6 style="font-weight: bolder;">Tipo de academia:  <span> {{ academy.academyType }} </span></h6>
+      <h6 style="font-weight: bolder;">Data de finalização:  <span> {{ academy.endDate }} </span></h6>
+      <h6 style="font-weight: bolder;">Status:  <span> {{ academy.status }} </span></h6>
+    </div>
+  </div>
 
       <div class="inline">
 
