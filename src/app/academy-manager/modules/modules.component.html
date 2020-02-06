@@ -66,20 +66,6 @@
     </div>
   </form>
 
-  <div><b>Campos de Avaliação: </b>
-    <ul class="list-inline">
-      <li class="list-inline-item btn bg-secondary text-white"
-        *ngFor="let evaluationSubject of evaluationSubjectArray; let i=index" id={{i}}>
-        {{evaluationSubject}} <button type="button" class="btn btn-secondary close"
-          (click)="deleteEvaluationSubject(i, evaluationSubject)">
-          <span aria-hidden="true"> ×</span></button></li>
-    </ul>
-  </div>
-  <div class="float-left mb-4">
-    <button type="button" class="btn btn-primary btn-md mt-4 float-left" (click)="openModal(templateAddEvaluation)">Novo
-      Campo de Avaliação</button>
-  </div>
-
   <!-- Table -->
   <table class="table table-sm table-striped container mt-3 col-12 text-center"
     *ngIf="evaluations$ | async as evaluation">
