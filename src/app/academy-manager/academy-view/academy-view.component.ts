@@ -13,7 +13,7 @@ import { User } from 'src/app/core/models/user';
 import { UserServiceService } from 'src/app/core/services/user-service/user-service.service';
 import { AccountService } from '../shared/services/account.service';
 import { Account } from '../shared/models/account';
-import { faPlus, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEye, faEdit, faTrashAlt, faSave, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-academy-view',
@@ -23,8 +23,11 @@ import { faPlus, faEye } from '@fortawesome/free-solid-svg-icons';
 })
 export class AcademyViewComponent implements OnInit {
 
-  faPlus = faPlus;
+  faPlusCircle = faPlusCircle;
   faEye = faEye;
+  faEdit = faEdit;
+  faTrashAlt = faTrashAlt;
+  faSave = faSave;
 
   public students: any[] = [];
   public studentsIds2: any[] = [];
@@ -105,8 +108,8 @@ export class AcademyViewComponent implements OnInit {
             this.academy = academy;
             this.academy$.next(this.academy);
             this.academy.studentsIds.forEach(student => {
-            this.getStudentsByAcademy(student);
-          });
+              this.getStudentsByAcademy(student);
+            });
           }
         );
       });
@@ -157,6 +160,7 @@ export class AcademyViewComponent implements OnInit {
       }, (error: string) => {
         console.log(error);
       });
+    this.modalRef.hide();
   }
 
   public returnToTable() {
@@ -237,13 +241,13 @@ export class AcademyViewComponent implements OnInit {
   }
 
   public getStudentsByAcademy(studentId: number) {
-      this.accountService.getById(studentId).subscribe((account: Account) => {
-        this.userService.getUserById(account.userId).subscribe(
-          (studentUser: User) => {
-            this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account });
-            this.academyStudents$.next(this.academyStudents);
-          });
-      });
+    this.accountService.getById(studentId).subscribe((account: Account) => {
+      this.userService.getUserById(account.userId).subscribe(
+        (studentUser: User) => {
+          this.academyStudents.push({ 'studentUser': studentUser, 'studentAccount': account });
+          this.academyStudents$.next(this.academyStudents);
+        });
+    });
   }
 
   public getAllStudents() {
