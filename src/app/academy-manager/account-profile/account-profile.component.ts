@@ -99,11 +99,10 @@ export class AccountProfileComponent implements OnInit {
             if (this.account.academyIds != null) {
               this.account.academyIds.forEach(academyId => this.getAcademy(academyId));
             }
+            this.accountAcademies$.next(this.accountAcademies);
             this.declarationsService.get(this.account.id).subscribe(
               (declarations: Declarations[]) => {
                 this.declarations = declarations;
-                console.log(this.declarations);
-                
                 this.declarations$.next(this.declarations);
               }
             );
@@ -275,8 +274,6 @@ export class AccountProfileComponent implements OnInit {
       (id: number) => {
         this.newDeclaration.id = id;
         this.declarations.push(this.newDeclaration);
-        console.log(this.newDeclaration);
-        
         this.declarations$.next(this.declarations);
         this.modalRef.hide();
         this.newDeclaration = new Declarations();
