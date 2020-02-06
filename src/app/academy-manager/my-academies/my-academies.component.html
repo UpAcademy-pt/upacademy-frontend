@@ -1,14 +1,14 @@
 <div class="container mt-4 ml-4" *ngIf="academy$| async as academy">
 
-  <div>
-  <h3>Bem-Vindo</h3>
-  </div>
+    <div>
+      <h3>Bem-Vindo</h3>
+    </div>
 
     <div>
-    <alert type="warning" class="alert-link container" dismissible="true" (onClosed)="onClosed(alert)">
-    <div id="hG"class="alert-heading">Avisos</div> 
-    <p class= "mb-0"> {{ academy.warning }} </p>
-    </alert>
+      <alert type="warning" class="alert-link container" dismissible="true" (onClosed)="onClosed(alert)">
+      <div id="hG"class="alert-heading">Avisos</div> 
+      <p class= "mb-0"> {{ academy.warning }} </p>
+      </alert>
     </div>
 
     <div id="InfoBox" class="form-inline">
@@ -26,16 +26,16 @@
 
     </div>
 
-    <div class= mt-3> 
-    <button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed"
-        [attr.aria-expanded]="isCollapsed" aria-controls="collapseBasic">Links
-    </button>
-    <div class= mt-3 id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
-    <div class="well well-lg card card-block card-header">{{academy.usefulInfo}}</div>
-    </div>
+    <div class= "my-4"> 
+      <button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="isCollapsed" aria-controls="collapseBasic">Links
+      </button>
+      <div class= "mt-3" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+        <div class="well well-lg card card-block card-header">{{academy.usefulInfo}}</div>
+      </div>
   </div>
 
-    <div class= mt-3> 
+    <div class= "mt-3"> 
       <accordion [isAnimated]="true">
         <accordion-group heading="Detalhes">
            <table class="table">
